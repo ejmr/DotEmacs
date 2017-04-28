@@ -641,6 +641,10 @@ _v_ariable       _u_ser-option
   :config
   (setq quickrun-focus-p nil)
   (quickrun-set-default "c" "c/clang")
+  (quickrun-add-command "asciidoc/html5"
+    '((:command . "asciidoc")
+      (:exec . "%c -b html5 -a icons -a toc2 -a theme=flask %s"))
+    :mode 'asciidoc-mode)
   (defhydra hydra-quickrun (:color blue)
     "Quickrun"
     ("q" quickrun "run")
