@@ -160,6 +160,7 @@
 
 (use-package org
   :config
+  (setq initial-major-mode 'org-mode)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "IN PROGRESS(p)" "|" "DONE(d)")
           (sequence "REPORT(r)" "BUG(b)" "TESTING(t)" "|" "CLOSED(c)")
