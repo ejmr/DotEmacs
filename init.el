@@ -64,7 +64,9 @@
 (use-package hierarchy)
 (use-package lentic)
 (use-package god-mode
-  :bind ("s-g" . god-mode-all))
+  :bind (("s-g" . god-mode-all)
+	 :map god-local-mode-map
+	 ("." . repeat)))
 (use-package refine)
 (use-package restart-emacs)
 (use-package zone)
