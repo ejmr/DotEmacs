@@ -705,6 +705,7 @@ _v_ariable       _u_ser-option
 		    ("b" dumb-jump-back "Back")
 		    ("l" dumb-jump-quick-look "Look")
 		    ("e" dumb-jump-go-prefer-external "External")
+		    ("w" dumb-jump-go-other-window "Window" :color blue)
 		    ("q" nil "Quit" :color blue)))
   (dumb-jump-mode 1))
 
