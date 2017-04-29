@@ -803,6 +803,16 @@ _v_ariable       _u_ser-option
   (bind-key "<s-up>" #'flycheck-previous-error)
   (bind-key "<s-down>" #'flycheck-next-error))
 
+(use-package solid-mode
+  :load-path "/home/eric/.emacs.d/local/solid-mode"
+  :config
+  (quickrun-add-command "solid"
+    '((:command . "solid")
+      (:exec . "%c %s")
+      (:compile-only . "%c %s")
+      (:description . "Compile and execute Solid scripts"))
+    :mode 'solid-mode))
+
 (use-package nameless
   :diminish 'nameless-mode
   :config
