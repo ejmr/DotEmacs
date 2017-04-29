@@ -715,7 +715,8 @@ _v_ariable       _u_ser-option
 (use-package projectile
   :diminish projectile-mode
   :config
-  (use-package counsel-projectile)
+  (use-package counsel-projectile
+    :config (counsel-projectile-on))
   (setq projectile-completion-system 'ivy)
   (projectile-mode nil))
 
