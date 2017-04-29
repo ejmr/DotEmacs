@@ -198,6 +198,7 @@
 
 (bind-key "<M-return>" #'indent-new-comment-line)
 (bind-key "s-a" #'align-regexp)
+(bind-key "s-v" #'view-mode)
 
 ;;; Setup `s-1' as a prefix key for help commands.
 (define-prefix-command 'super-1-map)
