@@ -74,6 +74,11 @@
 	 :map god-local-mode-map
 	 ("." . repeat)))
 
+(use-package kill-or-bury-alive
+  :config
+  (key-seq-define-global "ZK" #'kill-or-bury-alive)
+  (key-seq-define-global "ZP" #'kill-or-bury-alive-purge-buffers))
+
 (use-package refine)
 (use-package restart-emacs)
 (use-package zone)
@@ -272,7 +277,6 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
 
 ;;; General Chords
 
-(key-seq-define-global "ZK" #'kill-this-buffer)
 (key-seq-define-global "ZB" #'ivy-switch-buffer)
 (key-seq-define-global "ZW" #'kill-buffer-and-window)
 
