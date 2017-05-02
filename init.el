@@ -275,7 +275,6 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
 (key-seq-define-global "ZK" #'kill-this-buffer)
 (key-seq-define-global "ZB" #'ivy-switch-buffer)
 (key-seq-define-global "ZW" #'kill-buffer-and-window)
-(key-seq-define-global "ZS" #'save-buffer)
 
 
 ;;; Page Breaks
