@@ -975,6 +975,9 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package bbcode-mode
+  :load-path "/home/eric/.emacs.d/local/bbcode-mode")
+
 (use-package epub-mode
   :load-path "/home/eric/.emacs.d/local/epub-mode.el")
 
