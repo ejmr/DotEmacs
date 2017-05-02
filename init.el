@@ -748,6 +748,8 @@ _v_ariable       _u_ser-option
   :config
   (selected-global-mode t)
   :bind (:map selected-keymap
+	      ("n" . narrow-to-region)
+	      (";" . comment-dwim-2)
               ("u" . upcase-region)
               ("d" . downcase-region)
               ("c" . count-words-region)
