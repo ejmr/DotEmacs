@@ -65,10 +65,15 @@
 (use-package iedit)
 (use-package hierarchy)
 (use-package lentic)
+
+;;; TODO: Consider swapping God Mode for Ryo Modal or Modalka
+(use-package modalka :disabled t)
+(use-package ryo-modal :disabled t)
 (use-package god-mode
   :bind (("s-g" . god-mode-all)
 	 :map god-local-mode-map
 	 ("." . repeat)))
+
 (use-package refine)
 (use-package restart-emacs)
 (use-package zone)
