@@ -990,9 +990,10 @@ Also opens the next N files when given the prefix `arg'."
   (let ((fill-column 100000))
     (fill-individual-paragraphs (point-min) (point-max))))
 
-(use-package fountain-mode)
-(use-package darkroom)
 (use-package wc-mode)
+(use-package darkroom)
+(use-package fountain-mode
+  :config (add-hook 'fountain-mode-hook 'darkroom-tentative-mode))
 
 (use-package adoc-mode
   :commands (adoc-mode buffer-face-mode)
