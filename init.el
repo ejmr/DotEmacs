@@ -538,10 +538,10 @@ Info-mode:
 (bind-key "C-c x" #'hydra-commands/body)
 
 
-;;; Rebind M-; to Comment DWIM
+;;; Comment DWIM
 
 (use-package comment-dwim-2
-  :bind ("M-;" . comment-dwim-2))
+  :bind ("s-;" . comment-dwim-2))
 
 
 ;;; Expand Region
