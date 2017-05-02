@@ -522,17 +522,18 @@ Info-mode:
 
 ;;; Misc Commands
 
-(defhydra hydra-commands (:color blue :columns 2)
+(defhydra hydra-commands (:color blue :columns 3)
   "Commands"
   ("b" ejmr-browse-current-file "Browse")
   ("e" editorconfig-mode-apply "EditorConfig")
+  ("l" refine "Refine List")
   ("r" revert-buffer "Revert Buffer")
-  ("R" refine "Refine List")
   ("s" ejmr-edit-current-file-as-root "Sudo File")
   ("t" find-temp-file "Temp File")
   ("T" tldr "TL;DR")
   ("v" vlf "View Large File")
   ("w" woman "WoMan")
+  ("x" re-builder "Regex Builder")
   ("z" zone "Zone"))
 
 (bind-key "C-c x" #'hydra-commands/body)
