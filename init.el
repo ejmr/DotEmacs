@@ -56,6 +56,8 @@
 
 ;;; Global Utilities
 
+(use-package mmt)
+(use-package el-mock)
 (use-package vlf)
 (use-package eieio)
 (use-package general :disabled t)
