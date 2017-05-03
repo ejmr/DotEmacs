@@ -615,6 +615,7 @@ Info-mode:
     (bind-key "m" #'counsel-descbinds super-1-map)
     (bind-key "t" #'counsel-tmm super-1-map)
     (bind-key "u" #'counsel-unicode-char super-1-map)
+    (bind-key "h" #'counsel-load-theme super-1-map)
     (defhydra hydra-apropos (:color blue :hint nil)
       "
 _a_propos        _c_ommand
