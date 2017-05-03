@@ -280,6 +280,17 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
 (key-seq-define-global "ZB" #'ivy-switch-buffer)
 (key-seq-define-global "ZW" #'kill-buffer-and-window)
 
+(defun ejmr-server-edit-save-and-kill ()
+  "Set current buffer as 'done' for the server, save then kill.
+
+This is equivalent to `C-x C-s' followed by `C-x #'.  The latter
+will automatically kill the buffer."
+  (interactive)
+  (save-buffer)
+  (server-edit))
+
+(key-seq-define-global "Z#" #'ejmr-server-edit-save-and-kill)
+
 
 ;;; Page Breaks
 
