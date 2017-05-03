@@ -571,7 +571,7 @@ Info-mode:
   (use-package ivy-hydra)
   (use-package ivy-todo
     :commands ivy-todo
-    :bind (:map org-mode-map ("C-c t" . ivy-todo)))
+    :bind (:map org-mode-map ("C-c C-i" . ivy-todo)))
   (use-package counsel
     :config
     (use-package counsel-dash)
