@@ -707,6 +707,9 @@ _v_ariable       _u_ser-option
   :commands git-timemachine-toggle
   :bind ("C-x v T" . git-timemachine-toggle))
 
+(use-package diff
+  :mode ("COMMIT_EDITMSG" . diff-mode))
+
 (use-package diff-hl
   :config
   (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
