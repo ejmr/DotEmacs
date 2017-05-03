@@ -599,7 +599,9 @@ Info-mode:
 			      (cddr x)))
 			register-alist)
 		:require-match t
-		:action (lambda (x) (find-file x))
+		:sort t
+		:history 'ejmr-counsel-file-register-history
+		:action (lambda (x) (with-ivy-window (find-file x)))
 		:caller 'ejmr-counsel-file-register))
 
     (bind-key "r" #'ejmr-counsel-file-register super-1-map)
