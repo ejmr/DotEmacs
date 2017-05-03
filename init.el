@@ -773,7 +773,8 @@ _v_ariable       _u_ser-option
 (use-package nasm-mode
   :mode (("\\.asm\\'" . nasm-mode)
 	 ("\\.s\\'" . nasm-mode)))
-(use-package tup-mode)
+(use-package tup-mode
+  :load-path "/home/eric/.emacs.d/local/tup-mode")
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
 
