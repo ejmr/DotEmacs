@@ -758,6 +758,10 @@ _v_ariable       _u_ser-option
 
 (use-package brainfuck-mode)
 
+(use-package emacsql
+  :config
+  (use-package emacsql-sqlite))
+
 (use-package clang-format)
 (use-package irony)
 (use-package cov)
