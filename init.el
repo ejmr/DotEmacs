@@ -985,6 +985,15 @@ Also opens the next N files when given the prefix `arg'."
     ("w" avy-goto-word-1 "Word")
     ("s" avy-goto-subword-1 "Subword")))
 
+(use-package ace-isearch
+  :disabled t
+  :diminish 'ace-isearch-mode
+  :config
+  (global-ace-isearch-mode 1)
+  (setq ace-isearch-function 'avy-goto-word-1)
+  (setq ace-isearch-use-jump 'printing-char)
+  (setq ace-isearch-function-from-isearch 'ace-isearch-swiper-from-isearch))
+
 (use-package recursive-narrow
   :bind
   (("C-x n n" . recursive-narrow-or-widen-dwim)
