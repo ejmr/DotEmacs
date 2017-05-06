@@ -644,6 +644,13 @@ _v_ariable       _u_ser-option
     (bind-key "a" #'hydra-apropos/body super-1-map)
     (bind-key "C-x 8 <return>" #'counsel-unicode-char)
 
+    (defun ejmr-switch-to-info-other-frame ()
+      "Opens Info in a new frame."
+      (interactive)
+      (select-frame-set-input-focus (make-frame-command))
+      (info))
+    (bind-key "s-i" #'ejmr-switch-to-info-other-frame super-1-map)
+
     (key-seq-define-global "ZF" #'counsel-recentf)
 
     (ivy-set-actions
