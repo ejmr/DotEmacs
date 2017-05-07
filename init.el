@@ -866,6 +866,7 @@ _v_ariable       _u_ser-option
   (add-hook 'emacs-lisp-mode-hook #'nameless-mode))
 
 (bind-key "C-c C-b" #'emacs-lisp-byte-compile-and-load emacs-lisp-mode-map)
+(bind-key "C-c C-t" #'top-level emacs-lisp-mode-map)
 
 (use-package syntactic-close
   :bind ("s-0" . syntactic-close))
