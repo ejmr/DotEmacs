@@ -67,14 +67,6 @@
 (use-package hierarchy)
 (use-package lentic)
 
-;;; TODO: Consider swapping God Mode for Ryo Modal or Modalka
-(use-package modalka :disabled t)
-(use-package ryo-modal :disabled t)
-(use-package god-mode
-  :bind (("s-g" . god-mode-all)
-	 :map god-local-mode-map
-	 ("." . repeat)))
-
 (use-package kill-or-bury-alive
   :config
   (key-seq-define-global "ZK" #'kill-or-bury-alive)
@@ -169,6 +161,32 @@
 (use-package qwe
   :load-path ("/home/eric/.emacs.d/local/qwe-0.9.5/src"
 	      "/home/eric/.emacs.d/local/qwe-0.9.5/ext"))
+
+
+;;; Modal Input
+
+(use-package modalka :disabled t)
+
+(use-package ryo-modal
+  :disabled t
+  :commands ryo-modal-mode
+  :bind ("C-c SPC" . ryo-modal-mode)
+  :init
+  (add-hook 'ryo-modal-mode-hook
+	    (lambda () (if ryo-modal-mode
+		      (selected-minor-mode 1)
+		    (selected-minor-mode -1))))
+  :config
+  (define-key ryo-modal-mode-map (kbd ".") 'ryo-modal-repeat)
+  (add-to-list 'ryo-modal-bindings-list '("." "ryo-modal-repeat"))
+  (ryo-modal-keys ("q" ryo-modal-mode)
+		  ("n" next-line)
+		  ("p" previous-line)))
+
+(use-package god-mode
+  :bind (("s-g" . god-mode-all)
+	 :map god-local-mode-map
+	 ("." . repeat)))
 
 
 ;;; Org Mode
