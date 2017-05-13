@@ -20,6 +20,14 @@
 (require 'bind-key)
 (require 'diminish)
 
+;;; TODO: Ideally I would like to have (package-menu-execute t) at the
+;;; end of this but it simply does not work.
+(defun ejmr-update-available-packages ()
+  "Open the list of packages and mark all available for update."
+  (interactive)
+  (package-list-packages)
+  (package-menu-mark-upgrades))
+
 
 ;;; Global Minor Modes
 
@@ -66,6 +74,7 @@
 (use-package iedit)
 (use-package hierarchy)
 (use-package lentic)
+(use-package rpn-calc)
 
 (use-package kill-or-bury-alive
   :config
@@ -552,15 +561,17 @@ Info-mode:
 
 ;;; Misc Commands
 
-(defhydra hydra-commands (:color blue :columns 3)
+(defhydra hydra-commands (:color blue :columns 4)
   "Commands"
   ("b" ejmr-browse-current-file "Browse")
+  ("c" rpn-calc "RPN Calculator")
   ("e" editorconfig-mode-apply "EditorConfig")
   ("l" refine "Refine List")
   ("r" revert-buffer "Revert Buffer")
   ("s" ejmr-edit-current-file-as-root "Sudo File")
   ("t" find-temp-file "Temp File")
   ("T" tldr "TL;DR")
+  ("u" ejmr-update-available-packages "Update Packages")
   ("v" vlf "View Large File")
   ("w" woman "WoMan")
   ("x" re-builder "Regex Builder")
