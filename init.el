@@ -760,9 +760,9 @@ _v_ariable       _u_ser-option
   :mode ("COMMIT_EDITMSG" . diff-mode))
 
 (use-package diff-hl
+  :bind ("C-x v =" . diff-hl-diff-goto-hunk)
   :config
-  (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-  (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+  (global-diff-hl-mode 1))
 
 (use-package dumb-jump
   :config
