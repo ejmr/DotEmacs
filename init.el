@@ -1010,6 +1010,7 @@ Also opens the next N files when given the prefix `arg'."
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (setq avy-background t)
   (setq avy-all-windows nil)
+  (setq avy-timeout-seconds 1)
   (use-package avy-zap
     :config
     (key-seq-define-global "jz" #'avy-zap-up-to-char-dwim)
