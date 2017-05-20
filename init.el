@@ -1051,6 +1051,11 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package focus
+  :commands (focus-mode)
+  :config
+  (key-seq-define-global "ZC" #'focus-mode))
+
 (use-package copy-as-format
   :config
   (setq-default copy-as-format-default "markdown"))
