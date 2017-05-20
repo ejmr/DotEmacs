@@ -65,6 +65,7 @@
 
 ;;; Global Utilities
 
+(use-package avy-menu)
 (use-package mmt)
 (use-package el-mock)
 (use-package vlf)
