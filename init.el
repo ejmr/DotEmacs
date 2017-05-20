@@ -1008,6 +1008,7 @@ Also opens the next N files when given the prefix `arg'."
 (use-package avy
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq avy-background t)
   (use-package avy-zap
     :config
     (key-seq-define-global "jz" #'avy-zap-up-to-char-dwim)
