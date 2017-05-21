@@ -45,6 +45,19 @@
 (global-hl-line-mode t)
 (pending-delete-mode t)
 
+(use-package schrute
+  :diminish schrute-mode
+  :config
+  (setq schrute-shortcuts-commands
+	'((avy-goto-line . (next-line previous-line))
+	  (avy-goto-word-1 . (left-char right-char))
+	  (kill-buffer . (kill-or-bury-alive))
+	  (comment-region . (comment-dwim-2))
+	  (isearch . (swiper))
+	  (find-file . (counsel-recentf))
+	  (zap-char . (avy-zap-up-to-char-dwim))))
+  (schrute-mode 1))
+
 
 ;;; Global Variables
 
