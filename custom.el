@@ -131,6 +131,8 @@ static char *gnus-pointer[] = {
  '(initial-buffer-choice t)
  '(linum-relative-global-mode nil)
  '(magit-diff-use-overlays nil)
+ '(neo-smart-open t)
+ '(neo-theme (quote nerd))
  '(nrepl-message-colors
    (quote
     ("#ee11dd" "#8584ae" "#b4f5fe" "#4c406d" "#ffe000" "#ffa500" "#ffa500" "#DC8CC3")))

@@ -80,7 +80,8 @@
 
 (use-package neotree
   :commands neotree-toggle
-  :bind ("s-7" . neotree-toggle))
+  :bind ("s-7" . neotree-toggle)
+  :config (setq neo-theme 'state))
 
 (use-package avy-menu)
 (use-package mmt)
