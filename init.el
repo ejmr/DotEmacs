@@ -78,6 +78,10 @@
 
 ;;; Global Utilities
 
+(use-package neotree
+  :commands neotree-toggle
+  :bind ("s-7" . neotree-toggle))
+
 (use-package avy-menu)
 (use-package mmt)
 (use-package el-mock)
