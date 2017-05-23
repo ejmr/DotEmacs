@@ -235,7 +235,16 @@
     ("P" org-backward-heading-same-level "Previous Level")
     ("u" outline-up-heading "Up")
     ("g" org-goto "Goto" :exit t))
-  (bind-key "C-c o" #'hydra-org-movement/body))
+  (bind-key "C-c o" #'hydra-org-movement/body)
+  (use-package org-readme)
+  (use-package org-board)
+  (use-package ob-php)
+  (use-package ox-pandoc)
+  (use-package org-brain
+    :init
+    (setq org-brain-path "/home/eric/.emacs.d/org")
+    :config
+    (org-brain-activate-cache-saving)))
 
 
 ;;; Font
