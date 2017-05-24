@@ -236,6 +236,15 @@
     ("u" outline-up-heading "Up")
     ("g" org-goto "Goto" :exit t))
   (bind-key "C-c o" #'hydra-org-movement/body)
+  (use-package yankpad
+    :init
+    (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
+    :config
+    (define-prefix-command 'ejmr-yankpad-map)
+    (bind-key "s-p" 'ejmr-yankpad-map)
+    (bind-key "m" #'yankpad-map ejmr-yankpad-map)
+    (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
+    (add-to-list 'company-backends #'company-yankpad))
   (use-package org-readme)
   (use-package org-board)
   (use-package ob-php)
