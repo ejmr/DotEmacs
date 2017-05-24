@@ -820,6 +820,9 @@ _v_ariable       _u_ser-option
 (use-package realgud
   :disabled t)
 
+(use-package malinka
+  :disabled t)
+
 (use-package brainfuck-mode)
 
 (use-package emacsql
