@@ -29,6 +29,13 @@
   (package-menu-mark-upgrades))
 
 
+;;; Startup
+
+(use-package dashboard
+  :demand t
+  :config (dashboard-setup-startup-hook))
+
+
 ;;; Global Minor Modes
 
 (transient-mark-mode t)

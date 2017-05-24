@@ -127,8 +127,9 @@ static char *gnus-pointer[] = {
  '(hl-paren-colors (quote ("#40883f" "#0287c8" "#b85c57")))
  '(hl-sexp-background-color "#efebe9")
  '(indent-guide-global-mode t)
- '(inhibit-startup-screen t)
- '(initial-buffer-choice t)
+ '(inhibit-startup-screen nil)
+ '(initial-buffer-choice nil)
+ '(initial-major-mode (quote dashboard-mode))
  '(linum-relative-global-mode nil)
  '(magit-diff-use-overlays nil)
  '(neo-smart-open t)
@@ -140,9 +141,10 @@ static char *gnus-pointer[] = {
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/"))))
+ '(package-enable-at-startup t)
  '(package-selected-packages
    (quote
-    (browse-at-remote company-rtags company-php flycheck-rtags ivy-rtags malinka yankpad org-board ox-pandoc ox-asciidoc org-brain ob-php org-readme neotree schrute focus avy-menu rpn-calc ace-isearch copy-as-format emacsql-sqlite emacsql kill-or-bury-alive modalka el-mock mmt highlight-blocks vlf ini-mode symbol-overlay lispy mandm-theme lenlen-theme po-mode hierarchy intellij-theme lentic assess nord-theme rebecca-theme xmlgen brainfuck-mode diff-hl irony general resize-window iedit kaolin-theme restclient nhexl-mode god-mode vdiff composable dumb-jump ivy-todo direnv yaml-mode restart-emacs counsel-gtags counsel-dash wc-mode gandalf-theme white-theme paper-theme tern make-it-so git-timemachine flycheck-rust cargo editorconfig-custom-majormode editorconfig selected cov counsel-projectile projectile lice indent-guide tldr auto-dim-other-buffers emmet-mode go-mode dracula-theme base16-theme tango-plus-theme runner ryo-modal fish-mode 0xc realgud origami company-mode org-mode org-install polymode webpaste cycle-quotes green-screen-theme haskell-mode goose-theme flatui-theme color-theme-modern rainbow-identifiers rainbow-delimiters seoul256-theme punpun-theme plain-theme paganini-theme organic-green-theme material-theme majapahit-theme labburn-theme hydandata-light-theme avk-emacs-themes alect-themes leuven-theme madhat2r-theme zenburn-theme plan9-theme jazz-theme apropospriate-theme eziam-theme fn find-temp-file auto-yasnippet ace-link flycheck-mypy flyspell-correct-ivy free-keys adoc-mode dired-atool dired-efap hl-todo dired-k ws-butler tiny rich-minority flycheck-clangcheck clang-format ace-window syntactic-close linum-relative duplicate-thing clojure-mode company-quickhelp operate-on-number firestarter org tao-theme moe-theme creamsody-theme doom-themes zweilight-theme yasnippet which-key tomatinho pandoc-mode js2-mode github-theme darkroom corral pp-c-l caps-lock company-lua avy-zap fountain-mode python-mode php-mode key-seq win-switch ivy-hydra ivy-pages avy recursive-narrow nameless company flycheck rust-mode tup-mode markdown-mode quickrun comment-dwim-2 key-chord nasm-mode refine counsel change-inner expand-region lua-mode forth-mode solarized-theme ivy hydra use-package)))
+    (qwe alda-mode dashboard browse-at-remote company-rtags company-php flycheck-rtags ivy-rtags malinka yankpad org-board ox-pandoc ox-asciidoc org-brain ob-php org-readme neotree schrute focus avy-menu rpn-calc ace-isearch copy-as-format emacsql-sqlite emacsql kill-or-bury-alive modalka el-mock mmt highlight-blocks vlf ini-mode symbol-overlay lispy mandm-theme lenlen-theme po-mode hierarchy intellij-theme lentic assess nord-theme rebecca-theme xmlgen brainfuck-mode diff-hl irony general resize-window iedit kaolin-theme restclient nhexl-mode god-mode vdiff composable dumb-jump ivy-todo direnv yaml-mode restart-emacs counsel-gtags counsel-dash wc-mode gandalf-theme white-theme paper-theme tern make-it-so git-timemachine flycheck-rust cargo editorconfig-custom-majormode editorconfig selected cov counsel-projectile projectile lice indent-guide tldr auto-dim-other-buffers emmet-mode go-mode dracula-theme base16-theme tango-plus-theme runner ryo-modal fish-mode 0xc realgud origami company-mode org-mode org-install polymode webpaste cycle-quotes green-screen-theme haskell-mode goose-theme flatui-theme color-theme-modern rainbow-identifiers rainbow-delimiters seoul256-theme punpun-theme plain-theme paganini-theme organic-green-theme material-theme majapahit-theme labburn-theme hydandata-light-theme avk-emacs-themes alect-themes leuven-theme madhat2r-theme zenburn-theme plan9-theme jazz-theme apropospriate-theme eziam-theme fn find-temp-file auto-yasnippet ace-link flycheck-mypy flyspell-correct-ivy free-keys adoc-mode dired-atool dired-efap hl-todo dired-k ws-butler tiny rich-minority flycheck-clangcheck clang-format ace-window syntactic-close linum-relative duplicate-thing clojure-mode company-quickhelp operate-on-number firestarter org tao-theme moe-theme creamsody-theme doom-themes zweilight-theme yasnippet which-key tomatinho pandoc-mode js2-mode github-theme darkroom corral pp-c-l caps-lock company-lua avy-zap fountain-mode python-mode php-mode key-seq win-switch ivy-hydra ivy-pages avy recursive-narrow nameless company flycheck rust-mode tup-mode markdown-mode quickrun comment-dwim-2 key-chord nasm-mode refine counsel change-inner expand-region lua-mode forth-mode solarized-theme ivy hydra use-package)))
  '(pdf-view-midnight-colors (quote ("#969896" . "#f8eec7")))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
@@ -165,6 +167,7 @@ static char *gnus-pointer[] = {
  '(term-default-fg-color "#657b83")
  '(use-package-always-defer t)
  '(use-package-always-ensure nil)
+ '(use-package-enable-imenu-support t)
  '(vc-annotate-background "#D9D9D9")
  '(vc-annotate-background-mode nil)
  '(vc-annotate-color-map
