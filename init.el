@@ -1219,6 +1219,9 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 
 ;;; Online Services
 
+(use-package browse-at-remote
+  :bind ("C-x v t" . browse-at-remote))
+
 (use-package webpaste
   :config
   (defhydra hydra-webpaste (:color blue)
