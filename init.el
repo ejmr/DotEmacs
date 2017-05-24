@@ -823,6 +823,13 @@ _v_ariable       _u_ser-option
 (use-package malinka
   :disabled t)
 
+(use-package rtags
+  :disabled t
+  :config
+  (use-package ivy-rtags :disabled t)
+  (use-package flycheck-rtags :disabled t)
+  (use-package company-rtags :disabled t))
+
 (use-package brainfuck-mode)
 
 (use-package emacsql
