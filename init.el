@@ -278,24 +278,24 @@
 (bind-key "s-v" #'view-mode)
 
 ;;; Setup `s-1' as a prefix key for help commands.
-(define-prefix-command 'super-1-map)
-(bind-key "s-1" 'super-1-map)
+(define-prefix-command 'ejmr-help-map)
+(bind-key "s-1" 'ejmr-help-map)
 
 
 ;;; Window Management
 
 ;;; Use `s-w' as a prefix key for various window commands.
-(define-prefix-command 'super-w-map)
-(bind-key "s-w" 'super-w-map)
-(bind-key "s-w" #'ace-window super-w-map)
-(bind-key "0" #'delete-window super-w-map)
-(bind-key "1" #'delete-other-windows super-w-map)
-(bind-key "3" #'split-window-horizontally super-w-map)
-(bind-key "f" #'find-file-other-window super-w-map)
-(bind-key "r" #'find-file-read-only-other-window super-w-map)
-(bind-key "b" #'ivy-switch-buffer-other-window super-w-map)
-(bind-key "d" #'dired-other-window super-w-map)
-(bind-key "." #'xref-find-definitions-other-window super-w-map)
+(define-prefix-command 'ejmr-window-map)
+(bind-key "s-w" 'ejmr-window-map)
+(bind-key "s-w" #'ace-window ejmr-window-map)
+(bind-key "0" #'delete-window ejmr-window-map)
+(bind-key "1" #'delete-other-windows ejmr-window-map)
+(bind-key "3" #'split-window-horizontally ejmr-window-map)
+(bind-key "f" #'find-file-other-window ejmr-window-map)
+(bind-key "r" #'find-file-read-only-other-window ejmr-window-map)
+(bind-key "b" #'ivy-switch-buffer-other-window ejmr-window-map)
+(bind-key "d" #'dired-other-window ejmr-window-map)
+(bind-key "." #'xref-find-definitions-other-window ejmr-window-map)
 
 (defun ejmr-split-window-vertically-and-balance ()
   "Splits the window vertically then balances all windows.
@@ -305,9 +305,9 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
   (split-window-vertically)
   (balance-windows))
 
-(bind-key "2" #'ejmr-split-window-vertically-and-balance super-w-map)
+(bind-key "2" #'ejmr-split-window-vertically-and-balance ejmr-window-map)
 
-(defhydra hydra-window (super-w-map "s" :color amaranth)
+(defhydra hydra-window (ejmr-window-map "s" :color amaranth)
   "Window Size"
   ("^" enlarge-window "Taller")
   ("{" shrink-window-horizontally "Narrower")
@@ -682,18 +682,18 @@ Info-mode:
 		:action (lambda (x) (with-ivy-window (find-file x)))
 		:caller 'ejmr-counsel-file-register))
 
-    (bind-key "r" #'ejmr-counsel-file-register super-1-map)
-    (bind-key "f" #'counsel-describe-function super-1-map)
-    (bind-key "d" #'counsel-dash super-1-map)
-    (bind-key "v" #'counsel-describe-variable super-1-map)
-    (bind-key "l" #'counsel-find-library super-1-map)
-    (bind-key "s" #'counsel-info-lookup-symbol super-1-map)
-    (bind-key "i" #'counsel-imenu super-1-map)
-    (bind-key "b" #'counsel-bookmark super-1-map)
-    (bind-key "m" #'counsel-descbinds super-1-map)
-    (bind-key "t" #'counsel-tmm super-1-map)
-    (bind-key "u" #'counsel-unicode-char super-1-map)
-    (bind-key "h" #'counsel-load-theme super-1-map)
+    (bind-key "r" #'ejmr-counsel-file-register ejmr-help-map)
+    (bind-key "f" #'counsel-describe-function ejmr-help-map)
+    (bind-key "d" #'counsel-dash ejmr-help-map)
+    (bind-key "v" #'counsel-describe-variable ejmr-help-map)
+    (bind-key "l" #'counsel-find-library ejmr-help-map)
+    (bind-key "s" #'counsel-info-lookup-symbol ejmr-help-map)
+    (bind-key "i" #'counsel-imenu ejmr-help-map)
+    (bind-key "b" #'counsel-bookmark ejmr-help-map)
+    (bind-key "m" #'counsel-descbinds ejmr-help-map)
+    (bind-key "t" #'counsel-tmm ejmr-help-map)
+    (bind-key "u" #'counsel-unicode-char ejmr-help-map)
+    (bind-key "h" #'counsel-load-theme ejmr-help-map)
     (defhydra hydra-apropos (:color blue :hint nil)
       "
 _a_propos        _c_ommand
@@ -707,7 +707,7 @@ _v_ariable       _u_ser-option
       ("l" apropos-library)
       ("u" apropos-user-option)
       ("e" apropos-value))
-    (bind-key "a" #'hydra-apropos/body super-1-map)
+    (bind-key "a" #'hydra-apropos/body ejmr-help-map)
     (bind-key "C-x 8 <return>" #'counsel-unicode-char)
 
     (defun ejmr-switch-to-info-other-frame ()
@@ -715,7 +715,7 @@ _v_ariable       _u_ser-option
       (interactive)
       (select-frame-set-input-focus (make-frame-command))
       (info))
-    (bind-key "s-i" #'ejmr-switch-to-info-other-frame super-1-map)
+    (bind-key "s-i" #'ejmr-switch-to-info-other-frame ejmr-help-map)
 
     (key-seq-define-global "ZF" #'counsel-recentf)
 
