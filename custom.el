@@ -10,6 +10,7 @@
  '(ansi-term-color-vector
    [unspecified "#f7f7f7" "#7c7c7c" "#8e8e8e" "#a0a0a0" "#686868" "#747474" "#686868" "#464646"] t)
  '(beacon-color "#F8BBD0")
+ '(browse-url-browser-function (quote eww-browse-url))
  '(browse-url-generic-program "conkeror")
  '(caps-lock-mode nil)
  '(compilation-message-face (quote default))

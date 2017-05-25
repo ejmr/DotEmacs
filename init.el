@@ -1228,6 +1228,20 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 
 ;;; Online Services
 
+(progn
+  (defun ejmr-search-cheat-sh ()
+    "Search `http://cheat.sh/' for help on commands and code."
+    (interactive)
+    (ivy-read "Command or Topic: "
+	      (process-lines "curl" "--silent" "http://cheat.sh/:list?T&q")
+	      :require-match t
+	      :sort t
+	      :history 'ejmr-search-cheat-sh
+	      :action (lambda (input)
+			(browse-url (concat "http://cheat.sh/" input "?T&q")))
+	      :caller 'ejmr-search-cheat-sh))
+  (bind-key "c" #'ejmr-search-cheat-sh ejmr-help-map))
+
 (use-package browse-at-remote
   :bind ("C-x v t" . browse-at-remote))
 
