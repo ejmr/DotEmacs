@@ -791,6 +791,8 @@ _v_ariable       _u_ser-option
 
 (use-package polymode)
 
+(use-package neon-mode)
+
 (use-package nhexl-mode)
 
 (use-package restclient)
