@@ -1051,7 +1051,7 @@ Also opens the next N files when given the prefix `arg'."
 
 (use-package corral
   :config
-  (setq corral-preserve-point t)
+  (setq corral-preserve-point nil)
   (global-set-key (kbd "M-9") 'corral-parentheses-backward)
   (global-set-key (kbd "M-0") 'corral-parentheses-forward)
   (global-set-key (kbd "M-[") 'corral-brackets-backward)
