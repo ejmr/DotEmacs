@@ -775,6 +775,7 @@ _v_ariable       _u_ser-option
 (prefer-coding-system 'utf-8-unix)
 
 (use-package assess)
+(use-package stupid-indent-mode)
 
 (use-package po-mode
   :mode "\\.po\\'")
