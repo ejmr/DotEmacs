@@ -802,6 +802,11 @@ _v_ariable       _u_ser-option
   :commands git-timemachine-toggle
   :bind ("C-x v T" . git-timemachine-toggle))
 
+(use-package suggest
+  :config
+  (bind-key "C-c C-s" #'suggest-mode emacs-lisp-mode-map)
+  (bind-key "C-c C-e" #'emacs-lisp-mode suggest-mode-map))
+
 (use-package diff
   :mode ("COMMIT_EDITMSG" . diff-mode))
 
