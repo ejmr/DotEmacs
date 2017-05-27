@@ -614,6 +614,7 @@ Info-mode:
   ("c" rpn-calc "RPN Calculator")
   ("e" editorconfig-mode-apply "EditorConfig")
   ("l" refine "Refine List")
+  ("m" man "Man")
   ("r" revert-buffer "Revert Buffer")
   ("s" ejmr-edit-current-file-as-root "Sudo File")
   ("t" find-temp-file "Temp File")
