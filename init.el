@@ -31,6 +31,9 @@
 
 ;;; Startup
 
+(let ((file-name-handler-alist nil))
+  "~/.emacs.d/init.elc")
+
 (use-package dashboard
   :demand t
   :config (dashboard-setup-startup-hook))
