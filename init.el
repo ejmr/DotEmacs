@@ -74,6 +74,7 @@
 (setq backup-inhibited t)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(setq byte-compile-warnings nil)
 
 
 ;;; Registers
