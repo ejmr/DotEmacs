@@ -145,6 +145,10 @@
 
 (use-package auto-dim-other-buffers :disabled t)
 
+(use-package iflipb
+  :bind (("s-b" . iflipb-next-buffer)
+	 ("C-s-b" . iflipb-previous-buffer)))
+
 (use-package caps-lock
   :bind ("s-l" . caps-lock-mode))
 
