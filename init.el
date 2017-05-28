@@ -261,6 +261,13 @@
     (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
     (add-to-list 'company-backends #'company-yankpad))
   (use-package org-readme)
+  (use-package org-wiki
+    :disabled t
+    :load-path "/home/eric/.emacs.d/local/org-wiki"
+    :config
+    (setq org-wiki-location "/home/eric/Documents/Wiki")
+    (setq org-wiki-server-port "7331")
+    (setq org-wiki-server-host "127.0.0.1"))
   (use-package org-board)
   (use-package ob-php)
   (use-package ox-pandoc)
