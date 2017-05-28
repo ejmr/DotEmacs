@@ -1132,6 +1132,39 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package wiki-nav
+  :diminish (wiki-nav-mode button-lock-mode)
+  :config (global-wiki-nav-mode 1)
+
+  (defun ejmr-counsel-wiki-nav ()
+    "Jump to a wiki-nav link.
+
+This command will not show duplicate link names, which means it
+cannot jump to multiple instances of the same link within a
+buffer.  It will also not show any link beginning with the
+less-than character, i.e. links for jumping back to a previous
+buffer location."
+    (interactive)
+    (let* ((links (wiki-nav-links))
+	   (names (mapcar (lambda (name)
+			    (unless (string-prefix-p "<" name)
+			      name))
+			  (delete-dups (mapcar #'first links)))))
+      (ivy-read "(%d) Link: "
+		names
+		:require-match t
+		:history 'ejmr-counsel-wiki-nav
+		:caller 'ejmr-counsel-wiki-nav
+		:action (lambda (link-name)
+			  (with-ivy-window
+			    (let* ((link-info (cdr (assoc link-name links)))
+				   (link-buffer (car link-info))
+				   (link-position (cdr link-info)))
+			      (switch-to-buffer link-buffer)
+			      (goto-char link-position)))))))
+
+  (key-seq-define-global "qw" #'ejmr-counsel-wiki-nav))
+
 (use-package focus
   :commands (focus-mode)
   :config
