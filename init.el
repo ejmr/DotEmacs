@@ -1133,19 +1133,23 @@ Also opens the next N files when given the prefix `arg'."
 ;;; Text Reading, Editing, and Writing
 
 (use-package wiki-nav
+  :load-path "/home/eric/.emacs.d/local/button-lock"
   :diminish (wiki-nav-mode button-lock-mode)
   :config (global-wiki-nav-mode 1)
 
-  (defun ejmr-counsel-wiki-nav ()
+  (defun ejmr-counsel-wiki-nav (prefix)
     "Jump to a wiki-nav link.
 
 This command will not show duplicate link names, which means it
 cannot jump to multiple instances of the same link within a
 buffer.  It will also not show any link beginning with the
 less-than character, i.e. links for jumping back to a previous
-buffer location."
-    (interactive)
-    (let* ((links (wiki-nav-links))
+buffer location.
+
+If given the universal prefix this command will present links in
+all buffers."
+    (interactive "P")
+    (let* ((links (if prefix (wiki-nav-links) (wiki-nav-links-all-buffers)))
 	   (names (mapcar (lambda (name)
 			    (unless (string-prefix-p "<" name)
 			      name))
