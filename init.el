@@ -117,8 +117,7 @@
 (use-package tldr)
 (use-package fn)
 (use-package find-temp-file)
-(use-package rainbow-delimiters)
-(use-package rainbow-identifiers)
+
 (use-package editorconfig
   :diminish editorconfig-mode
   :config
@@ -761,6 +760,30 @@ _v_ariable       _u_ser-option
   (setq ivy-count-format "(%d/%d) "))
 
 
+;;; Highlighting
+
+(use-package hl-todo
+  :config
+  (defhydra hydra-todo (:pre
+			(hl-todo-mode 1)
+			:post
+			(hl-todo-mode -1))
+    "Todo"
+    ("n" hl-todo-next "Next")
+    ("p" hl-todo-previous "Previous")
+    ("o" hl-todo-occur "Occur")
+    ("q" nil "Quit" :color blue :exit t))
+  (bind-key "C-s-t" #'hydra-todo/body))
+
+(use-package highlight-blocks)
+(use-package rainbow-delimiters)
+(use-package rainbow-identifiers)
+
+(use-package symbol-overlay
+  :config
+  (bind-key "C-c s" #'symbol-overlay-put))
+
+
 ;;; Quickrun
 
 (use-package quickrun
@@ -803,8 +826,6 @@ _v_ariable       _u_ser-option
   (add-hook 'c-mode-hook 'ejmr-setup-cc-mode)
   (add-hook 'c++-mode-hook 'ejmr-setup-cc-mode))
 
-;;; TODO: Make a hydra for highlight-*, hl-*, and rainbow-* commands
-(use-package highlight-blocks)
 
 (use-package polymode)
 
@@ -911,10 +932,6 @@ _v_ariable       _u_ser-option
 (use-package rust-mode
   :config
   (use-package cargo :diminish cargo-minor-mode))
-
-(use-package symbol-overlay
-  :config
-  (bind-key "C-c s" #'symbol-overlay-put))
 
 (use-package php-mode)
 (use-package ini-mode)
@@ -1049,19 +1066,6 @@ Also opens the next N files when given the prefix `arg'."
   :diminish 'firestarter-mode
   :config
   (firestarter-mode t))
-
-(use-package hl-todo
-  :config
-  (defhydra hydra-todo (:pre
-			(hl-todo-mode 1)
-			:post
-			(hl-todo-mode -1))
-    "Todo"
-    ("n" hl-todo-next "Next")
-    ("p" hl-todo-previous "Previous")
-    ("o" hl-todo-occur "Occur")
-    ("q" nil "Quit" :color blue :exit t))
-  (bind-key "C-s-t" #'hydra-todo/body))
 
 (use-package duplicate-thing
   :config
