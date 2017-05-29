@@ -151,10 +151,6 @@
 (use-package caps-lock
   :bind ("s-l" . caps-lock-mode))
 
-(use-package ace-window
-  :bind ("C-x o" . ace-window))
-(use-package ace-link
-  :config (ace-link-setup-default))
 (use-package resize-window
   :bind ("C-x ^" . resize-window))
 
@@ -659,6 +655,50 @@ Info-mode:
     (key-seq-define-global "qc" 'hydra-change-inner/body)))
 
 
+;;; Avy and Ace
+
+(use-package avy
+  :config
+  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq avy-background t)
+  (setq avy-all-windows nil)
+  (setq avy-timeout-seconds 1)
+
+  (use-package avy-zap
+    :config
+    (bind-key "M-g z" #'avy-zap-to-char-dwim))
+
+  (use-package ace-flyspell
+    :config (ace-flyspell-setup))
+
+  (use-package link-hint
+    :config
+    (bind-key "M-g l" #'link-hint-open-link)
+    (bind-key "M-g C-l" #'link-hint-copy-link))
+
+  (use-package avy-flycheck
+    :config (avy-flycheck-setup))
+
+  (use-package ace-jump-buffer
+    :config
+    (bind-key "M-g b" #'ace-jump-buffer))
+
+  (bind-key "C-'" #'avy-isearch isearch-mode-map)
+
+  (defhydra hydra-avy (global-map "M-g" :color blue :hint nil)
+    "Goto"
+    ("c" avy-goto-char-timer "Character")
+    ("g" avy-goto-line "Line")
+    ("w" avy-goto-word-1 "Word")
+    ("s" avy-goto-subword-1 "Subword")))
+
+(use-package ace-window
+  :bind ("C-x o" . ace-window))
+
+(use-package ace-link
+  :config (ace-link-setup-default))
+
+
 ;;; Ivy and Swiper
 
 (use-package swiper
@@ -1085,28 +1125,6 @@ Also opens the next N files when given the prefix `arg'."
   (global-set-key (kbd "M-{") 'corral-braces-backward)
   (global-set-key (kbd "M-}") 'corral-braces-forward)
   (global-set-key (kbd "M-\"") 'corral-double-quotes-backward))
-
-(use-package avy
-  :config
-  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
-  (setq avy-background t)
-  (setq avy-all-windows nil)
-  (setq avy-timeout-seconds 1)
-  (use-package avy-zap
-    :config
-    (key-seq-define-global "jz" #'avy-zap-up-to-char-dwim)
-    (bind-key "M-g z" #'avy-zap-to-char-dwim))
-  (key-seq-define-global "jw" #'avy-goto-word-1)
-  (key-seq-define-global "js" #'avy-goto-subword-1)
-  (key-seq-define-global "jc" #'avy-goto-char-timer)
-  (key-seq-define-global "jl" #'avy-goto-line)
-  (bind-key "C-'" #'avy-isearch isearch-mode-map)
-  (defhydra hydra-avy (global-map "M-g" :color blue :hint nil)
-    "Goto"
-    ("c" avy-goto-char-timer "Character")
-    ("g" avy-goto-line "Line")
-    ("w" avy-goto-word-1 "Word")
-    ("s" avy-goto-subword-1 "Subword")))
 
 (use-package ace-isearch
   :disabled t
