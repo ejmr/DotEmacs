@@ -885,6 +885,14 @@ _v_ariable       _u_ser-option
   (bind-key "C-c C-s" #'suggest-mode emacs-lisp-mode-map)
   (bind-key "C-c C-e" #'emacs-lisp-mode suggest-mode-map))
 
+(use-package elisp-refs
+  :config
+  (bind-key "C-c C-r f" #'elisp-refs-function emacs-lisp-mode-map)
+  (bind-key "C-c C-r m" #'elisp-refs-macro emacs-lisp-mode-map)
+  (bind-key "C-c C-r v" #'elisp-refs-variable emacs-lisp-mode-map)
+  (bind-key "C-c C-r p" #'elisp-refs-special emacs-lisp-mode-map)
+  (bind-key "C-c C-r s" #'elisp-refs-symbol emacs-lisp-mode-map))
+
 (use-package diff
   :mode ("COMMIT_EDITMSG" . diff-mode))
 
