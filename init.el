@@ -256,6 +256,7 @@
     (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
     (add-to-list 'company-backends #'company-yankpad))
   (use-package org-readme)
+  (use-package org-parser)
   (use-package org-wiki
     :disabled t
     :load-path "/home/eric/.emacs.d/local/org-wiki"
