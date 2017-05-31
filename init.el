@@ -1044,6 +1044,8 @@ _v_ariable       _u_ser-option
   (setq projectile-completion-system 'ivy)
   (projectile-mode nil))
 
+(use-package find-file-in-project)
+
 
 ;;; HTML, XML, CSS
 
