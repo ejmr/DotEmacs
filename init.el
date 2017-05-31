@@ -478,17 +478,6 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 
 (bind-key "." #'hydra-buffer-menu/body Buffer-menu-mode-map)
 
-;;; Desktops
-
-(defhydra hydra-desktop (:color blue)
-  "Desktop"
-  ("c" desktop-clear "clear")
-  ("s" desktop-save "save")
-  ("r" desktop-revert "revert")
-  ("d" desktop-change-dir "directory"))
-
-(bind-key "C-c d" #'hydra-desktop/body)
-
 ;;; Minor Modes
 
 (defhydra hydra-minor-modes (:columns 6)
@@ -867,7 +856,6 @@ _v_ariable       _u_ser-option
   (add-hook 'c-mode-hook 'ejmr-setup-cc-mode)
   (add-hook 'c++-mode-hook 'ejmr-setup-cc-mode))
 
-
 (use-package polymode)
 
 (use-package neon-mode)
@@ -918,14 +906,6 @@ _v_ariable       _u_ser-option
 (use-package vdiff
   :config
   (bind-key "C-c v" vdiff-mode-prefix-map vdiff-mode-map))
-
-(use-package projectile
-  :diminish projectile-mode
-  :config
-  (use-package counsel-projectile
-    :config (counsel-projectile-on))
-  (setq projectile-completion-system 'ivy)
-  (projectile-mode nil))
 
 (use-package realgud
   :disabled t)
@@ -1043,6 +1023,26 @@ _v_ariable       _u_ser-option
 
 (use-package syntactic-close
   :bind ("s-0" . syntactic-close))
+
+
+;;; Project Management
+
+(defhydra hydra-desktop (:color blue)
+  "Desktop"
+  ("c" desktop-clear "clear")
+  ("s" desktop-save "save")
+  ("r" desktop-revert "revert")
+  ("d" desktop-change-dir "directory"))
+
+(bind-key "C-c d" #'hydra-desktop/body)
+
+(use-package projectile
+  :diminish projectile-mode
+  :config
+  (use-package counsel-projectile
+    :config (counsel-projectile-on))
+  (setq projectile-completion-system 'ivy)
+  (projectile-mode nil))
 
 
 ;;; HTML, XML, CSS
