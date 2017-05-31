@@ -1163,6 +1163,11 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package latex-mode
+  :config
+  (use-package magic-latex-buffer
+    :config (add-hook 'latex-mode-hook 'magic-latex-buffer)))
+
 (use-package wiki-nav
   :load-path "/home/eric/.emacs.d/local/button-lock"
   :diminish (wiki-nav-mode button-lock-mode)
