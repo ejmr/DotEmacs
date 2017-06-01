@@ -34,17 +34,7 @@
 (let ((file-name-handler-alist nil))
   "~/.emacs.d/init.elc")
 
-(use-package dashboard
-  :demand t
-  :config
-  (defun ejmr-display-dashboard ()
-    "Create a dashboard buffer and switch to it."
-    (interactive)
-    (switch-to-buffer "*dashboard*")
-    (dashboard-mode 1)
-    (goto-char (point-min))
-    (redisplay))
-  (add-hook 'emacs-startup-hook #'ejmr-display-dashboard))
+(use-package dashboard :disabled t)
 
 
 ;;; Global Minor Modes
