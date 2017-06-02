@@ -866,6 +866,7 @@ _v_ariable       _u_ser-option
 (use-package git-timemachine
   :commands git-timemachine-toggle
   :bind ("C-x v T" . git-timemachine-toggle))
+(use-package git-link)
 
 (use-package suggest
   :config
