@@ -964,7 +964,10 @@ _v_ariable       _u_ser-option
   :config
   (use-package cargo :diminish cargo-minor-mode))
 
-(use-package php-mode)
+(use-package php-mode
+  :config
+  (use-package psysh))
+
 (use-package ini-mode)
 (use-package haskell-mode)
 (use-package python-mode)
