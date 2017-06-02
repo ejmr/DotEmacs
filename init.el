@@ -608,6 +608,7 @@ Info-mode:
   ("b" ejmr-browse-current-file "Browse")
   ("c" rpn-calc "RPN Calculator")
   ("e" editorconfig-mode-apply "EditorConfig")
+  ("f" elfeed "Elfeed")
   ("l" refine "Refine List")
   ("m" man "Man")
   ("r" revert-buffer "Revert Buffer")
@@ -1321,7 +1322,9 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 (bind-key "C-c t" #'hydra-text/body)
 
 
-;;; Online Services
+;;; Web and Online Services
+
+(use-package elfeed)
 
 (progn
   (defun ejmr-search-cheat-sh ()
