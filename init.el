@@ -909,6 +909,9 @@ _v_ariable       _u_ser-option
 (use-package realgud
   :disabled t)
 
+(use-package cmake-ide
+  :disabled t)
+
 (use-package malinka
   :disabled t)
 
