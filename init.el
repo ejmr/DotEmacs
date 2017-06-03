@@ -866,7 +866,14 @@ _v_ariable       _u_ser-option
 (use-package git-timemachine
   :commands git-timemachine-toggle
   :bind ("C-x v T" . git-timemachine-toggle))
-(use-package git-link)
+(use-package git-link
+  :config
+  (defhydra hydra-git-link (:color blue)
+    "Git Link"
+    ("l" git-link "Link")
+    ("c" git-link-commit "Commit")
+    ("h" git-link-homepage "Homepage"))
+  (bind-key "k" #'hydra-git-link/body vc-prefix-map))
 
 (use-package suggest
   :config
