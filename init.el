@@ -1184,6 +1184,7 @@ Also opens the next N files when given the prefix `arg'."
     :config (add-hook 'latex-mode-hook 'magic-latex-buffer)))
 
 (use-package wiki-nav
+  :disabled t
   :load-path "/home/eric/.emacs.d/local/button-lock"
   :diminish (wiki-nav-mode button-lock-mode)
   :config (global-wiki-nav-mode 1)
