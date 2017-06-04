@@ -1340,6 +1340,24 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 
 ;;; Web and Online Services
 
+(use-package wandbox
+  :config
+  (defhydra hydra-wandbox (:color amaranth :hint nil)
+    "
+Wandbox
+————————————————————————————————————————
+Compile: _F_ile     _L_ist Compilers
+         _B_uffer   _I_nsert Template
+         _R_egion
+"
+    ("F" wandbox-compile-file)
+    ("B" wandbox-compile-buffer)
+    ("R" wandbox-compile-region)
+    ("L" wandbox-list-compilers :color red)
+    ("I" wandbox-insert-template)
+    ("q" nil))
+  (bind-key "C-c c" #'hydra-wandbox/body))
+
 (use-package elfeed)
 
 (progn
