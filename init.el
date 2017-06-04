@@ -1317,7 +1317,7 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 ^───────────^────^───────────^────^───────^──────────
 [_T_] Text       [_D_] Darkroom   [_s_] Sort Lines
 [_A_] AsciiDoc   [_$_] Flyspell   [_a_] Align Regexp
-[_M_] Markdown   [_u_] Auto Fill  ^^
+[_M_] Markdown   [_u_] Auto Fill  [_p_] Delete Duplicates]^^
 [_G_] GFM        ^^
 [_F_] Fountain
 ^^
@@ -1332,6 +1332,7 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
   ("$" flyspell-mode)
   ("s" sort-lines)
   ("u" auto-fill-mode)
+  ("p" delete-duplicate-lines)
   ("q" nil :color blue))
 
 (bind-key "C-c t" #'hydra-text/body)
