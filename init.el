@@ -940,21 +940,6 @@ _v_ariable       _u_ser-option
 (use-package irony)
 (use-package cov)
 
-(use-package selected
-  :diminish selected-minor-mode
-  :config
-  (selected-global-mode t)
-  :bind (:map selected-keymap
-	      ("n" . narrow-to-region)
-	      (";" . comment-dwim-2)
-              ("u" . upcase-region)
-              ("d" . downcase-region)
-              ("c" . count-words-region)
-	      ("\\" . indent-region)
-	      ("w" . copy-region-as-kill)
-	      ("k" . kill-region)
-              ("m" . apply-macro-to-region-lines)))
-
 (use-package lice)
 (use-package forth-mode)
 (use-package go-mode)
@@ -1177,6 +1162,21 @@ Also opens the next N files when given the prefix `arg'."
 
 
 ;;; Text Reading, Editing, and Writing
+
+(use-package selected
+  :diminish selected-minor-mode
+  :config
+  (selected-global-mode t)
+  :bind (:map selected-keymap
+	      ("n" . narrow-to-region)
+	      (";" . comment-dwim-2)
+              ("u" . upcase-region)
+              ("d" . downcase-region)
+              ("c" . count-words-region)
+	      ("\\" . indent-region)
+	      ("w" . copy-region-as-kill)
+	      ("k" . kill-region)
+              ("m" . apply-macro-to-region-lines)))
 
 (use-package latex-mode
   :config
