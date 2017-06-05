@@ -995,6 +995,8 @@ _v_ariable       _u_ser-option
     :config
     (setq flycheck-clangcheck-analyze t))
   (use-package flycheck-mypy :disabled t)
+  (use-package flycheck-package
+    :config (flycheck-package-setup))
   (use-package flycheck-rust
     :config
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
