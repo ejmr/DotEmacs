@@ -965,6 +965,7 @@ _v_ariable       _u_ser-option
 (use-package haskell-mode)
 (use-package python-mode)
 (use-package js2-mode)
+(use-package json-navigator)
 (use-package tern :disabled t)
 (use-package clojure-mode)
 
