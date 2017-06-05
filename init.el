@@ -1178,6 +1178,7 @@ Also opens the next N files when given the prefix `arg'."
               ("c" . count-words-region)
 	      ("\\" . indent-region)
 	      ("w" . copy-region-as-kill)
+	      ("W" . copy-as-format)
 	      ("k" . kill-region)
               ("m" . apply-macro-to-region-lines)))
 
