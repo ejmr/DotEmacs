@@ -1098,6 +1098,10 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; General Editing Utilities
 
+(use-package beginend
+  :config
+  (beginend-global-mode t))
+
 (defun ejmr-edit-current-file-as-root ()
   "Use TRAMP to `sudo' the current file."
   (interactive)
