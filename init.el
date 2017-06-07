@@ -56,6 +56,7 @@
 (use-package schrute
   :diminish schrute-mode
   :config
+  (setq schrute-command-repetitions 10)
   (setq schrute-shortcuts-commands
 	'((avy-goto-line . (next-line previous-line))
 	  (avy-goto-word-1 . (left-char right-char))
@@ -719,21 +720,8 @@ Info-mode:
       (bind-key "C-c a" #'hydra-counsel-gtags/body)
       (bind-key "C-s-g" #'counsel-gtags-dwim))
 
-    (defun ejmr-counsel-file-register ()
-      "Jump to a file register with completion."
-      (interactive)
-      (ivy-read "File Register: "
-		(mapcar (lambda (x)
-			  (if (eq 'file (cadr x))
-			      (cddr x)))
-			register-alist)
-		:require-match t
-		:sort t
-		:history 'ejmr-counsel-file-register-history
-		:action (lambda (x) (with-ivy-window (find-file x)))
-		:caller 'ejmr-counsel-file-register))
 
-    (bind-key "r" #'ejmr-counsel-file-register ejmr-help-map)
+    (bind-key "r" #'counsel-file-register ejmr-help-map)
     (bind-key "f" #'counsel-describe-function ejmr-help-map)
     (bind-key "d" #'counsel-dash ejmr-help-map)
     (bind-key "v" #'counsel-describe-variable ejmr-help-map)
