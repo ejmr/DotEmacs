@@ -84,6 +84,7 @@
 (set-register ?n '(file . "/home/eric/Documents/Notes.org"))
 (set-register ?c '(file . "/home/eric/.conkerorrc/"))
 (set-register ?u '(file . "/home/eric/.conkerorrc/saved-buffers.txt"))
+(set-register ?p '(file . "/media/eric/ejmr-fillip1/Projects"))
 
 
 ;;; Global Utilities
