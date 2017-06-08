@@ -720,6 +720,30 @@ Info-mode:
       (bind-key "C-c a" #'hydra-counsel-gtags/body)
       (bind-key "C-s-g" #'counsel-gtags-dwim))
 
+    (defun counsel-file-register ()
+      (interactive)
+      (ivy-read "File Register: "
+		;; Use the `register-alist' variable to filter out file
+		;; registers.  Each entry for a file registar will have the
+		;; following layout:
+		;;
+		;;     (NUMBER 'file . "string/path/to/file")
+		;;
+		;; So we go through each entry and see if the `cadr' is
+		;; `eq' to the symbol `file'.  If so then add the filename
+		;; (`cddr') which `ivy-read' will use for its choices.
+		(mapcar (lambda (register-alist-entry)
+			  (if (eq 'file (cadr register-alist-entry))
+			      (cddr register-alist-entry)))
+			register-alist)
+		:sort t
+		:require-match t
+		:history 'counsel-file-register
+		:caller 'counsel-file-register
+		:action (lambda (register-file)
+			  (with-ivy-window (find-file register-file)))
+		:history 'counsel-file-register
+		:caller 'counsel-file-register))
 
     (bind-key "r" #'counsel-file-register ejmr-help-map)
     (bind-key "f" #'counsel-describe-function ejmr-help-map)
