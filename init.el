@@ -237,15 +237,8 @@
           (sequence "REPORT(r)" "BUG(b)" "TESTING(t)" "|" "CLOSED(c)")
           (sequence "BRAINSTORMING(b)" "RFC(r)" "FEEDBACK(f)" "|" "ACCEPTED(a) REJECTED(j)")
           (sequence "|" "CANCELED(c)")))
-  (defhydra hydra-org-movement (:color red)
-    "Org Mode Movements"
-    ("n" outline-next-visible-heading "Next")
-    ("p" outline-previous-visible-heading "Previous")
-    ("N" org-forward-heading-same-level "Next Level")
-    ("P" org-backward-heading-same-level "Previous Level")
-    ("u" outline-up-heading "Up")
-    ("g" org-goto "Goto" :exit t))
-  (bind-key "C-c o" #'hydra-org-movement/body)
+  (use-package worf
+    :config (bind-key "C-c o" #'worf-mode))
   (use-package yankpad
     :init
     (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
