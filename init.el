@@ -287,6 +287,7 @@
 (bind-key "<M-return>" #'indent-new-comment-line)
 (bind-key "s-a" #'align-regexp)
 (bind-key "s-v" #'view-mode)
+(bind-key "s-o" #'overwrite-mode)
 
 ;;; Setup `s-1' as a prefix key for help commands.
 (define-prefix-command 'ejmr-help-map)
