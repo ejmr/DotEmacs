@@ -816,6 +816,9 @@ _v_ariable       _u_ser-option
 
 ;;; Programming Modes and Settings
 
+(use-package indent-tools
+  :bind ("C-c >" . indent-tools-hydra/body))
+
 (setq require-final-newline t)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (setq-default default-buffer-file-coding-system 'utf-8-unix)
