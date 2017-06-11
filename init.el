@@ -1358,7 +1358,7 @@ Compile: _F_ile     _L_ist Compilers
     "Search `http://cheat.sh/' for help on commands and code."
     (interactive)
     (ivy-read "Command or Topic: "
-	      (process-lines "curl" "--silent" "http://cheat.sh/:list?T&q")
+	      (process-lines "curl" "--silent" "-A \"GNU Emacs (curl)\"" "http://cheat.sh/:list?T&q")
 	      :require-match t
 	      :sort t
 	      :history 'ejmr-search-cheat-sh
