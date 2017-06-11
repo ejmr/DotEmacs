@@ -915,6 +915,8 @@ _v_ariable       _u_ser-option
 
 (use-package brainfuck-mode)
 
+(use-package sqlup-mode
+  :config (add-hook 'sql-mode-hook 'sqlup-mode))
 (use-package emacsql
   :config
   (use-package emacsql-sqlite))
