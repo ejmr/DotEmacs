@@ -89,6 +89,15 @@
 
 ;;; Global Utilities
 
+(use-package helpful
+  :config
+  (defhydra hydra-helpful (:color blue)
+    "Helpful"
+    ("f" helpful-function "Function")
+    ("c" helpful-command "Command")
+    ("m" helpful-macro "Macro"))
+  (bind-key "C-c h" #'hydra-helpful/body))
+
 (use-package neotree
   :commands neotree-toggle
   :bind ("s-7" . neotree-toggle)
