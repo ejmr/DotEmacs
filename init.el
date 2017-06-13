@@ -1315,6 +1315,8 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
   :config
   (add-hook 'markdown-mode-hook 'pandoc-mode))
 
+(use-package edit-indirect)
+
 (defhydra hydra-text (:color amaranth)
   "
 ^Major Modes^    ^Minor Modes^    ^Actions^
@@ -1324,9 +1326,11 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 [_M_] Markdown   [_u_] Auto Fill  [_p_] Delete Duplicates^^
 [_G_] GFM                       [_r_] Rectangle Commands^^
 [_F_] Fountain
+[_I_] Indirect Edit
 ^^
 "
   ("T" text-mode)
+  ("I" edit-indirect-region :color blue)
   ("A" adoc-mode)
   ("a" align-regexp)
   ("M" markdown-mode)
