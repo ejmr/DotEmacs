@@ -253,7 +253,7 @@
     (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
     :config
     (define-prefix-command 'ejmr-yankpad-map)
-    (bind-key "s-p" 'ejmr-yankpad-map)
+    (bind-key "C-c y" 'ejmr-yankpad-map)
     (bind-key "m" #'yankpad-map ejmr-yankpad-map)
     (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
     (add-to-list 'company-backends #'company-yankpad))
@@ -294,8 +294,6 @@
 ;;; Global Generic Key-Bindings
 
 (bind-key "<M-return>" #'indent-new-comment-line)
-(bind-key "s-a" #'align-regexp)
-(bind-key "s-v" #'view-mode)
 (bind-key "s-o" #'overwrite-mode)
 
 ;;; Setup `s-1' as a prefix key for help commands.
@@ -400,6 +398,7 @@ will automatically kill the buffer."
   ("Y" (yank-pop -1) "previous")
   ("c" counsel-yank-pop "counsel")
   ("l" (refine 'kill-ring) "list" :color blue)
+  ("w" hydra-webpaste/body "web" :color blue)
   ("q" nil "quit" :color blue))
 
 (bind-key "C-y" #'hydra-yank-pop/yank)
@@ -1386,8 +1385,7 @@ Compile: _F_ile     _L_ist Compilers
   (defhydra hydra-webpaste (:color blue)
     "Paste to Web"
     ("b" webpaste-paste-buffer "Buffer")
-    ("r" webpaste-paste-region "Region"))
-  (bind-key "C-c w" #'hydra-webpaste/body))
+    ("r" webpaste-paste-region "Region")))
 
 
 ;;; Custom File
