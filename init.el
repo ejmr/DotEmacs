@@ -19,6 +19,7 @@
   (require 'use-package))
 (require 'bind-key)
 (require 'diminish)
+(setq use-package-always-ensure t)
 
 ;;; TODO: Ideally I would like to have (package-menu-execute t) at the
 ;;; end of this but it simply does not work.
