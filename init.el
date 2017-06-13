@@ -1277,7 +1277,7 @@ all buffers."
   :mode (("README\\.md\\'" . gfm-mode)
 	 ("README\\.markdown\\'" . gfm-mode)
 	 ("\\.ronn\\'" . markdown-mode)
-	 ("\\.md\\'" . markdown-mode)
+	 ("\\.md\\'" . gfm-mode)
 	 ("\\.markdown\\'" . markdown-mode))
   :config
   (defhydra hydra-markdown (:hint nil :pre (ivy-mode nil) :post (ivy-mode t))
