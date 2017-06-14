@@ -1039,6 +1039,19 @@ _v_ariable       _u_ser-option
 (bind-key "C-c C-b" #'emacs-lisp-byte-compile-and-load emacs-lisp-mode-map)
 (bind-key "C-c C-t" #'top-level emacs-lisp-mode-map)
 
+(defhydra hydra-lisp-eval (:color blue :columns 2 :idle 1.0)
+  "Lisp Eval"
+  ("r" eval-region "Region")
+  ("b" eval-buffer "Buffer")
+  ("e" eval-expression "S-expression")
+  ("l" eval-last-sexp "Last S-expression")
+  ("L" eval-last-sexp-print-value "Last S-expression and Print Value")
+  ("d" eval-defun "Defun / Function")
+  ("f" eval-defun "Defun / Function"))
+
+(bind-key "C-c C-e" #'hydra-lisp-eval/body emacs-lisp-mode-map)
+(bind-key "C-c C-e" #'hydra-lisp-eval/body lisp-mode-map)
+
 (use-package syntactic-close
   :bind ("s-0" . syntactic-close))
 
