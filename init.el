@@ -848,6 +848,8 @@ _v_ariable       _u_ser-option
 
 ;;; Programming Modes and Settings
 
+(use-package scratch)
+
 (use-package indent-tools
   :bind ("C-c >" . indent-tools-hydra/body))
 
