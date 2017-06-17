@@ -337,7 +337,15 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
   ("q" nil "Quit" :color blue))
 
 
-;;; Completion via Company
+;;; Completion
+
+(use-package git-complete
+  :load-path "/home/eric/.emacs.d/local/git-complete"
+  :commands git-complete
+  :bind ("M-s-/" . git-complete)
+  :config
+  (setq git-complete-enable-autopair t)
+  (setq git-complete-ignore-case nil))
 
 (use-package company-mode
   :diminish 'company-mode
