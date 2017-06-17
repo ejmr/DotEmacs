@@ -40,6 +40,8 @@
 
 ;;; Global Minor Modes
 
+(use-package auto-minor-mode :defer nil)
+
 (transient-mark-mode t)
 (show-paren-mode t)
 (menu-bar-mode -1)
