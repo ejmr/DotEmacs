@@ -130,7 +130,7 @@ static char *gnus-pointer[] = {
  '(hl-sexp-background-color "#efebe9")
  '(indent-guide-global-mode t)
  '(inhibit-startup-screen nil)
- '(initial-buffer-choice t)
+ '(initial-buffer-choice "~/.conkerorrc/saved-buffers.txt")
  '(initial-major-mode (quote emacs-lisp-mode))
  '(linum-format " %7i ")
  '(linum-relative-global-mode nil)
