@@ -140,6 +140,8 @@
 
 (use-package lispy
   :config
+  (bind-key "C-c C-y" #'lispy-mode emacs-lisp-mode-map)
+  (bind-key "C-c C-y" #'lispy-mode lisp-mode-map)
   (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
   (add-hook       'lisp-mode-hook #'lispy-mode))
 
