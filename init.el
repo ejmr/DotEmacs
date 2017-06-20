@@ -650,6 +650,12 @@ Info-mode:
 (use-package expand-region
   :config
   (use-package change-inner)
+  (defun ejmr-mark-line ()
+    "Mark the current line."
+    (interactive)
+    (end-of-line)
+    (set-mark (point))
+    (beginning-of-line))
   (defhydra hydra-mark (:color blue :idle 1.5 :columns 3)
     "Mark"
     ("d" er/mark-defun "Defun / Function")
@@ -659,7 +665,7 @@ Info-mode:
     ("e" mark-sexp "S-Expression")
     ("E" er/mark-email "Email")
     ("b" mark-whole-buffer "Buffer")
-    ("l" mark-line "Line")
+    ("l" ejmr-mark-line "Line")
     ("p" er/mark-text-paragraph "Paragraph")
     ("s" er/mark-symbol "Symbol")
     ("S" er/mark-symbol-with-prefix "Prefixed symbol")
