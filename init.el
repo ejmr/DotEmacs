@@ -154,7 +154,7 @@
 
 (use-package indent-guide
   :diminish indent-guide-mode
-  :config (indent-guide-global-mode t))
+  :config (add-hook 'prog-mode-hook #'indent-guide-mode))
 
 (use-package auto-dim-other-buffers :disabled t)
 
