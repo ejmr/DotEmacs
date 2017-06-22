@@ -43,7 +43,11 @@
 (use-package auto-minor-mode :defer nil)
 
 (transient-mark-mode t)
-(show-paren-mode t)
+
+(progn
+  (show-paren-mode t)
+  (setq-default show-paren-style 'expression))
+
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (which-function-mode t)
