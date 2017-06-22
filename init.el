@@ -62,7 +62,7 @@
   (setq schrute-command-repetitions 10)
   (setq schrute-shortcuts-commands
 	'((avy-goto-line . (next-line previous-line))
-	  (avy-goto-word-1 . (left-char right-char))
+	  (avy-goto-word-1 . (backward-char forward-char))
 	  (kill-buffer . (kill-or-bury-alive))
 	  (comment-region . (comment-dwim-2))
 	  (isearch . (swiper))
