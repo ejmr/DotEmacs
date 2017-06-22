@@ -249,6 +249,7 @@
 
 (use-package org
   :config
+  (setq org-M-RET-may-split-line '((default . nil)))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "IN PROGRESS(p)" "|" "DONE(d)")
           (sequence "REPORT(r)" "BUG(b)" "TESTING(t)" "|" "CLOSED(c)")
