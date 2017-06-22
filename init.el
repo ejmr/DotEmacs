@@ -866,6 +866,10 @@ _v_ariable       _u_ser-option
 
 ;;; Programming Modes and Settings
 
+(use-package racket-mode
+  :commands (racket-mode)
+  :mode ("\\.rkt\\'" . racket-mode))
+
 (use-package scratch)
 
 (use-package indent-tools
