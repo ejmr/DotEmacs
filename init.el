@@ -1119,6 +1119,23 @@ _v_ariable       _u_ser-option
 
   (setq dired-dwim-target t)
 
+  (defun ejmr-dired-view-readme ()
+    "View the README file in the current Dired directory.
+
+This command will mark files that match the regular expression
+`^README' and then moves to the first such marked file.  The
+command then removes the mark---actually all asterik
+marks---opens the README in View Mode, and finally maximizes the
+size of the window in order to facilitate easier reading."
+    (interactive)
+    (goto-char (point-min))
+    (dired-mark-files-regexp "^README")
+    (dired-next-marked-file 1)
+    (dired-unmark-all-files ?\*)
+    (dired-view-file)
+    (delete-other-windows))
+  (bind-key "* R" #'ejmr-dired-view-readme dired-mode-map)
+
   (use-package make-it-so
     :commands make-it-so
     :config (bind-key "C-c ." #'make-it-so dired-mode-map))
