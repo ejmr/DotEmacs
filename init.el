@@ -1225,6 +1225,8 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package ids-edit :disabled t)
+
 (use-package selected
   :diminish selected-minor-mode
   :config
