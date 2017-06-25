@@ -1436,6 +1436,8 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 
 ;;; Web and Online Services
 
+(use-package transfer-sh)
+
 (use-package wandbox
   :config
   (defhydra hydra-wandbox (:color amaranth :hint nil)
