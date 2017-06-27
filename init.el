@@ -68,6 +68,7 @@
 	'((avy-goto-line . (next-line previous-line))
 	  (avy-goto-word-1 . (backward-char forward-char))
 	  (kill-buffer . (kill-or-bury-alive))
+	  (delete-char . (avy-zap-to-char-dwim))
 	  (comment-region . (comment-dwim-2))
 	  (isearch . (swiper))
 	  (find-file . (counsel-recentf))
