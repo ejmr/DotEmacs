@@ -1253,6 +1253,19 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; Text Reading, Editing, and Writing
 
+;;; TODO: Should I create a simple major mode for dealing with files
+;;; containing nothing but lists of URIs and move this function into
+;;; that mode's keymap?
+(defun ejmr-sort-buffer-lines-and-delete-duplicates ()
+  "Sorts all lines in the buffer and deletes duplicates.
+
+This automates a task I perform very often with my text file of
+saved URIs which Conkeror creates."
+  (interactive)
+  (mark-whole-buffer)
+  (sort-lines nil (point-min) (point-max))
+  (delete-duplicate-lines (point-min) (point-max)))
+
 (use-package ids-edit :disabled t)
 
 (use-package selected
