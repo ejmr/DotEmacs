@@ -898,6 +898,9 @@ _v_ariable       _u_ser-option
   (add-hook 'c-mode-hook 'ejmr-setup-cc-mode)
   (add-hook 'c++-mode-hook 'ejmr-setup-cc-mode))
 
+(use-package modern-cpp-font-lock
+  :config (modern-c++-font-lock-global-mode t))
+
 (use-package polymode)
 
 (use-package neon-mode)
