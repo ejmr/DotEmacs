@@ -723,12 +723,30 @@ Info-mode:
 
   (bind-key "C-'" #'avy-isearch isearch-mode-map)
 
+  (defhydra hydra-avy-copy (:color blue)
+    "Copy"
+    ("l" avy-copy-line "Line")
+    ("r" avy-copy-region "Region"))
+  (defhydra hydra-avy-move (:color blue)
+    "Move"
+    ("l" avy-move-line "Line")
+    ("r" avy-move-region "Region"))
+  (defhydra hydra-avy-kill (:color blue)
+    "Kill"
+    ("l" avy-kill-whole-line "Line")
+    ("r" avy-kill-region "Region")
+    ("M-l" avy-kill-ring-save-whole-line "Save Line")
+    ("M-r" avy-kill-ring-save-region "Save Region"))
+
   (defhydra hydra-avy (global-map "M-g" :color blue :hint nil)
     "Goto"
     ("c" avy-goto-char-timer "Character")
     ("g" avy-goto-line "Line")
     ("w" avy-goto-word-1 "Word")
-    ("s" avy-goto-subword-1 "Subword")))
+    ("s" avy-goto-subword-1 "Subword")
+    ("M-c" hydra-avy-copy/body "Copy")
+    ("M-m" hydra-avy-move/body "Move")
+    ("M-k" hydra-avy-kill/body "Kill")))
 
 (use-package ace-window
   :bind ("C-x o" . ace-window))
