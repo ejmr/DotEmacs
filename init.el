@@ -1403,6 +1403,7 @@ all buffers."
 	 ("\\.markdown\\'" . markdown-mode))
   :config
   (setq markdown-command "pandoc -f markdown -t html5")
+  (add-hook 'markdown-mode-hook 'auto-fill-mode)
   (defhydra hydra-markdown (:hint nil :pre (ivy-mode nil) :post (ivy-mode t))
     "
 Formatting        C-c C-s    _s_: bold          _e_: italic     _b_: blockquote   _p_: pre-formatted    _c_: code
