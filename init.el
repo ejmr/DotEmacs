@@ -97,7 +97,9 @@
 
 ;;; Global Utilities
 
-(use-package anyins)
+(use-package anyins
+  :commands (anyins-mode)
+  :bind ("C-x r a" . anyins-mode))
 
 (use-package commander)
 
