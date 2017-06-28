@@ -97,6 +97,17 @@
 
 ;;; Global Utilities
 
+(use-package crux
+  :config
+  (bind-keys :prefix "s-x"
+	     :prefix-map ejmr-crux-map
+	     ("o" . crux-open-with)
+	     ("c" . crux-cleanup-buffer-or-region)
+	     ("u" . crux-view-url)
+	     ("e" . crux-eval-and-replace)
+	     ("d" . crux-delete-file-and-buffer)
+	     ("k" . crux-kill-other-buffers)))
+
 (use-package helpful
   :config
   (defhydra hydra-helpful (:color blue)
