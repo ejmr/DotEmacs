@@ -97,6 +97,8 @@
 
 ;;; Global Utilities
 
+(use-package anyins)
+
 (use-package crux
   :config
   (bind-keys :prefix "s-x"
@@ -512,6 +514,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 (defhydra hydra-minor-modes (:columns 6)
   "Minor Mode"
   ("a" global-aggressive-indent-mode "Agressive")
+  ("A" anyins-mode "Anyins")
   ("c" global-company-mode "Company")
   ("C" cargo-minor-mode "Cargo")
   ("d" darkroom-tentative-mode "Darkroom")
