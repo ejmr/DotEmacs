@@ -947,6 +947,9 @@ _v_ariable       _u_ser-option
 
 (use-package restclient)
 
+(use-package git-modes
+  :load-path "/home/eric/.emacs.d/local/git-modes")
+
 (use-package git-timemachine
   :commands git-timemachine-toggle
   :bind ("C-x v T" . git-timemachine-toggle))
