@@ -500,6 +500,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 
 (defhydra hydra-minor-modes (:columns 6)
   "Minor Mode"
+  ("a" global-aggressive-indent-mode "Agressive")
   ("c" global-company-mode "Company")
   ("C" cargo-minor-mode "Cargo")
   ("d" darkroom-tentative-mode "Darkroom")
@@ -888,6 +889,11 @@ _v_ariable       _u_ser-option
 
 
 ;;; Programming Modes and Settings
+
+(use-package aggressive-indent-mode
+  :commands (aggressive-indent-mode)
+  :config
+  (global-aggressive-indent-mode t))
 
 (use-package racket-mode
   :commands (racket-mode)
