@@ -99,6 +99,8 @@
 
 (use-package anyins)
 
+(use-package commander)
+
 (use-package crux
   :config
   (bind-keys :prefix "s-x"
