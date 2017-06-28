@@ -1333,6 +1333,7 @@ saved URIs which Conkeror creates."
   :bind (:map selected-keymap
 	      ("n" . narrow-to-region)
 	      (";" . comment-dwim-2)
+	      ("$" . flyspell-region)
               ("u" . upcase-region)
               ("d" . downcase-region)
               ("c" . count-words-region)
