@@ -839,16 +839,6 @@ _v_ariable       _u_ser-option
      'counsel-recentf
      '(("v" view-file "view")))
 
-    (defhydra hydra-git (:color blue)
-      "Git"
-      ("f" counsel-git "File")
-      ("g" counsel-git-grep "Grep")
-      ("o" counsel-git-grep-occur "Occur")
-      ("r" counsel-git-grep-query-replace "Replace")
-      ("s" counsel-git-stash "Stash")
-      ("l" counsel-git-log "Log")
-      ("q" nil "Quit"))
-    (bind-key "C-c g" #'hydra-git/body))
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) "))
@@ -899,6 +889,37 @@ _v_ariable       _u_ser-option
   (bind-key "C-c q" #'hydra-quickrun/body))
 
 
+;;; Git
+
+(use-package git-modes
+  :load-path "/home/eric/.emacs.d/local/git-modes")
+
+(use-package git-timemachine
+  :commands git-timemachine-toggle
+  :bind ("C-x v T" . git-timemachine-toggle))
+
+(use-package git-link
+  :config
+  (defhydra hydra-git-link (:color blue)
+    "Git Link"
+    ("l" git-link "Link")
+    ("c" git-link-commit "Commit")
+    ("h" git-link-homepage "Homepage"))
+  (bind-key "k" #'hydra-git-link/body vc-prefix-map))
+
+(defhydra hydra-git (:color blue)
+  "Git"
+  ("f" counsel-git "File")
+  ("g" counsel-git-grep "Grep")
+  ("o" counsel-git-grep-occur "Occur")
+  ("r" counsel-git-grep-query-replace "Replace")
+  ("s" counsel-git-stash "Stash")
+  ("l" counsel-git-log "Log")
+  ("q" nil "Quit"))
+
+(bind-key "C-c g" #'hydra-git/body))
+
+
 ;;; Programming Modes and Settings
 
 (use-package fuel :disabled t)
@@ -946,21 +967,6 @@ _v_ariable       _u_ser-option
 (use-package nhexl-mode)
 
 (use-package restclient)
-
-(use-package git-modes
-  :load-path "/home/eric/.emacs.d/local/git-modes")
-
-(use-package git-timemachine
-  :commands git-timemachine-toggle
-  :bind ("C-x v T" . git-timemachine-toggle))
-(use-package git-link
-  :config
-  (defhydra hydra-git-link (:color blue)
-    "Git Link"
-    ("l" git-link "Link")
-    ("c" git-link-commit "Commit")
-    ("h" git-link-homepage "Homepage"))
-  (bind-key "k" #'hydra-git-link/body vc-prefix-map))
 
 (use-package suggest
   :config
@@ -1063,9 +1069,7 @@ _v_ariable       _u_ser-option
 (use-package clojure-mode)
 
 (use-package conf-mode
-  :mode (("\\.gitignore\\'" . conf-mode)
-	 ("\\.gitconfig\\'" . conf-mode)
-	 ("\\.toml\\'" . conf-mode)))
+  :mode ("\\.toml\\'" . conf-mode))
 
 (use-package ws-butler
   :diminish 'ws-butler-mode
