@@ -1118,6 +1118,12 @@ _v_ariable       _u_ser-option
   :bind ("s-0" . syntactic-close))
 
 
+;;; External Tools and System Management
+
+;;; TODO: Configure it for apt and setup a hydra for commands.
+(use-package system-packages)
+
+
 ;;; Project Management
 
 (defhydra hydra-desktop (:color blue)
