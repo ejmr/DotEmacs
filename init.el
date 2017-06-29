@@ -273,6 +273,7 @@
           (sequence "REPORT(r)" "BUG(b)" "TESTING(t)" "|" "CLOSED(c)")
           (sequence "BRAINSTORMING(b)" "RFC(r)" "FEEDBACK(f)" "|" "ACCEPTED(a) REJECTED(j)")
           (sequence "|" "CANCELED(c)")))
+  (use-package org-tree-slide)
   (use-package worf
     :config (bind-key "C-c o" #'worf-mode))
   (use-package yankpad
@@ -296,6 +297,7 @@
   (use-package org-board)
   (use-package ob-php)
   (use-package ox-pandoc)
+  (use-package ox-gfm)
   (use-package org-brain
     :init
     (setq org-brain-path "/home/eric/.emacs.d/org")
