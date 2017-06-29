@@ -1412,7 +1412,14 @@ all buffers."
     (fill-individual-paragraphs (point-min) (point-max))))
 
 (use-package wc-mode)
-(use-package darkroom)
+(use-package darkroom
+  :config
+  (defhydra hydra-darkroom ()
+    "Darkroom Margin"
+    ("+" darkroom-increase-margins "Increase")
+    ("-" darkroom-decrease-margins "Decrease"))
+  (bind-key "C-M-+" #'hydra-darkroom/darkroom-increase-margins darkroom-mode-map)
+  (bind-key "C-M--" #'hydra-darkroom/darkroom-decrease-margins darkroom-mode-map))
 (use-package fountain-mode
   :config (add-hook 'fountain-mode-hook 'darkroom-tentative-mode))
 
