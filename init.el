@@ -46,7 +46,7 @@
 
 (progn
   (show-paren-mode t)
-  (setq-default show-paren-style 'expression))
+  (setq-default show-paren-style 'mixed))
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
