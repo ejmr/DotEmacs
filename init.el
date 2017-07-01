@@ -936,6 +936,8 @@ _v_ariable       _u_ser-option
 
 ;;; Programming Modes and Settings
 
+(add-to-list 'auto-mode-alist '("Justfile" . makefile-mode))
+
 (use-package fuel :disabled t)
 
 (use-package aggressive-indent-mode
