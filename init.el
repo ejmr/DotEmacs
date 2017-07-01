@@ -304,6 +304,7 @@
   (use-package ox-pandoc)
   (use-package ox-gfm)
   (use-package org-brain
+    :disabled t
     :init
     (setq org-brain-path "/home/eric/.emacs.d/org")
     :config
