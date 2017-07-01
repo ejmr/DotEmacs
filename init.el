@@ -977,37 +977,8 @@ _v_ariable       _u_ser-option
 (use-package polymode)
 
 (use-package neon-mode)
-
 (use-package nhexl-mode)
-
 (use-package restclient)
-
-(use-package suggest
-  :config
-  (bind-key "C-c C-s" #'suggest-mode emacs-lisp-mode-map)
-  (bind-key "C-c C-e" #'emacs-lisp-mode suggest-mode-map))
-
-(use-package package-lint
-  :config
-  (bind-key "C-c C-l" #'package-lint-current-buffer emacs-lisp-mode-map))
-
-(use-package el2markdown
-  :config
-  (defhydra hydra-el2markdown ()
-    "el2markdown"
-    ("v" el2markdown-view-buffer "View")
-    ("f" el2markdown-write-file "Write File")
-    ("r" el2markdown-write-readme "Write README")
-    ("q" nil "Quit" :color blue))
-  (bind-key "C-c C-2" #'hydra-el2markdown/body emacs-lisp-mode-map))
-
-(use-package elisp-refs
-  :config
-  (bind-key "C-c C-r f" #'elisp-refs-function emacs-lisp-mode-map)
-  (bind-key "C-c C-r m" #'elisp-refs-macro emacs-lisp-mode-map)
-  (bind-key "C-c C-r v" #'elisp-refs-variable emacs-lisp-mode-map)
-  (bind-key "C-c C-r p" #'elisp-refs-special emacs-lisp-mode-map)
-  (bind-key "C-c C-r s" #'elisp-refs-symbol emacs-lisp-mode-map))
 
 (use-package diff
   :mode ("COMMIT_EDITMSG" . diff-mode))
@@ -1071,8 +1042,10 @@ _v_ariable       _u_ser-option
 (use-package nasm-mode
   :mode (("\\.asm\\'" . nasm-mode)
 	 ("\\.s\\'" . nasm-mode)))
+
 (use-package tup-mode
   :load-path "/home/eric/.emacs.d/local/tup-mode")
+
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
 
@@ -1134,6 +1107,39 @@ _v_ariable       _u_ser-option
       (:description . "Compile and execute Solid scripts"))
     :mode 'solid-mode))
 
+(use-package syntactic-close
+  :bind ("s-0" . syntactic-close))
+
+
+;;; Emacs Lisp Programming
+
+(use-package suggest
+  :config
+  (bind-key "C-c C-s" #'suggest-mode emacs-lisp-mode-map)
+  (bind-key "C-c C-e" #'emacs-lisp-mode suggest-mode-map))
+
+(use-package package-lint
+  :config
+  (bind-key "C-c C-l" #'package-lint-current-buffer emacs-lisp-mode-map))
+
+(use-package el2markdown
+  :config
+  (defhydra hydra-el2markdown ()
+    "el2markdown"
+    ("v" el2markdown-view-buffer "View")
+    ("f" el2markdown-write-file "Write File")
+    ("r" el2markdown-write-readme "Write README")
+    ("q" nil "Quit" :color blue))
+  (bind-key "C-c C-2" #'hydra-el2markdown/body emacs-lisp-mode-map))
+
+(use-package elisp-refs
+  :config
+  (bind-key "C-c C-r f" #'elisp-refs-function emacs-lisp-mode-map)
+  (bind-key "C-c C-r m" #'elisp-refs-macro emacs-lisp-mode-map)
+  (bind-key "C-c C-r v" #'elisp-refs-variable emacs-lisp-mode-map)
+  (bind-key "C-c C-r p" #'elisp-refs-special emacs-lisp-mode-map)
+  (bind-key "C-c C-r s" #'elisp-refs-symbol emacs-lisp-mode-map))
+
 (use-package nameless
   :diminish 'nameless-mode
   :config
@@ -1155,9 +1161,6 @@ _v_ariable       _u_ser-option
 
 (bind-key "C-c C-e" #'hydra-lisp-eval/body emacs-lisp-mode-map)
 (bind-key "C-c C-e" #'hydra-lisp-eval/body lisp-mode-map)
-
-(use-package syntactic-close
-  :bind ("s-0" . syntactic-close))
 
 
 ;;; External Tools and System Management
