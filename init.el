@@ -1255,6 +1255,9 @@ Also opens the next N files when given the prefix `arg'."
 
 ;;; General Editing Utilities
 
+(use-package linkd
+  :load-path "/home/eric/.emacs.d/local/linkd")
+
 (use-package demo-it)
 
 (use-package beginend
