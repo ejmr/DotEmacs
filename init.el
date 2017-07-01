@@ -991,6 +991,16 @@ _v_ariable       _u_ser-option
   :config
   (bind-key "C-c C-l" #'package-lint-current-buffer emacs-lisp-mode-map))
 
+(use-package el2markdown
+  :config
+  (defhydra hydra-el2markdown ()
+    "el2markdown"
+    ("v" el2markdown-view-buffer "View")
+    ("f" el2markdown-write-file "Write File")
+    ("r" el2markdown-write-readme "Write README")
+    ("q" nil "Quit" :color blue))
+  (bind-key "C-c C-2" #'hydra-el2markdown/body emacs-lisp-mode-map))
+
 (use-package elisp-refs
   :config
   (bind-key "C-c C-r f" #'elisp-refs-function emacs-lisp-mode-map)
