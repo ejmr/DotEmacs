@@ -97,6 +97,11 @@
 
 ;;; Global Utilities
 
+(use-package historian
+  :config
+  (use-package ivy-historian
+    :config (ivy-historian-mode t)))
+
 (use-package anyins
   :commands (anyins-mode)
   :bind ("C-x r a" . anyins-mode))
