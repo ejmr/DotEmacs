@@ -29,6 +29,10 @@
   (package-list-packages)
   (package-menu-mark-upgrades))
 
+;;; TODO: Setup a local mirror of the Emacs Wiki.
+;;; https://emacsmirror.net/manual/epkg/Installation.html#Installation
+(use-package epkg :disabled t)
+
 
 ;;; Startup
 
