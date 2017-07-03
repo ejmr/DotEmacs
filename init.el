@@ -101,6 +101,8 @@
 
 ;;; Global Utilities
 
+(use-package with-editor)
+
 (use-package historian
   :config
   (use-package ivy-historian
