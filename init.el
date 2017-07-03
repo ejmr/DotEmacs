@@ -728,6 +728,8 @@ Info-mode:
 
 ;;; Avy and Ace
 
+;;; TODO: Check recent Avy commits for any new commands that I may
+;;; want to bind to keys.
 (use-package avy
   :config
   (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
@@ -1268,6 +1270,8 @@ Also opens the next N files when given the prefix `arg'."
 
 
 ;;; General Editing Utilities
+
+(use-package decide)
 
 (use-package linkd
   :load-path "/home/eric/.emacs.d/local/linkd")
