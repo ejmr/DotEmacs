@@ -321,6 +321,7 @@
           (sequence "BRAINSTORMING(b)" "RFC(r)" "FEEDBACK(f)" "|" "ACCEPTED(a) REJECTED(j)")
           (sequence "|" "CANCELED(c)")))
   (use-package org-tree-slide)
+  (use-package calfw :config (use-package calfw-org))
   (use-package worf
     :config (bind-key "C-c o" #'worf-mode))
   (use-package yankpad
@@ -334,6 +335,7 @@
     (add-to-list 'company-backends #'company-yankpad))
   (use-package org-readme)
   (use-package org-parser)
+  (use-package org-journal :disabled t)
   (use-package org-wiki
     :disabled t
     :load-path "/home/eric/.emacs.d/local/org-wiki"
