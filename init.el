@@ -114,6 +114,7 @@
 ;;; Global Utilities
 
 (use-package with-editor)
+(use-package add-hooks)
 
 (use-package historian
   :config
@@ -1137,6 +1138,9 @@ _v_ariable       _u_ser-option
 
 
 ;;; Emacs Lisp Programming
+
+(use-package elx)
+(use-package face-explorer)
 
 (use-package suggest
   :config
