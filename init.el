@@ -1432,6 +1432,16 @@ saved URIs which Conkeror creates."
   (use-package magic-latex-buffer
     :config (add-hook 'latex-mode-hook 'magic-latex-buffer)))
 
+(use-package google-translate
+  :config
+  (use-package google-translate-smooth-ui
+    :commands google-translate-smooth-translate
+    :bind ("C-M-$" . google-translate-smooth-translate)
+    :config
+    (setq-default google-translate-translation-directions-alist
+		  '(("en" . "ja")
+		    ("ja" . "en")))))
+
 (use-package wiki-nav
   :disabled t
   :load-path "/home/eric/.emacs.d/local/button-lock"
