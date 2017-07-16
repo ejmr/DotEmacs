@@ -42,6 +42,18 @@
 (use-package dashboard :disabled t)
 
 
+;;; Global Custom Keymap Prefixes
+;;;
+;;; This page defines keymaps which I use throughout for a lot of my
+;;; custom key-bindings.  It is important to create these keymaps as
+;;; soon as possible so that the rest of the configuration can use
+;;; them.  Therefore, this page should always come early.
+
+(defvaralias 'ejmr-custom-bindings-map 'mode-specific-map) ; i.e. `C-c'
+(bind-key "h" (define-prefix-command 'ejmr-hydra-map) ejmr-custom-bindings-map)
+(bind-key "s-x" (define-prefix-command 'ejmr-command-shortcut-map))
+
+
 ;;; Global Minor Modes
 
 (use-package auto-minor-mode :defer nil)
@@ -142,24 +154,13 @@
     ("M-p" mc/unmark-previous-like-this)
     ("r" mc/mark-all-in-region-regexp :exit t)
     ("q" nil))
-  (bind-key "C-s-c" #'hydra-multiple-cursors/body))
+  (bind-key "c" #'hydra-multiple-cursors/body ejmr-hydra-map))
 
 (use-package anyins
   :commands (anyins-mode)
   :bind ("C-x r a" . anyins-mode))
 
 (use-package commander)
-
-(use-package crux
-  :config
-  (bind-keys :prefix "s-x"
-	     :prefix-map ejmr-crux-map
-	     ("o" . crux-open-with)
-	     ("c" . crux-cleanup-buffer-or-region)
-	     ("u" . crux-view-url)
-	     ("e" . crux-eval-and-replace)
-	     ("d" . crux-delete-file-and-buffer)
-	     ("k" . crux-kill-other-buffers)))
 
 (use-package helpful
   :config
@@ -168,11 +169,11 @@
     ("f" helpful-function "Function")
     ("c" helpful-command "Command")
     ("m" helpful-macro "Macro"))
-  (bind-key "C-c h" #'hydra-helpful/body))
+  (bind-key "h" #'hydra-helpful/body ejmr-hydra-map))
 
 (use-package neotree
   :commands neotree-toggle
-  :bind ("s-7" . neotree-toggle)
+  :bind (:map ejmr-command-shortcut-map ("n" . neotree-toggle))
   :config (setq neo-theme 'state))
 
 (use-package avy-menu)
@@ -228,11 +229,12 @@
 (use-package auto-dim-other-buffers :disabled t)
 
 (use-package iflipb
+  :disabled t
   :bind (("s-b" . iflipb-next-buffer)
 	 ("C-s-b" . iflipb-previous-buffer)))
 
 (use-package caps-lock
-  :bind ("s-l" . caps-lock-mode))
+  :bind (:map ejmr-custom-bindings-map ("l" . caps-lock-mode)))
 
 (use-package resize-window
   :bind ("C-x ^" . resize-window))
@@ -241,7 +243,7 @@
   :bind ("C-'" . cycle-quotes))
 
 (use-package tomatinho
-  :bind ("s-8" . tomatinho))
+  :bind (:map ejmr-command-shortcut-map ("o" . tomatinho)))
 
 (use-package which-key
   :diminish 'which-key-mode
@@ -256,10 +258,10 @@
   :config
   (use-package linum-relative
     :diminish 'linum-relative-mode
-    :bind ("s-9" . linum-relative-global-mode)))
+    :bind (:map ejmr-custom-bindings-map ("n" . linum-relative-global-mode))))
 
 (use-package tiny
-  :bind ("s-t" . tiny-expand))
+  :bind (:map ejmr-command-shortcut-map ("t" . tiny-expand)))
 
 (use-package origami
   :diminish 'origami-mode
@@ -277,7 +279,7 @@
     ("p" origami-previous-fold "Previous")
     ("q" nil "Quit" :color blue))
 
-  (bind-key "C-c i" #'hydra-origami/body))
+  (bind-key "i" #'hydra-origami/body ejmr-hydra-map))
 
 (use-package qwe
   :load-path ("/home/eric/.emacs.d/local/qwe-0.9.5/src"
@@ -291,7 +293,9 @@
 (use-package ryo-modal
   :disabled t
   :commands ryo-modal-mode
-  :bind ("C-c SPC" . ryo-modal-mode)
+  ;; TODO: Before using `ryo-modal' I need to choose a different
+  ;; key-binding to avoid conflicts.
+  :bind (:map ejmr-custom-bindings-map ("SPC" . ryo-modal-mode))
   :init
   (add-hook 'ryo-modal-mode-hook
 	    (lambda () (if ryo-modal-mode
@@ -305,9 +309,10 @@
 		  ("p" previous-line)))
 
 (use-package god-mode
-  :bind (("s-g" . god-mode-all)
-	 :map god-local-mode-map
-	 ("." . repeat)))
+  :bind (:map ejmr-command-shortcut-map
+	      ("s-g" . god-mode-all)
+	      :map god-local-mode-map
+	      ("." . repeat)))
 
 
 ;;; Org Mode
@@ -323,13 +328,13 @@
   (use-package org-tree-slide)
   (use-package calfw :config (use-package calfw-org))
   (use-package worf
-    :config (bind-key "C-c o" #'worf-mode))
+    :config (bind-key "o" #'worf-mode ejmr-custom-bindings-map))
   (use-package yankpad
     :init
     (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
     :config
     (define-prefix-command 'ejmr-yankpad-map)
-    (bind-key "C-c y" 'ejmr-yankpad-map)
+    (bind-key "y" 'ejmr-yankpad-map ejmr-command-shortcut-map)
     (bind-key "m" #'yankpad-map ejmr-yankpad-map)
     (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
     (add-to-list 'company-backends #'company-yankpad))
@@ -502,7 +507,7 @@ will automatically kill the buffer."
   ("0" (text-scale-increase 0) "default")
   ("q" nil "quit"))
 
-(bind-key "C-c z" #'hydra-zoom/body)
+(bind-key "z" #'hydra-zoom/body ejmr-hydra-map)
 
 ;;; Hydra for Rectangle Commands
 
@@ -531,6 +536,8 @@ _h_   _l_   _o_k        _y_ank
   ("s" string-rectangle nil)
   ("p" kill-rectangle nil)
   ("o" nil nil))
+
+(bind-key "r" #'hydra-rectangle/body ejmr-hydra-map)
 
 ;;; Buffer Menu
 
@@ -596,7 +603,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
   ("Y" lispy-mode "Lispy")
   ("q" nil "Quit" :color blue))
 
-(bind-key "C-c n" #'hydra-minor-modes/body)
+(bind-key "n" #'hydra-minor-modes/body ejmr-hydra-map)
 
 ;;; Major Modes
 
@@ -608,7 +615,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
   ("p" projectile-mode "Projectile")
   ("t" text-mode "Text"))
 
-(bind-key "C-c m" #'hydra-major-modes/body)
+(bind-key "m" #'hydra-major-modes/body ejmr-hydra-map)
 
 ;;; Info Mode
 
@@ -690,7 +697,7 @@ Info-mode:
   ("v" flycheck-verify-setup)
   ("?" flycheck-describe-checker))
 
-(bind-key "C-c f" #'hydra-flycheck/body)
+(bind-key "f" #'hydra-flycheck/body ejmr-hydra-map)
 
 ;;; Misc Commands
 
@@ -712,13 +719,15 @@ Info-mode:
   ("x" re-builder "Regex Builder")
   ("z" zone "Zone"))
 
-(bind-key "C-c x" #'hydra-commands/body)
+(bind-key "x" #'hydra-commands/body ejmr-hydra-map)
+(bind-key "x" #'hydra-commands/body ejmr-command-shortcut-map)
+(bind-key "s-x" #'hydra-commands/body ejmr-command-shortcut-map)
 
 
 ;;; Comment DWIM
 
 (use-package comment-dwim-2
-  :bind ("s-;" . comment-dwim-2))
+  :bind (:map ejmr-command-shortcut-map (";" . comment-dwim-2)))
 
 
 ;;; Expand Region
@@ -761,7 +770,7 @@ Info-mode:
     ("o" change-outer "Outer")
     ("." er/expand-region "Expand Region" :exit nil)
     ("," er/contract-region "Contract Region" :exit nil))
-  (bind-key "C-c SPC" #'hydra-mark/body))
+  (bind-key "SPC" #'hydra-mark/body ejmr-custom-bindings-map))
 
 
 ;;; Avy and Ace
@@ -856,8 +865,8 @@ Info-mode:
 	("p" counsel-gtags-go-backward "Previous" :color red)
 	("c" counsel-gtags-create-tags "Create")
 	("u" counsel-gtags-update-tags "Update"))
-      (bind-key "C-c a" #'hydra-counsel-gtags/body)
-      (bind-key "C-s-g" #'counsel-gtags-dwim))
+      (bind-key "a" #'hydra-counsel-gtags/body ejmr-hydra-map)
+      (bind-key "g" #'counsel-gtags-dwim ejmr-command-shortcut-map))
 
     (bind-key "r" #'counsel-file-register ejmr-help-map)
     (bind-key "f" #'counsel-describe-function ejmr-help-map)
@@ -900,9 +909,9 @@ _v_ariable       _u_ser-option
      'counsel-recentf
      '(("v" view-file "view")))
 
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) "))
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")))
 
 
 ;;; Highlighting
@@ -918,7 +927,7 @@ _v_ariable       _u_ser-option
     ("p" hl-todo-previous "Previous")
     ("o" hl-todo-occur "Occur")
     ("q" nil "Quit" :color blue :exit t))
-  (bind-key "C-s-t" #'hydra-todo/body))
+  (bind-key "s-t" #'hydra-todo/body ejmr-command-shortcut-map))
 
 (use-package highlight-blocks)
 (use-package rainbow-delimiters)
@@ -926,7 +935,7 @@ _v_ariable       _u_ser-option
 
 (use-package symbol-overlay
   :config
-  (bind-key "C-c s" #'symbol-overlay-put))
+  (bind-key "s" #'symbol-overlay-put ejmr-command-shortcut-map))
 
 
 ;;; Quickrun
@@ -947,7 +956,8 @@ _v_ariable       _u_ser-option
     ("s" quickrun-shell "shell")
     ("c" quickrun-compile-only "compile")
     ("p" quickrun-replace-region "replace"))
-  (bind-key "C-c q" #'hydra-quickrun/body))
+  (bind-key "q" #'hydra-quickrun/body ejmr-hydra-map)
+  (bind-key "q" #'hydra-quickrun/body ejmr-command-shortcut-map))
 
 
 ;;; Git
@@ -979,7 +989,7 @@ _v_ariable       _u_ser-option
     ("l" counsel-git-log "Log")
     ("q" nil "Quit"))
 
-  (bind-key "c" #'hydra-git/body vc-prefix-map)))
+  (bind-key "c" #'hydra-git/body vc-prefix-map))
 
 
 ;;; Programming Modes and Settings
@@ -1002,7 +1012,7 @@ _v_ariable       _u_ser-option
 (use-package scratch)
 
 (use-package indent-tools
-  :bind ("C-c >" . indent-tools-hydra/body))
+  :bind (:map ejmr-hydra-map (">" . indent-tools-hydra/body)))
 
 (setq require-final-newline t)
 (setq-default buffer-file-coding-system 'utf-8-unix)
@@ -1044,28 +1054,25 @@ _v_ariable       _u_ser-option
   :config
   (setq dumb-jump-selector 'ivy)
   (setq dumb-jump-prefer-searcher 'ag)
-  (bind-key "s-d" (defhydra hydra-dumb-jump (:color pink)
-		    "Dumb Jump"
-		    ("g" dumb-jump-go "Go")
-		    ("b" dumb-jump-back "Back")
-		    ("l" dumb-jump-quick-look "Look")
-		    ("e" dumb-jump-go-prefer-external "External")
-		    ("w" dumb-jump-go-other-window "Window" :color blue)
-		    ("q" nil "Quit" :color blue)))
+  (bind-key "d" (defhydra hydra-dumb-jump (:color pink)
+		  "Dumb Jump"
+		  ("g" dumb-jump-go "Go")
+		  ("b" dumb-jump-back "Back")
+		  ("l" dumb-jump-quick-look "Look")
+		  ("e" dumb-jump-go-prefer-external "External")
+		  ("w" dumb-jump-go-other-window "Window" :color blue)
+		  ("q" nil "Quit" :color blue))
+	    ejmr-command-shortcut-map)
   (dumb-jump-mode 1))
 
 (use-package vdiff
+  :disabled t
   :config
   (bind-key "C-c v" vdiff-mode-prefix-map vdiff-mode-map))
 
-(use-package realgud
-  :disabled t)
-
-(use-package cmake-ide
-  :disabled t)
-
-(use-package malinka
-  :disabled t)
+(use-package realgud :disabled t)
+(use-package cmake-ide :disabled t)
+(use-package malinka :disabled t)
 
 (use-package rtags
   :disabled t
@@ -1131,8 +1138,8 @@ _v_ariable       _u_ser-option
   (bind-key "C-?" #'yas-expand yas-minor-mode-map)
   (use-package auto-yasnippet
     :config
-    (bind-key "C-s-a c" #'aya-create yas-minor-mode-map)
-    (bind-key "C-s-a e" #'aya-expand yas-minor-mode-map)))
+    (bind-key "s-x a c" #'aya-create yas-minor-mode-map)
+    (bind-key "s-x a e" #'aya-expand yas-minor-mode-map)))
 
 (use-package flycheck
   :config
@@ -1235,7 +1242,7 @@ _v_ariable       _u_ser-option
   ("r" desktop-revert "revert")
   ("d" desktop-change-dir "directory"))
 
-(bind-key "C-c d" #'hydra-desktop/body)
+(bind-key "d" #'hydra-desktop/body ejmr-hydra-map)
 
 (use-package projectile
   :diminish projectile-mode
@@ -1573,7 +1580,7 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
     ("F" markdown-insert-footnote :color blue)
     ("W" markdown-insert-wiki-link :color blue)
     ("R" markdown-insert-reference-link-dwim :color blue))
-  (bind-key "C-c C-m" #'hydra-markdown/body markdown-mode-map))
+  (bind-key "C-c h m" #'hydra-markdown/body markdown-mode-map))
 
 (use-package pandoc-mode
   :config
@@ -1610,7 +1617,7 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
   ("r" hydra-rectangle/body)
   ("q" nil :color blue))
 
-(bind-key "C-c t" #'hydra-text/body)
+(bind-key "t" #'hydra-text/body ejmr-hydra-map)
 
 
 ;;; Web and Online Services
@@ -1633,7 +1640,7 @@ Compile: _F_ile     _L_ist Compilers
     ("L" wandbox-list-compilers :color red)
     ("I" wandbox-insert-template)
     ("q" nil))
-  (bind-key "C-c c" #'hydra-wandbox/body))
+  (bind-key "w" #'hydra-wandbox/body ejmr-command-shortcut-map))
 
 (use-package elfeed)
 
@@ -1661,7 +1668,8 @@ Compile: _F_ile     _L_ist Compilers
   (defhydra hydra-webpaste (:color blue)
     "Paste to Web"
     ("b" webpaste-paste-buffer "Buffer")
-    ("r" webpaste-paste-region "Region")))
+    ("r" webpaste-paste-region "Region"))
+  (bind-key "p" #'hydra-webpaste/body ejmr-command-shortcut-map))
 
 
 ;;; Custom File
