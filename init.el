@@ -968,17 +968,18 @@ _v_ariable       _u_ser-option
     ("h" git-link-homepage "Homepage"))
   (bind-key "k" #'hydra-git-link/body vc-prefix-map))
 
-(defhydra hydra-git (:color blue)
-  "Git"
-  ("f" counsel-git "File")
-  ("g" counsel-git-grep "Grep")
-  ("o" counsel-git-grep-occur "Occur")
-  ("r" counsel-git-grep-query-replace "Replace")
-  ("s" counsel-git-stash "Stash")
-  ("l" counsel-git-log "Log")
-  ("q" nil "Quit"))
+(progn
+  (defhydra hydra-git (:color blue)
+    "Git"
+    ("f" counsel-git "File")
+    ("g" counsel-git-grep "Grep")
+    ("o" counsel-git-grep-occur "Occur")
+    ("r" counsel-git-grep-query-replace "Replace")
+    ("s" counsel-git-stash "Stash")
+    ("l" counsel-git-log "Log")
+    ("q" nil "Quit"))
 
-(bind-key "C-c g" #'hydra-git/body))
+  (bind-key "c" #'hydra-git/body vc-prefix-map)))
 
 
 ;;; Programming Modes and Settings
