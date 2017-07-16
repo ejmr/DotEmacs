@@ -72,12 +72,19 @@
 (use-package schrute
   :diminish schrute-mode
   :config
+  (use-package bln-mode
+    :commands (bln-forward-half bln-backward-half)
+    :config
+    (bind-key "s-[" #'bln-backward-half)
+    (bind-key "s-]" #'bln-forward-half))
   (setq schrute-command-repetitions 10)
   (setq schrute-shortcuts-commands
 	'((avy-goto-line . (next-line previous-line))
 	  (avy-goto-word-1 . (backward-char forward-char))
 	  (kill-buffer . (kill-or-bury-alive))
 	  (delete-char . (avy-zap-to-char-dwim))
+	  (forward-char . (bln-forward-half))
+	  (backward-char . (bln-backward-half))
 	  (comment-region . (comment-dwim-2))
 	  (isearch . (swiper))
 	  (find-file . (counsel-recentf))
