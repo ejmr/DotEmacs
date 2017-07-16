@@ -64,6 +64,11 @@
 (global-hl-line-mode t)
 (pending-delete-mode t)
 
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode t))
+
 (use-package schrute
   :diminish schrute-mode
   :config
