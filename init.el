@@ -1223,6 +1223,8 @@ _v_ariable       _u_ser-option
 ;;; TODO: Configure it for apt and setup a hydra for commands.
 (use-package system-packages)
 
+(use-package pass)
+
 
 ;;; Project Management
 
