@@ -1580,6 +1580,7 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
   (add-hook 'markdown-mode-hook 'pandoc-mode))
 
 (use-package edit-indirect)
+(use-package underline-with-char)
 
 (defhydra hydra-text (:color amaranth)
   "
@@ -1589,11 +1590,12 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 [_A_] AsciiDoc   [_$_] Flyspell   [_a_] Align Regexp
 [_M_] Markdown   [_u_] Auto Fill  [_p_] Delete Duplicates^^
 [_G_] GFM                       [_r_] Rectangle Commands^^
-[_F_] Fountain
+[_F_] Fountain                  [_n_] Underline With Character
 [_I_] Indirect Edit
 ^^
 "
   ("T" text-mode)
+  ("n" underline-with-char :color blue)
   ("I" edit-indirect-region :color blue)
   ("A" adoc-mode)
   ("a" align-regexp)
@@ -1651,6 +1653,8 @@ Compile: _F_ile     _L_ist Compilers
 
 (use-package browse-at-remote
   :bind ("C-x v t" . browse-at-remote))
+
+(use-package numbers)
 
 (use-package webpaste
   :config
