@@ -1562,6 +1562,7 @@ all buffers."
 (use-package epub-mode
   :load-path "/home/eric/.emacs.d/local/epub-mode.el")
 
+;;; TODO: Install the `unfill' package then delete this function.
 (defun ejmr-refill-to-one-line ()
   "Refills a paragraph to a single line."
   (interactive)
