@@ -1213,6 +1213,7 @@ _v_ariable       _u_ser-option
 
 (use-package elx)
 (use-package face-explorer)
+(use-package apiwrap)
 
 (use-package suggest
   :config
