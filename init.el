@@ -326,6 +326,7 @@
           (sequence "BRAINSTORMING(b)" "RFC(r)" "FEEDBACK(f)" "|" "ACCEPTED(a) REJECTED(j)")
           (sequence "|" "CANCELED(c)")))
   (use-package org-tree-slide)
+  (use-package org-ref)
   (use-package calfw :config (use-package calfw-org))
   (use-package worf
     :config (bind-key "o" #'worf-mode ejmr-custom-bindings-map))
