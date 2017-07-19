@@ -1362,6 +1362,26 @@ _v_ariable       _u_ser-option
 
 ;;; General Editing Utilities
 
+(progn
+  (defun ejmr-smart-open-line-below ()
+    "Insert and indent an empty line after the current line."
+    (interactive)
+    (move-end-of-line nil)
+    (newline-and-indent))
+  (defun ejmr-smart-open-line-above ()
+    "Insert and indent an empty line above the current line."
+    (interactive)
+    (move-beginning-of-line nil)
+    (newline-and-indent)
+    (forward-line -1)
+    (indent-according-to-mode))
+  (bind-key "C-o" #'ejmr-smart-open-line-below)
+  (bind-key "C-S-o" #'ejmr-smart-open-line-above))
+
+(use-package shrink-whitespace
+  :commands (shrink-whitespace)
+  :bind ("M-SPC" . shrink-whitespace))
+
 (use-package decide)
 
 (use-package linkd
