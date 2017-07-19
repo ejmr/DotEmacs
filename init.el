@@ -962,6 +962,23 @@ _v_ariable       _u_ser-option
   (bind-key "q" #'hydra-quickrun/body ejmr-hydra-map)
   (bind-key "q" #'hydra-quickrun/body ejmr-command-shortcut-map))
 
+;;; `isend-mode' is somewhat similar to Quickrun, in that I can
+;;; roughly accomplish the same thing using the `quickrun-*' commands.
+;;; But `isend-mode' makes things easier when working, for example,
+;;; with shell scripts.
+(use-package isend-mode
+  :config
+  (setq-default isend-forward-line t)
+  (bind-key "i" (defhydra hydra-isend ()
+		  "isend"
+		  ("a" isend-associate "Associate")
+		  ("RET" isend-send "Line")
+		  ("f" isend-send-defun "Function")
+		  ("b" isend-send-buffer "Buffer")
+		  ("d" isend-display-buffer "Display")
+		  ("q" nil "Quit" :color blue))
+	    ejmr-hydra-map))
+
 
 ;;; Git
 
