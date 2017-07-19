@@ -279,7 +279,7 @@
     ("p" origami-previous-fold "Previous")
     ("q" nil "Quit" :color blue))
 
-  (bind-key "i" #'hydra-origami/body ejmr-hydra-map))
+  (bind-key "o" #'hydra-origami/body ejmr-hydra-map))
 
 (use-package qwe
   :load-path ("/home/eric/.emacs.d/local/qwe-0.9.5/src"
