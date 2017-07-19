@@ -1315,11 +1315,11 @@ _v_ariable       _u_ser-option
   (defun ejmr-dired-view-readme ()
     "View the README file in the current Dired directory.
 
-This command will mark files that match the regular expression
-`^README' and then moves to the first such marked file.  The
-command then removes the mark---actually all asterik
-marks---opens the README in View Mode, and finally maximizes the
-size of the window in order to facilitate easier reading."
+    This command will mark files that match the regular expression
+    `^README' and then moves to the first such marked file.  The
+    command then removes the mark---actually all asterik
+    marks---opens the README in View Mode, and finally maximizes the
+    size of the window in order to facilitate easier reading."
     (interactive)
     (goto-char (point-min))
     (dired-mark-files-regexp "^README")
@@ -1338,7 +1338,7 @@ size of the window in order to facilitate easier reading."
   (defun ejmr-dired-find-file (&optional arg)
     "Open file under point or each marked file.
 
-Also opens the next N files when given the prefix `arg'."
+    Also opens the next N files when given the prefix `arg'."
     (interactive "P")
     (let ((fn-list (dired-get-marked-files nil arg)))
       (mapc 'find-file fn-list)))
@@ -1448,8 +1448,8 @@ Also opens the next N files when given the prefix `arg'."
 (defun ejmr-sort-buffer-lines-and-delete-duplicates ()
   "Sorts all lines in the buffer and deletes duplicates.
 
-This automates a task I perform very often with my text file of
-saved URIs which Conkeror creates."
+    This automates a task I perform very often with my text file of
+    saved URIs which Conkeror creates."
   (interactive)
   (mark-whole-buffer)
   (sort-lines nil (point-min) (point-max))
@@ -1464,15 +1464,15 @@ saved URIs which Conkeror creates."
   :bind (:map selected-keymap
 	      ("n" . narrow-to-region)
 	      (";" . comment-dwim-2)
-	      ("$" . flyspell-region)
-              ("u" . upcase-region)
-              ("d" . downcase-region)
-              ("c" . count-words-region)
-	      ("\\" . indent-region)
-	      ("w" . copy-region-as-kill)
-	      ("W" . copy-as-format)
-	      ("k" . kill-region)
-              ("m" . apply-macro-to-region-lines)))
+    ("$" . flyspell-region)
+    ("u" . upcase-region)
+    ("d" . downcase-region)
+    ("c" . count-words-region)
+    ("\\" . indent-region)
+    ("w" . copy-region-as-kill)
+    ("W" . copy-as-format)
+    ("k" . kill-region)
+    ("m" . apply-macro-to-region-lines)))
 
 (use-package latex-mode
   :config
