@@ -239,9 +239,6 @@
 (use-package resize-window
   :bind ("C-x ^" . resize-window))
 
-(use-package cycle-quotes
-  :bind ("C-'" . cycle-quotes))
-
 (use-package tomatinho
   :bind (:map ejmr-command-shortcut-map ("o" . tomatinho)))
 
@@ -999,6 +996,20 @@ _v_ariable       _u_ser-option
 
 
 ;;; Programming Modes and Settings
+
+(use-package string-inflection
+  :commands (string-inflection-all-cycle)
+  :config
+  (use-package cycle-quotes)
+  (defhydra hydra-string-inflection ()
+    "Inflection"
+    ("c" capitalize-word "Capitalize")
+    ("u" upcase-word "Upcase")
+    ("l" downcase-word "Lowercase")
+    ("'" cycle-quotes "Quote")
+    ("SPC" string-inflection-all-cycle "Cycle")
+    ("q" nil "Quit" :color blue))
+  (bind-key "M-c" #'hydra-string-inflection/body))
 
 (use-package just-mode
   :load-path "/home/eric/.emacs.d/local/just-mode"
