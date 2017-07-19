@@ -452,6 +452,11 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay 0.4))
 
+;;; TODO: Make sure that `:chords` uses the `key-seq` functionality
+;;; before I switch any of my current bindings.  And ensure that it
+;;; supports `:map` for local chords.
+(use-package use-package-chords :disabled t)
+
 ;;; General Chords
 
 (key-seq-define-global "ZB" #'ivy-switch-buffer)
