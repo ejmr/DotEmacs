@@ -1108,6 +1108,11 @@ _v_ariable       _u_ser-option
 (use-package cmake-ide :disabled t)
 (use-package malinka :disabled t)
 
+(use-package makefile-executor
+  :commands (makefile-executor-mode)
+  :config
+  (add-hook 'makefile-mode-hook 'makefile-executor-mode))
+
 (use-package rtags
   :disabled t
   :config
