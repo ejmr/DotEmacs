@@ -824,14 +824,14 @@ Info-mode:
     ("M-r" avy-kill-ring-save-region "Save Region"))
 
   (defhydra hydra-avy (global-map "M-g" :color blue :hint nil)
-    "Goto"
-    ("c" avy-goto-char-timer "Character")
+    "Avy Goto"
+    ("c" avy-goto-char-timer "Characters")
     ("g" avy-goto-line "Line")
     ("w" avy-goto-word-1 "Word")
     ("s" avy-goto-subword-1 "Subword")
-    ("M-c" hydra-avy-copy/body "Copy")
-    ("M-m" hydra-avy-move/body "Move")
-    ("M-k" hydra-avy-kill/body "Kill")))
+    ("M-w" hydra-avy-copy/body "Copy")
+    ("C-y" hydra-avy-move/body "Move")
+    ("C-w" hydra-avy-kill/body "Kill")))
 
 (use-package ace-window
   :bind ("C-x o" . ace-window))
