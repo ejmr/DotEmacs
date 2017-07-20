@@ -76,6 +76,8 @@
 (global-hl-line-mode t)
 (pending-delete-mode t)
 
+(use-package aggressive-indent :diminish aggressive-indent-mode)
+
 (use-package undo-tree
   :diminish undo-tree-mode
   :config
