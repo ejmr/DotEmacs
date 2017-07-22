@@ -1239,6 +1239,7 @@ _v_ariable       _u_ser-option
 
 ;;; Emacs Lisp Programming
 
+(use-package treepy)
 (use-package elx)
 (use-package face-explorer)
 (use-package apiwrap)
