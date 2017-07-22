@@ -1152,6 +1152,7 @@ _v_ariable       _u_ser-option
 (use-package sqlup-mode
   :config (add-hook 'sql-mode-hook 'sqlup-mode))
 (use-package emacsql
+  :disabled t
   :config
   (use-package emacsql-sqlite))
 
