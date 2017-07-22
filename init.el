@@ -407,6 +407,8 @@ register-alist'."
 (define-prefix-command 'ejmr-help-map)
 (bind-key "s-1" 'ejmr-help-map)
 
+(use-package mykie :disabled t)
+
 
 ;;; Window Management
 
