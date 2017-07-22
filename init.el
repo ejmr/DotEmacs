@@ -221,7 +221,9 @@ register-alist'."
 (use-package zone)
 (use-package tldr)
 (use-package fn)
-(use-package find-temp-file)
+
+(use-package find-temp-file
+  :bind (:map ejmr-command-shortcut-map ("f" . find-temp-file)))
 
 (use-package editorconfig
   :diminish editorconfig-mode
