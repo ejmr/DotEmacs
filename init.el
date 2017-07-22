@@ -122,6 +122,18 @@
 
 ;;; Registers
 
+(defun ejmr-edit-registers ()
+  "Call `refine' on the `register-alist' variable.
+
+This command allows for easier editing of registers, including
+killing registers which I no longer need, by using the `refine'
+command.  This function is a shortcut for `M-x refine <RET>
+register-alist'."
+  (interactive)
+  (refine 'register-alist))
+
+(bind-key "C-x r e" #'ejmr-edit-registers)
+
 (set-register ?i '(file . "/home/eric/.emacs.d/init.el"))
 (set-register ?g '(file . "/home/eric/.gitconfig"))
 (set-register ?s '(file . "/home/eric/.config/fish/"))
