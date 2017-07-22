@@ -25,6 +25,8 @@
  '(darkroom-margins 0.13)
  '(default-input-method "japanese-hiragana")
  '(diary-entry-marker (quote font-lock-variable-name-face))
+ '(dumb-jump-ag-cmd "/usr/local/bin/ag")
+ '(dumb-jump-git-grep-cmd "/usr/local/bin/git grep")
  '(emms-mode-line-icon-image-cache
    (quote
     (image :type xpm :ascent center :data "/* XPM */
