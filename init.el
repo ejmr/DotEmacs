@@ -36,8 +36,14 @@
 
 ;;; Startup
 
-(let ((file-name-handler-alist nil))
-  "~/.emacs.d/init.elc")
+(progn
+  (let ((file-name-handler-alist nil))
+    "~/.emacs.d/init.elc")
+  (defun ejmr-compile-and-load-config ()
+    "Compiles my `init.el' file and loads it."
+    (interactive)
+    (byte-compile-file "/home/eric/.emacs.d/init.el" t))
+  (bind-key "s-i" #'ejmr-compile-and-load-config))
 
 (use-package dashboard :disabled t)
 
