@@ -62,7 +62,7 @@
 
 ;;; Global Minor Modes
 
-(use-package auto-minor-mode :defer nil)
+(use-package auto-minor-mode)
 
 (transient-mark-mode t)
 
