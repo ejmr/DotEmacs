@@ -136,7 +136,8 @@ register-alist'."
 
 (set-register ?i '(file . "/home/eric/.emacs.d/init.el"))
 (set-register ?g '(file . "/home/eric/.gitconfig"))
-(set-register ?s '(file . "/home/eric/.config/fish/"))
+(set-register ?\C-f '(file . "/home/eric/.config/fish/"))
+(set-register ?s '(file . "/tmp/Scratch.org"))
 (set-register ?n '(file . "/home/eric/Documents/Notes.org"))
 (set-register ?c '(file . "/home/eric/.conkerorrc/"))
 (set-register ?u '(file . "/home/eric/.conkerorrc/saved-buffers.txt"))
