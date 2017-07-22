@@ -146,7 +146,9 @@ register-alist'."
 
 ;;; Global Utilities
 
-(use-package with-editor)
+(use-package with-editor
+  :config (shell-command-with-editor-mode t))
+
 (use-package add-hooks)
 
 (use-package historian
