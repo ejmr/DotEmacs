@@ -43,6 +43,7 @@
   (defun ejmr-compile-and-load-config ()
     "Compiles my `init.el' file and loads it."
     (interactive)
+    (find-file-noselect "/home/eric/.emacs.d/init.el")
     (byte-compile-file "/home/eric/.emacs.d/init.el" t))
   (bind-key "s-i" #'ejmr-compile-and-load-config))
 
