@@ -188,6 +188,10 @@ _a_g          _p_roject    _d_ired
   (use-package ivy-historian
     :config (ivy-historian-mode t)))
 
+;;; TODO: Leave disabled until is supports image links is at least
+;;; Markdown, AsciiDoc, and RST.
+(use-package uimage :disabled t)
+
 (use-package multiple-cursors
   :config
   (defhydra hydra-multiple-cursors (:hint nil)
