@@ -660,6 +660,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
   ("l" visual-line-mode "Line")
   ("L" global-lentic-mode "Lentic")
   ("n" nameless-mode "Nameless")
+  ("N" annotate-mode "Annotate")
   ("o" global-origami-mode "Origami")
   ("r" rainbow-identifiers-mode "Rainbow")
   ("p" pandoc-mode "Pandoc")
@@ -678,6 +679,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 (defhydra hydra-major-modes (:color blue)
   "Major Mode"
   ("a" adoc-mode "Asciidoc")
+  ("i" intero-mode "Intero")
   ("m" markdown-mode "Markdown")
   ("n" nasm-mode "NASM")
   ("p" projectile-mode "Projectile")
