@@ -128,6 +128,7 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq byte-compile-warnings nil)
+(setq ejmr-dvorak-keys (list ?a ?o ?e ?u ?h ?t ?n ?s))
 
 
 ;;; Registers
