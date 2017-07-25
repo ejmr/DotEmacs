@@ -325,7 +325,7 @@ _a_g          _p_roject    _d_ired
   :diminish 'origami-mode
   :config
   (global-origami-mode t)
-  (defhydra hydra-origami (:color amaranth :columns 4)
+  (defhydra hydra-origami (:color pink :columns 4)
     "Origami Folds"
     ("t" origami-recursively-toggle-node "Toggle")
     ("s" origami-show-only-node "Single")
