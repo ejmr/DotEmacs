@@ -157,6 +157,27 @@ register-alist'."
 
 ;;; Global Utilities
 
+(use-package ag
+  :config
+  (bind-key "a" (defhydra hydra-ag (:color blue :hint nil)
+		  "
+Silver Searcher:     _q_uit
+
+_a_g          _p_roject    _d_ired
+   _f_iles      file_s_       re_g_exp
+   _r_egexp     rege_x_p
+"
+		  ("a" ag)
+		  ("f" ag-files)
+		  ("r" ag-regexp)
+		  ("p" ag-project)
+		  ("s" ag-project-files)
+		  ("x" ag-project-regexp)
+		  ("d" ag-dired)
+		  ("g" ag-dired-regexp)
+		  ("q" nil))
+	    ejmr-hydra-map))
+
 (use-package with-editor
   :config (shell-command-with-editor-mode t))
 
