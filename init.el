@@ -57,9 +57,17 @@
 ;;; soon as possible so that the rest of the configuration can use
 ;;; them.  Therefore, this page should always come early.
 
-(defvaralias 'ejmr-custom-bindings-map 'mode-specific-map) ; i.e. `C-c'
+;;; `C-c`
+(defvaralias 'ejmr-custom-bindings-map 'mode-specific-map)
 (bind-key "h" (define-prefix-command 'ejmr-hydra-map) ejmr-custom-bindings-map)
+;;; `C-c h`
 (bind-key "s-x" (define-prefix-command 'ejmr-command-shortcut-map))
+;;; ``C-c m k1
+
+
+;;; Global Key Re-mappings
+
+
 
 
 ;;; Global Minor Modes
