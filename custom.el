@@ -180,7 +180,7 @@ static char *gnus-pointer[] = {
  '(term-default-bg-color "#fdf6e3")
  '(term-default-fg-color "#657b83")
  '(use-package-always-defer t)
- '(use-package-always-ensure nil)
+ '(use-package-always-ensure nil t)
  '(use-package-enable-imenu-support t)
  '(vc-annotate-background "#D9D9D9")
  '(vc-annotate-background-mode nil)
