@@ -387,7 +387,9 @@ _a_g          _p_roject    _d_ired
   (use-package org-ref)
   (use-package calfw :config (use-package calfw-org))
   (use-package worf
-    :config (bind-key "o" #'worf-mode ejmr-custom-bindings-map))
+    :config
+    (bind-key "o" #'worf-mode ejmr-custom-bindings-map)
+    (add-hook 'org-mode-hook #'worf-mode))
   (use-package yankpad
     :init
     (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
