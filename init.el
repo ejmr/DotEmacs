@@ -112,6 +112,8 @@
 	'((avy-goto-line . (next-line previous-line))
 	  (avy-goto-word-1 . (backward-char forward-char))
 	  (kill-buffer . (kill-or-bury-alive))
+	  ;; (scroll-down-command . )
+	  ;; (screll-up-command . )
 	  (delete-char . (avy-zap-to-char-dwim))
 	  (forward-char . (bln-forward-half))
 	  (backward-char . (bln-backward-half))
@@ -748,7 +750,7 @@ Info-mode:
 ;;; Flycheck
 
 (defhydra hydra-flycheck (:color blue)
-    "
+  "
 ^
 ^Flycheck^          ^Errors^            ^Checker^
 ^────────^──────────^──────^────────────^───────^───────────
@@ -849,14 +851,15 @@ Info-mode:
 ;;; want to bind to keys.
 (use-package avy
   :config
-  (setq avy-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
+  (setq avy-keys ejmr-dvorak-keys)
   (setq avy-background t)
   (setq avy-all-windows nil)
   (setq avy-timeout-seconds 1)
 
   (use-package avy-zap
-    :config
-    (bind-key "M-g z" #'avy-zap-to-char-dwim))
+    :bind ("M-g z" . avy-zap-to-char-dwim))
+  (use-package ace-jump-zap
+    :bind ("M-z" . ace-jump-zap-to-char))
 
   (use-package ace-flyspell
     :config (ace-flyspell-setup))
@@ -917,6 +920,7 @@ Info-mode:
   :diminish 'ivy-mode
   :config
   (use-package ivy-hydra)
+  (use-package ivy-rich)
   (use-package ivy-todo
     :commands ivy-todo
     :bind (:map org-mode-map ("C-c C-i" . ivy-todo)))
@@ -935,7 +939,7 @@ Info-mode:
 	("p" counsel-gtags-go-backward "Previous" :color red)
 	("c" counsel-gtags-create-tags "Create")
 	("u" counsel-gtags-update-tags "Update"))
-      (bind-key "a" #'hydra-counsel-gtags/body ejmr-hydra-map)
+      (bind-key "g" #'hydra-counsel-gtags/body ejmr-hydra-map)
       (bind-key "g" #'counsel-gtags-dwim ejmr-command-shortcut-map))
 
     (bind-key "r" #'counsel-file-register ejmr-help-map)
@@ -1081,6 +1085,8 @@ _v_ariable       _u_ser-option
 
 ;;; Programming Modes and Settings
 
+(use-package geben :defer t)
+
 (use-package string-inflection
   :commands (string-inflection-all-cycle)
   :config
@@ -1155,13 +1161,15 @@ _v_ariable       _u_ser-option
   :config
   (setq dumb-jump-selector 'ivy)
   (setq dumb-jump-prefer-searcher 'ag)
-  (bind-key "d" (defhydra hydra-dumb-jump (:color pink)
+  (setq dumb-jump-force-searcher nil)
+  (bind-key "d" (defhydra hydra-dumb-jump (:color amaranth)
 		  "Dumb Jump"
 		  ("g" dumb-jump-go "Go")
 		  ("b" dumb-jump-back "Back")
 		  ("l" dumb-jump-quick-look "Look")
-		  ("e" dumb-jump-go-prefer-external "External")
+		  ("e" dumb-jump-go-prefer-external-other-window "External" :color blue)
 		  ("w" dumb-jump-go-other-window "Window" :color blue)
+		  ("p" dumb-jump-go-prompt "Prompt")
 		  ("q" nil "Quit" :color blue))
 	    ejmr-command-shortcut-map)
   (dumb-jump-mode 1))
@@ -1224,10 +1232,15 @@ _v_ariable       _u_ser-option
   (use-package psysh))
 
 (use-package ini-mode)
-(use-package haskell-mode)
+
+(use-package haskell-mode
+  :config
+  (use-package intero))
+
 (use-package python-mode)
 (use-package js2-mode)
 (use-package json-navigator)
+(use-package indium)
 (use-package tern :disabled t)
 (use-package clojure-mode)
 
@@ -1279,10 +1292,25 @@ _v_ariable       _u_ser-option
 
 ;;; Emacs Lisp Programming
 
+(use-package with-simulated-input :defer nil)
+
+;;; TODO: Create wrapper function which not only creates a log but
+;;; also a temporary Hydra with many of its commands, e.g `*--log' and
+;;; `*--log-open-log' and `*--log-set-level'.
+(use-package log4e-mode)
+
+(use-package s)
+(use-package ht)
+(use-package rx)
+(use-package with-simulated-input)
 (use-package treepy)
 (use-package elx)
 (use-package face-explorer)
 (use-package apiwrap)
+(use-package elquery)
+
+(use-package elisp-doctstiong-mode
+  :config (add-hook 'emacs-lisp-mode-hook #'elisp-doctstiong-mode))
 
 (use-package suggest
   :config
@@ -1340,6 +1368,8 @@ _v_ariable       _u_ser-option
 (use-package system-packages)
 
 (use-package pass)
+
+(use-package fzf :disabled t)
 
 
 ;;; Project Management
@@ -1430,6 +1460,8 @@ _v_ariable       _u_ser-option
 
 
 ;;; General Editing Utilities
+
+(use-package annotate)
 
 (progn
   (defun ejmr-smart-open-line-below ()
@@ -1680,6 +1712,8 @@ all buffers."
 	 ("\\.md\\'" . gfm-mode)
 	 ("\\.markdown\\'" . markdown-mode))
   :config
+  (use-package literal-string
+    :bind (:map markdown-mode-map ("C-'" . literal-string-edit-sting)))
   (setq markdown-command "pandoc -f markdown -t html5")
   (add-hook 'markdown-mode-hook 'auto-fill-mode)
   (defhydra hydra-markdown (:hint nil :pre (ivy-mode nil) :post (ivy-mode t))
@@ -1710,7 +1744,9 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
     ("F" markdown-insert-footnote :color blue)
     ("W" markdown-insert-wiki-link :color blue)
     ("R" markdown-insert-reference-link-dwim :color blue))
-  (bind-key "C-c h m" #'hydra-markdown/body markdown-mode-map))
+  (bind-key "C-c h m" #'hydra-markdown/body markdown-mode-map)
+  (bind-key "<C-up>" #'markdown-backward-papagraph)
+  (bind-key "<C-down>" #'markdown-forward-paragraph))
 
 (use-package pandoc-mode
   :config
@@ -1752,7 +1788,15 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 
 ;;; Web and Online Services
 
+(use-package opener
+  :bind (:map ejmr-command-shortcut-map ("u" . opener-open-at-point)))
+
 (use-package transfer-sh)
+(use-package obfusurl)
+(use-package request)
+
+;;; TODO: Add support for `ddg.gg' and TinyURLs.
+(use-package url-shortener)
 
 (use-package wandbox
   :config
