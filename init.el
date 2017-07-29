@@ -763,6 +763,7 @@ will automatically kill the buffer."
   ("p" pandoc-mode "Pandoc")
   ("s" firestarter-mode "Firestarter")
   ("S" selected-minor-mode "Selected")
+  ("t" global-highlight-thing-mode "HL Thing")
   ("v" view-mode "View")
   ("w" ws-butler-mode "WS Butler")
   ("y" yas-global-mode "YASnippet")
