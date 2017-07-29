@@ -9,12 +9,11 @@
 (server-start)
 
 
-;;; Package Support
+;;; Package Support and Themes
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-(load-theme 'spacemacs-light)
 
 (eval-when-compile
   (require 'use-package))
@@ -34,8 +33,21 @@
 ;;; https://emacsmirror.net/manual/epkg/Installation.html#Installation
 (use-package epkg :disabled t)
 
+(use-package theme-looper
+  :config
+  (bind-key "l" (defhydra hydra-theme-loop (:color amaranth)
+		  "Themes"
+		  ("n" theme-looper-enable-next-theme "Next")
+		  ("e" (lambda ()
+			 (interactive)
+			 (theme-looper-enable-theme (car custom-enabled-themes)))
+		   "Enable" :color blue)
+		  ("r" theme-looper-enable-random-theme "Random")
+		  ("q" nil "quit" :color blue))
+	    ejmr-hydra-map))
+
 
-;;; Startup
+;;; Initialization and Splash Screen
 
 (progn
   (let ((file-name-handler-alist nil))
@@ -62,42 +74,9 @@
 (bind-key "h" (define-prefix-command 'ejmr-hydra-map) ejmr-custom-bindings-map)
 ;;; `C-c h`
 (bind-key "s-x" (define-prefix-command 'ejmr-command-shortcut-map))
-;;; ``C-c m k1
 
 
-;;; Global Key Re-mappings
-
-
-
-
-;;; Global Minor Modes
-
-(use-package auto-minor-mode)
-
-(transient-mark-mode t)
-
-(progn
-  (show-paren-mode t)
-  (setq-default show-paren-style 'mixed))
-
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(which-function-mode t)
-(global-auto-revert-mode t)
-(electric-indent-mode t)
-(electric-pair-mode t)
-(column-number-mode t)
-(tool-bar-mode -1)
-(global-prettify-symbols-mode t)
-(global-hl-line-mode t)
-(pending-delete-mode t)
-
-(use-package aggressive-indent :diminish aggressive-indent-mode)
-
-(use-package undo-tree
-  :diminish undo-tree-mode
-  :config
-  (global-undo-tree-mode t))
+;;; Global Key Shortcuts
 
 (use-package schrute
   :diminish schrute-mode
@@ -124,6 +103,30 @@
   (schrute-mode 1))
 
 
+;;; Global Minor Modes
+
+(use-package auto-minor-mode)
+
+(transient-mark-mode t)
+
+(progn
+  (show-paren-mode t)
+  (setq-default show-paren-style 'mixed))
+
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(which-function-mode t)
+(global-auto-revert-mode t)
+(diminish 'auto-revert-mode)
+(electric-indent-mode t)
+(electric-pair-mode t)
+(column-number-mode t)
+(tool-bar-mode -1)
+(global-prettify-symbols-mode t)
+(global-hl-line-mode t)
+(pending-delete-mode t)
+
+
 ;;; Global Variables
 
 (setq backup-inhibited t)
@@ -133,7 +136,7 @@
 (setq ejmr-dvorak-keys (list ?a ?o ?e ?u ?h ?t ?n ?s))
 
 
-;;; Registers
+;;; Global Registers
 
 (defun ejmr-edit-registers ()
   "Call `refine' on the `register-alist' variable.
@@ -158,79 +161,6 @@ register-alist'."
 
 
 ;;; Global Utilities
-
-(use-package ag
-  :config
-  (bind-key "a" (defhydra hydra-ag (:color blue :hint nil)
-		  "
-Silver Searcher:     _q_uit
-
-_a_g          _p_roject    _d_ired
-   _f_iles      file_s_       re_g_exp
-   _r_egexp     rege_x_p
-"
-		  ("a" ag)
-		  ("f" ag-files)
-		  ("r" ag-regexp)
-		  ("p" ag-project)
-		  ("s" ag-project-files)
-		  ("x" ag-project-regexp)
-		  ("d" ag-dired)
-		  ("g" ag-dired-regexp)
-		  ("q" nil))
-	    ejmr-hydra-map))
-
-(use-package with-editor
-  :config (shell-command-with-editor-mode t))
-
-(use-package add-hooks)
-
-(use-package historian
-  :config
-  (use-package ivy-historian
-    :config (ivy-historian-mode t)))
-
-;;; TODO: Leave disabled until is supports image links is at least
-;;; Markdown, AsciiDoc, and RST.
-(use-package uimage :disabled t)
-
-(use-package multiple-cursors
-  :config
-  (defhydra hydra-multiple-cursors (:hint nil)
-    "
-     ^Up^            ^Down^        ^Other^
-----------------------------------------------
-[_p_]   Next    [_n_]   Next    [_l_] Edit lines
-[_P_]   Skip    [_N_]   Skip    [_a_] Mark all
-[_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
-^ ^             ^ ^             [_q_] Quit
-"
-    ("l" mc/edit-lines :exit t)
-    ("a" mc/mark-all-like-this :exit t)
-    ("n" mc/mark-next-like-this)
-    ("N" mc/skip-to-next-like-this)
-    ("M-n" mc/unmark-next-like-this)
-    ("p" mc/mark-previous-like-this)
-    ("P" mc/skip-to-previous-like-this)
-    ("M-p" mc/unmark-previous-like-this)
-    ("r" mc/mark-all-in-region-regexp :exit t)
-    ("q" nil))
-  (bind-key "c" #'hydra-multiple-cursors/body ejmr-hydra-map))
-
-(use-package anyins
-  :commands (anyins-mode)
-  :bind ("C-x r a" . anyins-mode))
-
-(use-package commander)
-
-(use-package helpful
-  :config
-  (defhydra hydra-helpful (:color blue)
-    "Helpful"
-    ("f" helpful-function "Function")
-    ("c" helpful-command "Command")
-    ("m" helpful-macro "Macro"))
-  (bind-key "h" #'hydra-helpful/body ejmr-hydra-map))
 
 (use-package neotree
   :commands neotree-toggle
@@ -271,13 +201,6 @@ _a_g          _p_roject    _d_ired
     :config
     (add-hook 'editorconfig-custom-hooks 'editorconfig-custom-majormode)))
 
-(use-package lispy
-  :config
-  (bind-key "C-c C-y" #'lispy-mode emacs-lisp-mode-map)
-  (bind-key "C-c C-y" #'lispy-mode lisp-mode-map)
-  (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
-  (add-hook       'lisp-mode-hook #'lispy-mode))
-
 (use-package composable
   :diminish composable-mode
   :config
@@ -285,33 +208,11 @@ _a_g          _p_roject    _d_ired
   (composable-mode t)
   (composable-mark-mode t))
 
-(use-package indent-guide
-  :diminish indent-guide-mode
-  :config (add-hook 'prog-mode-hook #'indent-guide-mode))
-
-(use-package auto-dim-other-buffers :disabled t)
-
-(use-package iflipb
-  :disabled t
-  :bind (("s-b" . iflipb-next-buffer)
-	 ("C-s-b" . iflipb-previous-buffer)))
-
 (use-package caps-lock
   :bind (:map ejmr-custom-bindings-map ("l" . caps-lock-mode)))
 
-(use-package resize-window
-  :bind ("C-x ^" . resize-window))
-
 (use-package tomatinho
   :bind (:map ejmr-command-shortcut-map ("o" . tomatinho)))
-
-(use-package which-key
-  :diminish 'which-key-mode
-  :config (which-key-mode t))
-
-(use-package free-keys
-  :commands (free-keys)
-  :bind ("C-~" . free-keys))
 
 (use-package linum
   :diminish 'linum-mode
@@ -320,137 +221,64 @@ _a_g          _p_roject    _d_ired
     :diminish 'linum-relative-mode
     :bind (:map ejmr-custom-bindings-map ("n" . linum-relative-global-mode))))
 
-(use-package tiny
-  :bind (:map ejmr-command-shortcut-map ("t" . tiny-expand)))
-
-(use-package origami
-  :diminish 'origami-mode
-  :config
-  (global-origami-mode t)
-  (defhydra hydra-origami (:color pink :columns 4)
-    "Origami Folds"
-    ("t" origami-recursively-toggle-node "Toggle")
-    ("s" origami-show-only-node "Single")
-    ("r" origami-redo "Redo")
-    ("u" origami-undo "Undo")
-    ("o" origami-open-all-nodes "Open")
-    ("c" origami-close-all-nodes "Close")
-    ("n" origami-next-fold "Next")
-    ("p" origami-previous-fold "Previous")
-    ("q" nil "Quit" :color blue))
-
-  (bind-key "o" #'hydra-origami/body ejmr-hydra-map))
-
 (use-package qwe
   :load-path ("/home/eric/.emacs.d/local/qwe-0.9.5/src"
 	      "/home/eric/.emacs.d/local/qwe-0.9.5/ext"))
 
 
-;;; Modal Input
+;;; Buffer Management
 
-(use-package modalka :disabled t)
+(defhydra hydra-buffer-menu (:color pink :hint nil)
+  "
+^Mark^             ^Unmark^           ^Actions^          ^Search
+^^^^^^^^-----------------------------------------------------------------                        (__)
+_m_: mark          _u_: unmark        _x_: execute       _R_: re-isearch                         (oo)
+_s_: save          _U_: unmark up     _b_: bury          _I_: isearch                      /------\\/
+_d_: delete        ^ ^                _g_: refresh       _O_: multi-occur                 / |    ||
+_D_: delete up     ^ ^                _T_: files only: % -28`Buffer-menu-files-only^^    *  /\\---/\\
+_~_: modified      ^ ^                ^ ^                ^^                                 ~~   ~~
+"
+  ("m" Buffer-menu-mark)
+  ("u" Buffer-menu-unmark)
+  ("U" Buffer-menu-backup-unmark)
+  ("d" Buffer-menu-delete)
+  ("D" Buffer-menu-delete-backwards)
+  ("s" Buffer-menu-save)
+  ("~" Buffer-menu-not-modified)
+  ("x" Buffer-menu-execute)
+  ("b" Buffer-menu-bury)
+  ("g" revert-buffer)
+  ("T" Buffer-menu-toggle-files-only)
+  ("O" Buffer-menu-multi-occur :color blue)
+  ("I" Buffer-menu-isearch-buffers :color blue)
+  ("R" Buffer-menu-isearch-buffers-regexp :color blue)
+  ("c" nil "cancel")
+  ("v" Buffer-menu-select "select" :color blue)
+  ("o" Buffer-menu-other-window "other-window" :color blue)
+  ("q" quit-window "quit" :color blue))
 
-(use-package ryo-modal
+(bind-key "." #'hydra-buffer-menu/body Buffer-menu-mode-map)
+
+(use-package auto-dim-other-buffers :disabled t)
+
+(use-package iflipb
   :disabled t
-  :commands ryo-modal-mode
-  ;; TODO: Before using `ryo-modal' I need to choose a different
-  ;; key-binding to avoid conflicts.
-  :bind (:map ejmr-custom-bindings-map ("SPC" . ryo-modal-mode))
-  :init
-  (add-hook 'ryo-modal-mode-hook
-	    (lambda () (if ryo-modal-mode
-		      (selected-minor-mode 1)
-		    (selected-minor-mode -1))))
+  :bind (("s-b" . iflipb-next-buffer)
+	 ("C-s-b" . iflipb-previous-buffer)))
+
+
+;;; Minibuffer
+
+(use-package historian
   :config
-  (define-key ryo-modal-mode-map (kbd ".") 'ryo-modal-repeat)
-  (add-to-list 'ryo-modal-bindings-list '("." "ryo-modal-repeat"))
-  (ryo-modal-keys ("q" ryo-modal-mode)
-		  ("n" next-line)
-		  ("p" previous-line)))
-
-(use-package god-mode
-  :bind (:map ejmr-command-shortcut-map
-	      ("s-g" . god-mode-all)
-	      :map god-local-mode-map
-	      ("." . repeat)))
+  (use-package ivy-historian
+    :config (ivy-historian-mode t)))
 
 
-;;; Org Mode
+;;; Windows and Frames
 
-(use-package org
-  :config
-  (setq org-M-RET-may-split-line '((default . nil)))
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "IN PROGRESS(p)" "|" "DONE(d)")
-          (sequence "REPORT(r)" "BUG(b)" "TESTING(t)" "|" "CLOSED(c)")
-          (sequence "BRAINSTORMING(b)" "RFC(r)" "FEEDBACK(f)" "|" "ACCEPTED(a) REJECTED(j)")
-          (sequence "|" "CANCELED(c)")))
-  (use-package org-tree-slide)
-  (use-package org-ref)
-  (use-package calfw :config (use-package calfw-org))
-  (use-package worf
-    :config
-    (bind-key "o" #'worf-mode ejmr-custom-bindings-map)
-    (add-hook 'org-mode-hook #'worf-mode))
-  (use-package yankpad
-    :init
-    (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
-    :config
-    (define-prefix-command 'ejmr-yankpad-map)
-    (bind-key "y" 'ejmr-yankpad-map ejmr-command-shortcut-map)
-    (bind-key "m" #'yankpad-map ejmr-yankpad-map)
-    (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
-    (add-to-list 'company-backends #'company-yankpad))
-  (use-package org-readme)
-  (use-package org-parser)
-  (use-package org-journal :disabled t)
-  (use-package org-wiki
-    :disabled t
-    :load-path "/home/eric/.emacs.d/local/org-wiki"
-    :config
-    (setq org-wiki-location "/home/eric/Documents/Wiki")
-    (setq org-wiki-server-port "7331")
-    (setq org-wiki-server-host "127.0.0.1"))
-  (use-package org-board)
-  (use-package ob-php)
-  (use-package ox-pandoc)
-  (use-package ox-gfm)
-  (use-package org-brain
-    :disabled t
-    :init
-    (setq org-brain-path "/home/eric/.emacs.d/org")
-    :config
-    (org-brain-activate-cache-saving)))
-
-
-;;; Font
-
-(set-frame-font "Bitstream Vera Sans Mono-13" nil t)
-
-
-;;; Disabled Features
-
-(put 'narrow-to-region 'disabled nil)
-
-
-;;; Global Hooks
-
-(add-hook 'text-mode-hook 'visual-line-mode)
-
-
-;;; Global Generic Key-Bindings
-
-(bind-key "<M-return>" #'indent-new-comment-line)
-(bind-key "s-o" #'overwrite-mode)
-
-;;; Setup `s-1' as a prefix key for help commands.
-(define-prefix-command 'ejmr-help-map)
-(bind-key "s-1" 'ejmr-help-map)
-
-(use-package mykie :disabled t)
-
-
-;;; Window Management
+(use-package resize-window
+  :bind ("C-x ^" . resize-window))
 
 ;;; Use `s-w' as a prefix key for various window commands.
 (define-prefix-command 'ejmr-window-map)
@@ -485,72 +313,61 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
   ("q" nil "Quit" :color blue))
 
 
-;;; Completion
+;;; Expanding and Folding Text
 
-(use-package git-complete
-  :load-path "/home/eric/.emacs.d/local/git-complete"
-  :commands git-complete
-  :bind ("M-s-/" . git-complete)
-  :config
-  (setq git-complete-enable-autopair t)
-  (setq git-complete-ignore-case nil))
+(use-package tiny
+  :bind (:map ejmr-command-shortcut-map ("t" . tiny-expand)))
 
-(use-package company-mode
-  :diminish 'company-mode
-  :bind ("s-/" . company-complete)
+(use-package origami
+  :diminish 'origami-mode
   :config
-  (global-company-mode t)
-  (use-package company-lua)
-  (use-package company-quickhelp
-    :diminish 'company-quickhelp-mode
-    :config
-    (company-quickhelp-mode 1)
-    (bind-key "M-h" #'company-quickhelp-manual-begin company-active-map)))
+  (global-origami-mode t)
+  (defhydra hydra-origami (:color pink :columns 4)
+    "Origami Folds"
+    ("t" origami-recursively-toggle-node "Toggle")
+    ("s" origami-show-only-node "Single")
+    ("r" origami-redo "Redo")
+    ("u" origami-undo "Undo")
+    ("o" origami-open-all-nodes "Open")
+    ("c" origami-close-all-nodes "Close")
+    ("n" origami-next-fold "Next")
+    ("p" origami-previous-fold "Previous")
+    ("q" nil "Quit" :color blue))
+
+  (bind-key "o" #'hydra-origami/body ejmr-hydra-map))
 
 
-;;; Key Chord Mode
+;;; External Searching
 
-(use-package key-chord
+(use-package ag
   :config
-  (use-package key-seq)
-  (key-chord-mode 1)
-  (setq key-chord-two-keys-delay 0.4))
+  (bind-key "a" (defhydra hydra-ag (:color blue :hint nil)
+		  "
+Silver Searcher:     _q_uit
 
-;;; TODO: Make sure that `:chords` uses the `key-seq` functionality
-;;; before I switch any of my current bindings.  And ensure that it
-;;; supports `:map` for local chords.
-(use-package use-package-chords :disabled t)
-
-;;; General Chords
-
-(key-seq-define-global "ZB" #'ivy-switch-buffer)
-(key-seq-define-global "ZW" #'kill-buffer-and-window)
-
-(defun ejmr-server-edit-save-and-kill ()
-  "Set current buffer as 'done' for the server, save then kill.
-
-This is equivalent to `C-x C-s' followed by `C-x #'.  The latter
-will automatically kill the buffer."
-  (interactive)
-  (save-buffer)
-  (server-edit))
-
-(key-seq-define-global "Z#" #'ejmr-server-edit-save-and-kill)
+_a_g          _p_roject    _d_ired
+   _f_iles      file_s_       re_g_exp
+   _r_egexp     rege_x_p
+"
+		  ("a" ag)
+		  ("f" ag-files)
+		  ("r" ag-regexp)
+		  ("p" ag-project)
+		  ("s" ag-project-files)
+		  ("x" ag-project-regexp)
+		  ("d" ag-dired)
+		  ("g" ag-dired-regexp)
+		  ("q" nil))
+	    ejmr-hydra-map))
 
 
-;;; Page Breaks
+;;; External Shell Utilities
 
-(use-package pp-c-l
-  :config (pretty-control-l-mode 1))
+(use-package with-editor
+  :config (shell-command-with-editor-mode t))
 
 
-;;; Hydra
-
-(use-package hydra
-  :config
-  (setq hydra-verbose nil))
-
-;;; Hydra to Replace C-y and M-y
+;;; Undo, Redo, and Kill Ring
 
 (defhydra hydra-yank-pop ()
   "Yank"
@@ -561,6 +378,7 @@ will automatically kill the buffer."
   ("c" counsel-yank-pop "counsel")
   ("l" (refine 'kill-ring) "list" :color blue)
   ("w" hydra-webpaste/body "web" :color blue)
+  ("o" org-cliplink "org-cliplink" :color blue)
   ("q" nil "quit" :color blue))
 
 (bind-key "C-y" #'hydra-yank-pop/yank)
@@ -568,128 +386,30 @@ will automatically kill the buffer."
 (bind-key "s-y" #'hydra-yank-pop/body)
 (bind-key "C-s-y" #'counsel-yank-pop)
 
-;;; Hydra for Zooming Text
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode t))
 
-(defhydra hydra-zoom ()
-  "Zoom"
-  ("+" text-scale-increase "in")
-  ("-" text-scale-decrease "out")
-  ("0" (text-scale-increase 0) "default")
-  ("q" nil "quit"))
+
+;;; Indentation
 
-(bind-key "z" #'hydra-zoom/body ejmr-hydra-map)
+(use-package indent-tools
+  :bind (:map ejmr-hydra-map (">" . indent-tools-hydra/body)))
 
-;;; Hydra for Rectangle Commands
+(use-package aggressive-indent-mode
+  :commands (aggressive-indent-mode)
+  :config
+  (global-aggressive-indent-mode t))
 
-(defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-				     :color pink
-				     :post (deactivate-mark))
-  "
-  ^_k_^     _d_elete    _s_tring
-_h_   _l_   _o_k        _y_ank
-  ^_j_^     _n_ew-copy  _r_eset
-^^^^        _e_xchange  _u_ndo
-^^^^        ^ ^         _p_aste
-"
-  ("h" backward-char nil)
-  ("l" forward-char nil)
-  ("k" previous-line nil)
-  ("j" next-line nil)
-  ("e" exchange-point-and-mark nil)
-  ("n" copy-rectangle-as-kill nil)
-  ("d" delete-rectangle nil)
-  ("r" (if (region-active-p)
-           (deactivate-mark)
-         (rectangle-mark-mode 1)) nil)
-  ("y" yank-rectangle nil)
-  ("u" undo nil)
-  ("s" string-rectangle nil)
-  ("p" kill-rectangle nil)
-  ("o" nil nil))
+(use-package indent-guide
+  :diminish indent-guide-mode
+  :config (add-hook 'prog-mode-hook #'indent-guide-mode))
 
-(bind-key "r" #'hydra-rectangle/body ejmr-hydra-map)
+(use-package aggressive-indent :diminish aggressive-indent-mode)
 
-;;; Buffer Menu
-
-(defhydra hydra-buffer-menu (:color pink :hint nil)
-  "
-^Mark^             ^Unmark^           ^Actions^          ^Search
-^^^^^^^^-----------------------------------------------------------------                        (__)
-_m_: mark          _u_: unmark        _x_: execute       _R_: re-isearch                         (oo)
-_s_: save          _U_: unmark up     _b_: bury          _I_: isearch                      /------\\/
-_d_: delete        ^ ^                _g_: refresh       _O_: multi-occur                 / |    ||
-_D_: delete up     ^ ^                _T_: files only: % -28`Buffer-menu-files-only^^    *  /\\---/\\
-_~_: modified      ^ ^                ^ ^                ^^                                 ~~   ~~
-"
-  ("m" Buffer-menu-mark)
-  ("u" Buffer-menu-unmark)
-  ("U" Buffer-menu-backup-unmark)
-  ("d" Buffer-menu-delete)
-  ("D" Buffer-menu-delete-backwards)
-  ("s" Buffer-menu-save)
-  ("~" Buffer-menu-not-modified)
-  ("x" Buffer-menu-execute)
-  ("b" Buffer-menu-bury)
-  ("g" revert-buffer)
-  ("T" Buffer-menu-toggle-files-only)
-  ("O" Buffer-menu-multi-occur :color blue)
-  ("I" Buffer-menu-isearch-buffers :color blue)
-  ("R" Buffer-menu-isearch-buffers-regexp :color blue)
-  ("c" nil "cancel")
-  ("v" Buffer-menu-select "select" :color blue)
-  ("o" Buffer-menu-other-window "other-window" :color blue)
-  ("q" quit-window "quit" :color blue))
-
-(bind-key "." #'hydra-buffer-menu/body Buffer-menu-mode-map)
-
-;;; Minor Modes
-
-(defhydra hydra-minor-modes (:columns 6)
-  "Minor Mode"
-  ("a" global-aggressive-indent-mode "Agressive")
-  ("A" anyins-mode "Anyins")
-  ("c" global-company-mode "Company")
-  ("C" cargo-minor-mode "Cargo")
-  ("d" darkroom-tentative-mode "Darkroom")
-  ("D" direnv-mode "Direnv")
-  ("e" emmet-mode "Emmet")
-  ("f" global-flycheck-mode "Flycheck")
-  ("F" flyspell-mode "Flyspell")
-  ("g" god-mode-all "God Mode")
-  ("h" nhexl-mode "Hex")
-  ("H" global-diff-hl-mode "Diff HL")
-  ("i" indent-guide-global-mode "Indent Guide")
-  ("l" visual-line-mode "Line")
-  ("L" global-lentic-mode "Lentic")
-  ("n" nameless-mode "Nameless")
-  ("N" annotate-mode "Annotate")
-  ("o" global-origami-mode "Origami")
-  ("r" rainbow-identifiers-mode "Rainbow")
-  ("p" pandoc-mode "Pandoc")
-  ("s" firestarter-mode "Firestarter")
-  ("S" selected-minor-mode "Selected")
-  ("v" view-mode "View")
-  ("w" ws-butler-mode "WS Butler")
-  ("y" yas-global-mode "YASnippet")
-  ("Y" lispy-mode "Lispy")
-  ("q" nil "Quit" :color blue))
-
-(bind-key "n" #'hydra-minor-modes/body ejmr-hydra-map)
-
-;;; Major Modes
-
-(defhydra hydra-major-modes (:color blue)
-  "Major Mode"
-  ("a" adoc-mode "Asciidoc")
-  ("i" intero-mode "Intero")
-  ("m" markdown-mode "Markdown")
-  ("n" nasm-mode "NASM")
-  ("p" projectile-mode "Projectile")
-  ("t" text-mode "Text"))
-
-(bind-key "m" #'hydra-major-modes/body ejmr-hydra-map)
-
-;;; Info Mode
+
+;;; Help and Info
 
 (defhydra hydra-info (:color blue :hint nil)
   "
@@ -747,6 +467,325 @@ Info-mode:
 
 (bind-key "?" #'hydra-info/body Info-mode-map)
 
+(use-package helpful
+  :config
+  (defhydra hydra-helpful (:color blue)
+    "Helpful"
+    ("f" helpful-function "Function")
+    ("c" helpful-command "Command")
+    ("m" helpful-macro "Macro"))
+  (bind-key "h" #'hydra-helpful/body ejmr-hydra-map))
+
+;;; TODO: Leave disabled until is supports image links is at least
+;;; Markdown, AsciiDoc, and RST.
+(use-package uimage :disabled t)
+
+
+;;; Rectangular Editing
+
+(defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
+				     :color pink
+				     :post (deactivate-mark))
+  "
+  ^_k_^     _d_elete    _s_tring
+_h_   _l_   _o_k        _y_ank
+  ^_j_^     _n_ew-copy  _r_eset
+^^^^        _e_xchange  _u_ndo
+^^^^        ^ ^         _p_aste
+"
+  ("h" backward-char nil)
+  ("l" forward-char nil)
+  ("k" previous-line nil)
+  ("j" next-line nil)
+  ("e" exchange-point-and-mark nil)
+  ("n" copy-rectangle-as-kill nil)
+  ("d" delete-rectangle nil)
+  ("r" (if (region-active-p)
+           (deactivate-mark)
+         (rectangle-mark-mode 1)) nil)
+  ("y" yank-rectangle nil)
+  ("u" undo nil)
+  ("s" string-rectangle nil)
+  ("p" kill-rectangle nil)
+  ("o" nil nil))
+
+(bind-key "r" #'hydra-rectangle/body ejmr-hydra-map)
+
+(use-package multiple-cursors
+  :disabled t
+  :config
+  (defhydra hydra-multiple-cursors (:hint nil)
+    "
+     ^Up^            ^Down^        ^Other^
+----------------------------------------------
+[_p_]   Next    [_n_]   Next    [_l_] Edit lines
+[_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+[_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+^ ^             ^ ^             [_q_] Quit
+"
+    ("l" mc/edit-lines :exit t)
+    ("a" mc/mark-all-like-this :exit t)
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+    ("r" mc/mark-all-in-region-regexp :exit t)
+    ("q" nil))
+  (bind-key "c" #'hydra-multiple-cursors/body ejmr-hydra-map))
+
+(use-package anyins
+  :commands (anyins-mode)
+  :bind ("C-x r a" . anyins-mode))
+
+
+;;; Modal Input
+
+(use-package modalka :disabled t)
+
+(use-package ryo-modal
+  :disabled t
+  :commands ryo-modal-mode
+  ;; TODO: Before using `ryo-modal' I need to choose a different
+  ;; key-binding to avoid conflicts.
+  :bind (:map ejmr-custom-bindings-map ("SPC" . ryo-modal-mode))
+  :init
+  (add-hook 'ryo-modal-mode-hook
+	    (lambda () (if ryo-modal-mode
+		      (selected-minor-mode 1)
+		    (selected-minor-mode -1))))
+  :config
+  (define-key ryo-modal-mode-map (kbd ".") 'ryo-modal-repeat)
+  (add-to-list 'ryo-modal-bindings-list '("." "ryo-modal-repeat"))
+  (ryo-modal-keys ("q" ryo-modal-mode)
+		  ("n" next-line)
+		  ("p" previous-line)))
+
+(use-package god-mode
+  :bind (:map ejmr-command-shortcut-map
+	      ("s-g" . god-mode-all)
+	      :map god-local-mode-map
+	      ("." . repeat)))
+
+
+;;; Org Mode
+
+(use-package org
+  :config
+  (setq org-M-RET-may-split-line '((default . nil)))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IN PROGRESS(p)" "|" "DONE(d)")
+          (sequence "REPORT(r)" "BUG(b)" "TESTING(t)" "|" "CLOSED(c)")
+          (sequence "BRAINSTORMING(b)" "RFC(r)" "FEEDBACK(f)" "|" "ACCEPTED(a) REJECTED(j)")
+          (sequence "|" "CANCELED(c)")))
+  (use-package org-tree-slide)
+  (use-package org-webpage :disabled t)
+  (use-package org-cliplink)
+  (use-package interleave)
+  (use-package org-ref)
+  (use-package calfw :config (use-package calfw-org))
+  (use-package worf
+    :config
+    (bind-key "o" #'worf-mode ejmr-custom-bindings-map)
+    (add-hook 'org-mode-hook #'worf-mode))
+  (use-package yankpad
+    :init
+    (setq yankpad-file "/home/eric/.emacs.d/org/yankpad.org")
+    :config
+    (define-prefix-command 'ejmr-yankpad-map)
+    (bind-key "y" 'ejmr-yankpad-map ejmr-command-shortcut-map)
+    (bind-key "m" #'yankpad-map ejmr-yankpad-map)
+    (bind-key "e" #'yankpad-expand ejmr-yankpad-map)
+    (add-to-list 'company-backends #'company-yankpad))
+  (use-package org-readme)
+  (use-package org-parser)
+  (use-package org-journal :disabled t)
+  (use-package org-wiki
+    :disabled t
+    :load-path "/home/eric/.emacs.d/local/org-wiki"
+    :config
+    (setq org-wiki-location "/home/eric/Documents/Wiki")
+    (setq org-wiki-server-port "7331")
+    (setq org-wiki-server-host "127.0.0.1"))
+  (use-package org-board)
+  (use-package ob-php)
+  (use-package ox-pandoc)
+  (use-package ox-gfm)
+  (use-package org-brain
+    :disabled t
+    :init
+    (setq org-brain-path "/home/eric/.emacs.d/org")
+    :config
+    (org-brain-activate-cache-saving)))
+
+
+;;; Font
+
+(set-frame-font "Bitstream Vera Sans Mono-13" nil t)
+
+(defhydra hydra-zoom ()
+  "Zoom"
+  ("+" text-scale-increase "in")
+  ("-" text-scale-decrease "out")
+  ("0" (text-scale-increase 0) "default")
+  ("q" nil "quit"))
+
+(bind-key "z" #'hydra-zoom/body ejmr-hydra-map)
+
+
+;;; Disabled Features
+
+(put 'narrow-to-region 'disabled nil)
+
+
+;;; Global Hooks
+
+(add-hook 'text-mode-hook 'visual-line-mode)
+
+
+;;; Global Generic Key-Bindings
+
+(bind-key "<M-return>" #'indent-new-comment-line)
+(bind-key "s-o" #'overwrite-mode)
+
+;;; Setup `s-1' and `s-9` as a prefix keys for help commands.  Having
+;;; this prefix on multiple keys, on seperate sides of the keyboard
+;;; makes it easier to perform certain key-sequences.
+(define-prefix-command 'ejmr-help-map)
+(bind-key "s-1" 'ejmr-help-map)
+(bind-key "s-9" 'ejmr-help-map)
+
+(use-package mykie :disabled t)
+
+(use-package free-keys
+  :commands (free-keys)
+  :bind ("C-~" . free-keys))
+
+(use-package which-key
+  :diminish 'which-key-mode
+  :config (which-key-mode t))
+
+
+;;; Auto Completion
+
+(use-package git-complete
+  :load-path "/home/eric/.emacs.d/local/git-complete"
+  :commands git-complete
+  :bind ("M-s-/" . git-complete)
+  :config
+  (setq git-complete-enable-autopair t)
+  (setq git-complete-ignore-case nil))
+
+
+;;; Company
+
+(use-package company-mode
+  :diminish 'company-mode
+  :bind ("s-/" . company-complete)
+  :config
+  (global-company-mode t)
+  (use-package company-lua)
+  (use-package company-quickhelp
+    :diminish 'company-quickhelp-mode
+    :config
+    (company-quickhelp-mode 1)
+    (bind-key "M-h" #'company-quickhelp-manual-begin company-active-map)))
+
+
+;;; Key Chord Mode
+
+(use-package key-chord
+  :config
+  (use-package key-seq)
+  (key-chord-mode 1)
+  (setq key-chord-two-keys-delay 0.4))
+
+;;; TODO: Make sure that `:chords` uses the `key-seq` functionality
+;;; before I switch any of my current bindings.  And ensure that it
+;;; supports `:map` for local chords.
+(use-package use-package-chords :disabled t)
+
+
+;;; Global Chords
+
+(key-seq-define-global "ZB" #'ivy-switch-buffer)
+(key-seq-define-global "ZW" #'kill-buffer-and-window)
+
+(defun ejmr-server-edit-save-and-kill ()
+  "Set current buffer as 'done' for the server, save then kill.
+
+This is equivalent to `C-x C-s' followed by `C-x #'.  The latter
+will automatically kill the buffer."
+  (interactive)
+  (save-buffer)
+  (server-edit))
+
+(key-seq-define-global "Z#" #'ejmr-server-edit-save-and-kill)
+
+
+;;; Page Breaks
+
+(use-package pp-c-l
+  :config (pretty-control-l-mode 1))
+
+
+;;; Hydra
+
+(use-package hydra
+  :config
+  (setq hydra-verbose nil))
+
+
+;;; Hydra for Minor Modes
+
+(defhydra hydra-minor-modes (:columns 6)
+  "Minor Mode"
+  ("a" global-aggressive-indent-mode "Agressive")
+  ("A" anyins-mode "Anyins")
+  ("c" global-company-mode "Company")
+  ("C" cargo-minor-mode "Cargo")
+  ("d" darkroom-tentative-mode "Darkroom")
+  ("D" direnv-mode "Direnv")
+  ("e" emmet-mode "Emmet")
+  ("f" global-flycheck-mode "Flycheck")
+  ("F" flyspell-mode "Flyspell")
+  ("g" god-mode-all "God Mode")
+  ("h" nhexl-mode "Hex")
+  ("H" global-diff-hl-mode "Diff HL")
+  ("i" indent-guide-global-mode "Indent Guide")
+  ("l" visual-line-mode "Line")
+  ("L" global-lentic-mode "Lentic")
+  ("n" nameless-mode "Nameless")
+  ("N" annotate-mode "Annotate")
+  ("o" global-origami-mode "Origami")
+  ("r" rainbow-identifiers-mode "Rainbow")
+  ("p" pandoc-mode "Pandoc")
+  ("s" firestarter-mode "Firestarter")
+  ("S" selected-minor-mode "Selected")
+  ("v" view-mode "View")
+  ("w" ws-butler-mode "WS Butler")
+  ("y" yas-global-mode "YASnippet")
+  ("Y" lispy-mode "Lispy")
+  ("q" nil "Quit" :color blue))
+
+(bind-key "n" #'hydra-minor-modes/body ejmr-hydra-map)
+
+
+;;; Hydra for Major Modes
+
+(defhydra hydra-major-modes (:color blue)
+  "Major Mode"
+  ("a" adoc-mode "Asciidoc")
+  ("i" intero-mode "Intero")
+  ("m" markdown-mode "Markdown")
+  ("n" nasm-mode "NASM")
+  ("p" projectile-mode "Projectile")
+  ("t" text-mode "Text"))
+
+(bind-key "m" #'hydra-major-modes/body ejmr-hydra-map)
+
+
 ;;; Flycheck
 
 (defhydra hydra-flycheck (:color blue)
@@ -771,7 +810,8 @@ Info-mode:
 
 (bind-key "f" #'hydra-flycheck/body ejmr-hydra-map)
 
-;;; Misc Commands
+
+;;; Hydra for Misc Commands
 
 (defhydra hydra-commands (:color blue :columns 4)
   "Commands"
@@ -796,13 +836,13 @@ Info-mode:
 (bind-key "s-x" #'hydra-commands/body ejmr-command-shortcut-map)
 
 
-;;; Comment DWIM
+;;; Commenting
 
 (use-package comment-dwim-2
   :bind (:map ejmr-command-shortcut-map (";" . comment-dwim-2)))
 
 
-;;; Expand Region
+;;; Mark Text and Regions
 
 (use-package expand-region
   :config
@@ -990,6 +1030,12 @@ _v_ariable       _u_ser-option
 
 ;;; Highlighting
 
+(diminish 'hi-lock-mode)
+
+(use-package highlight-thing
+  :diminish highlight-thing-mode
+  :config (global-highlight-thing-mode t))
+
 (use-package hl-todo
   :config
   (defhydra hydra-todo (:pre
@@ -1012,7 +1058,7 @@ _v_ariable       _u_ser-option
   (bind-key "s" #'symbol-overlay-put ejmr-command-shortcut-map))
 
 
-;;; Quickrun
+;;; Compiling, Running Code
 
 (use-package quickrun
   :config
@@ -1083,145 +1129,7 @@ _v_ariable       _u_ser-option
   (bind-key "c" #'hydra-git/body vc-prefix-map))
 
 
-;;; Programming Modes and Settings
-
-(use-package geben :defer t)
-
-(use-package string-inflection
-  :commands (string-inflection-all-cycle)
-  :config
-  (use-package cycle-quotes)
-  (defhydra hydra-string-inflection ()
-    "Inflection"
-    ("c" capitalize-word "Capitalize")
-    ("u" upcase-word "Upcase")
-    ("l" downcase-word "Lowercase")
-    ("'" cycle-quotes "Quote")
-    ("SPC" string-inflection-all-cycle "Cycle")
-    ("q" nil "Quit" :color blue))
-  (bind-key "M-c" #'hydra-string-inflection/body))
-
-(use-package just-mode
-  :load-path "/home/eric/.emacs.d/local/just-mode"
-  :mode "Justfile")
-
-(use-package fuel :disabled t)
-
-(use-package aggressive-indent-mode
-  :commands (aggressive-indent-mode)
-  :config
-  (global-aggressive-indent-mode t))
-
-(use-package racket-mode
-  :commands (racket-mode)
-  :mode ("\\.rkt\\'" . racket-mode))
-
-(use-package scratch)
-
-(use-package indent-tools
-  :bind (:map ejmr-hydra-map (">" . indent-tools-hydra/body)))
-
-(setq require-final-newline t)
-(setq-default buffer-file-coding-system 'utf-8-unix)
-(setq-default default-buffer-file-coding-system 'utf-8-unix)
-(set-default-coding-systems 'utf-8-unix)
-(prefer-coding-system 'utf-8-unix)
-
-(use-package assess)
-(use-package stupid-indent-mode)
-
-(use-package po-mode
-  :mode "\\.po\\'")
-
-(progn
-  (defun ejmr-setup-cc-mode ()
-    (c-set-style "linux")
-    (flycheck-select-checker 'c/c++-clangcheck))
-  (add-hook 'c-mode-hook 'ejmr-setup-cc-mode)
-  (add-hook 'c++-mode-hook 'ejmr-setup-cc-mode))
-
-(use-package modern-cpp-font-lock
-  :config (modern-c++-font-lock-global-mode t))
-
-(use-package polymode)
-
-(use-package neon-mode)
-(use-package nhexl-mode)
-(use-package restclient)
-
-(use-package diff
-  :mode ("COMMIT_EDITMSG" . diff-mode))
-
-(use-package diff-hl
-  :bind ("C-x v =" . diff-hl-diff-goto-hunk)
-  :config
-  (global-diff-hl-mode 1))
-
-(use-package dumb-jump
-  :config
-  (setq dumb-jump-selector 'ivy)
-  (setq dumb-jump-prefer-searcher 'ag)
-  (setq dumb-jump-force-searcher nil)
-  (bind-key "d" (defhydra hydra-dumb-jump (:color amaranth)
-		  "Dumb Jump"
-		  ("g" dumb-jump-go "Go")
-		  ("b" dumb-jump-back "Back")
-		  ("l" dumb-jump-quick-look "Look")
-		  ("e" dumb-jump-go-prefer-external-other-window "External" :color blue)
-		  ("w" dumb-jump-go-other-window "Window" :color blue)
-		  ("p" dumb-jump-go-prompt "Prompt")
-		  ("q" nil "Quit" :color blue))
-	    ejmr-command-shortcut-map)
-  (dumb-jump-mode 1))
-
-(use-package vdiff
-  :disabled t
-  :config
-  (bind-key "C-c v" vdiff-mode-prefix-map vdiff-mode-map))
-
-(use-package realgud :disabled t)
-(use-package cmake-ide :disabled t)
-(use-package malinka :disabled t)
-
-(use-package makefile-executor
-  :commands (makefile-executor-mode)
-  :config
-  (add-hook 'makefile-mode-hook 'makefile-executor-mode))
-
-(use-package rtags
-  :disabled t
-  :config
-  (use-package ivy-rtags :disabled t)
-  (use-package flycheck-rtags :disabled t)
-  (use-package company-rtags :disabled t))
-
-(use-package brainfuck-mode)
-
-(use-package sqlup-mode
-  :config (add-hook 'sql-mode-hook 'sqlup-mode))
-(use-package emacsql
-  :disabled t
-  :config
-  (use-package emacsql-sqlite))
-
-(use-package clang-format)
-(use-package irony)
-(use-package cov)
-
-(use-package lice)
-(use-package forth-mode)
-(use-package go-mode)
-(use-package fish-mode)
-(use-package lua-mode)
-(use-package nasm-mode
-  :mode (("\\.asm\\'" . nasm-mode)
-	 ("\\.s\\'" . nasm-mode)))
-
-(use-package tup-mode
-  :load-path "/home/eric/.emacs.d/local/tup-mode")
-
-(use-package yaml-mode
-  :mode ("\\.yml\\'" . yaml-mode))
+;;; Modes for Specific Programming Languages
 
 (use-package rust-mode
   :config
@@ -1247,6 +1155,55 @@ _v_ariable       _u_ser-option
 (use-package conf-mode
   :mode ("\\.toml\\'" . conf-mode))
 
+(use-package neon-mode)
+(use-package nhexl-mode)
+(use-package brainfuck-mode)
+(use-package forth-mode)
+(use-package go-mode)
+(use-package fish-mode)
+
+(use-package lua-mode
+  :config
+  (setq-default lua-indent-level 4))
+
+(use-package nasm-mode
+  :mode (("\\.asm\\'" . nasm-mode)
+	 ("\\.s\\'" . nasm-mode)))
+
+(progn
+  (defun ejmr-setup-cc-mode ()
+    (c-set-style "linux")
+    (flycheck-select-checker 'c/c++-clangcheck))
+  (add-hook 'c-mode-hook 'ejmr-setup-cc-mode)
+  (add-hook 'c++-mode-hook 'ejmr-setup-cc-mode))
+
+(use-package modern-cpp-font-lock
+  :config (modern-c++-font-lock-global-mode t))
+
+(use-package solid-mode
+  :load-path "/home/eric/.emacs.d/local/solid-mode"
+  :config
+  (quickrun-add-command "solid"
+    '((:command . "solid")
+      (:exec . "%c %s")
+      (:compile-only . "%c %s")
+      (:description . "Compile and execute Solid scripts"))
+    :mode 'solid-mode))
+
+(use-package shen-elisp)
+
+(use-package fuel :disabled t)
+
+(use-package racket-mode
+  :commands (racket-mode)
+  :mode ("\\.rkt\\'" . racket-mode))
+
+
+;;; Programming Utilities
+
+(use-package syntactic-close
+  :bind ("s-0" . syntactic-close))
+
 (use-package ws-butler
   :diminish 'ws-butler-mode
   :config (add-hook 'prog-mode-hook 'ws-butler-mode))
@@ -1260,6 +1217,127 @@ _v_ariable       _u_ser-option
     :config
     (bind-key "s-x a c" #'aya-create yas-minor-mode-map)
     (bind-key "s-x a e" #'aya-expand yas-minor-mode-map)))
+
+(use-package clang-format)
+(use-package irony)
+(use-package cov)
+(use-package lice)
+
+(use-package x86-lookup
+  :config
+  (setq-default x86-lookup-pdf "/home/eric/.emacs.d/etc/intel-x86-reference.pdf"))
+
+(use-package geben :defer t)
+
+(use-package string-inflection
+  :commands (string-inflection-all-cycle)
+  :config
+  (use-package cycle-quotes)
+  (defhydra hydra-string-inflection ()
+    "Inflection"
+    ("c" capitalize-word "Capitalize")
+    ("u" upcase-word "Upcase")
+    ("l" downcase-word "Lowercase")
+    ("'" cycle-quotes "Quote")
+    ("SPC" string-inflection-all-cycle "Cycle")
+    ("q" nil "Quit" :color blue))
+  (bind-key "M-c" #'hydra-string-inflection/body))
+
+(use-package just-mode
+  :load-path "/home/eric/.emacs.d/local/just-mode"
+  :mode "Justfile")
+
+(use-package scratch)
+
+(setq require-final-newline t)
+(setq-default buffer-file-coding-system 'utf-8-unix)
+(setq-default default-buffer-file-coding-system 'utf-8-unix)
+(set-default-coding-systems 'utf-8-unix)
+(prefer-coding-system 'utf-8-unix)
+
+(use-package assess)
+(use-package stupid-indent-mode)
+
+(use-package po-mode
+  :mode "\\.po\\'")
+
+(use-package polymode)
+
+
+;;; Diffs
+
+(use-package vdiff
+  :disabled t
+  :config
+  (bind-key "C-c v" vdiff-mode-prefix-map vdiff-mode-map))
+
+(use-package diff
+  :mode ("COMMIT_EDITMSG" . diff-mode))
+
+(use-package diff-hl
+  :bind ("C-x v =" . diff-hl-diff-goto-hunk)
+  :config
+  (global-diff-hl-mode 1))
+
+
+;;; Searching Tags, Symbols, Functions, Et Cetera
+
+(use-package rtags
+  :disabled t
+  :config
+  (use-package ivy-rtags :disabled t)
+  (use-package flycheck-rtags :disabled t)
+  (use-package company-rtags :disabled t))
+
+(use-package dumb-jump
+  :config
+  (setq dumb-jump-selector 'ivy)
+  (setq dumb-jump-prefer-searcher 'ag)
+  (setq dumb-jump-force-searcher nil)
+  (bind-key "d" (defhydra hydra-dumb-jump (:color amaranth)
+		  "Dumb Jump"
+		  ("g" dumb-jump-go "Go")
+		  ("b" dumb-jump-back "Back")
+		  ("l" dumb-jump-quick-look "Look")
+		  ("e" dumb-jump-go-prefer-external-other-window "External" :color blue)
+		  ("w" dumb-jump-go-other-window "Window" :color blue)
+		  ("p" dumb-jump-go-prompt "Prompt")
+		  ("q" nil "Quit" :color blue))
+	    ejmr-command-shortcut-map)
+  (dumb-jump-mode 1))
+
+
+;;; Debuggers
+
+(use-package realgud :disabled t)
+
+
+;;; Build Tools
+
+(use-package tup-mode
+  :load-path "/home/eric/.emacs.d/local/tup-mode")
+
+(use-package cmake-ide :disabled t)
+(use-package malinka :disabled t)
+
+(use-package makefile-executor
+  :commands (makefile-executor-mode)
+  :config
+  (add-hook 'makefile-mode-hook 'makefile-executor-mode))
+
+
+;;; SQL
+
+(use-package sqlup-mode
+  :config (add-hook 'sql-mode-hook 'sqlup-mode))
+
+(use-package emacsql
+  :disabled t
+  :config
+  (use-package emacsql-sqlite))
+
+
+;;; Flycheck
 
 (use-package flycheck
   :config
@@ -1276,22 +1354,18 @@ _v_ariable       _u_ser-option
   (bind-key "<s-up>" #'flycheck-previous-error)
   (bind-key "<s-down>" #'flycheck-next-error))
 
-(use-package solid-mode
-  :load-path "/home/eric/.emacs.d/local/solid-mode"
-  :config
-  (quickrun-add-command "solid"
-    '((:command . "solid")
-      (:exec . "%c %s")
-      (:compile-only . "%c %s")
-      (:description . "Compile and execute Solid scripts"))
-    :mode 'solid-mode))
-
-(use-package syntactic-close
-  :bind ("s-0" . syntactic-close))
-
 
 ;;; Emacs Lisp Programming
 
+(use-package lispy
+  :config
+  (bind-key "C-c C-y" #'lispy-mode emacs-lisp-mode-map)
+  (bind-key "C-c C-y" #'lispy-mode lisp-mode-map)
+  (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
+  (add-hook       'lisp-mode-hook #'lispy-mode))
+
+(use-package add-hooks)
+(use-package commander)
 (use-package with-simulated-input :defer nil)
 
 ;;; TODO: Create wrapper function which not only creates a log but
@@ -1300,6 +1374,15 @@ _v_ariable       _u_ser-option
 (use-package log4e-mode)
 
 (use-package s)
+(use-package iterator)
+(use-package subemacs-eval)
+(use-package eros)
+(use-package json-rpc)
+(use-package markup)
+(use-package load-relative)
+(use-package bui)
+(use-package package-build)
+(use-package lib-requires)
 (use-package ht)
 (use-package rx)
 (use-package with-simulated-input)
@@ -1368,7 +1451,7 @@ _v_ariable       _u_ser-option
 (use-package system-packages)
 
 (use-package pass)
-
+(use-package itail :bind (:map ejmr-hydra-map ("i" . itail)))
 (use-package fzf :disabled t)
 
 
@@ -1383,7 +1466,11 @@ _v_ariable       _u_ser-option
 
 (bind-key "d" #'hydra-desktop/body ejmr-hydra-map)
 
+(use-package jpop
+  :disabled t)
+
 (use-package projectile
+  :disabled t
   :diminish projectile-mode
   :config
   (use-package counsel-projectile
@@ -1461,6 +1548,10 @@ _v_ariable       _u_ser-option
 
 ;;; General Editing Utilities
 
+(use-package embrace
+  :bind (:map ejmr-command-shortcut-map ("e" . embrace-commander)))
+
+(use-package zpresent)
 (use-package annotate)
 
 (progn
@@ -1491,7 +1582,6 @@ _v_ariable       _u_ser-option
 (use-package demo-it)
 
 (use-package beginend
-  :diminish beginend-global-mode
   :config
   (beginend-global-mode t))
 
@@ -1578,22 +1668,24 @@ _v_ariable       _u_ser-option
 
 (use-package ids-edit :disabled t)
 
+;;; TODO: Add any useful specific bindings for various major modes.
 (use-package selected
   :diminish selected-minor-mode
   :config
+  (setq-default selected-minor-mode-override t)
   (selected-global-mode t)
   :bind (:map selected-keymap
 	      ("n" . narrow-to-region)
 	      (";" . comment-dwim-2)
-    ("$" . flyspell-region)
-    ("u" . upcase-region)
-    ("d" . downcase-region)
-    ("c" . count-words-region)
-    ("\\" . indent-region)
-    ("w" . copy-region-as-kill)
-    ("W" . copy-as-format)
-    ("k" . kill-region)
-    ("m" . apply-macro-to-region-lines)))
+	      ("$" . flyspell-region)
+	      ("u" . upcase-region)
+	      ("d" . downcase-region)
+	      ("c" . count-words-region)
+	      ("\\" . indent-region)
+	      ("w" . copy-region-as-kill)
+	      ("W" . copy-as-format)
+	      ("k" . kill-region)
+	      ("m" . apply-macro-to-region-lines)))
 
 (use-package latex-mode
   :config
@@ -1788,6 +1880,35 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 
 ;;; Web and Online Services
 
+(use-package yaml-mode
+  :mode ("\\.yml\\'" . yaml-mode))
+
+(use-package restclient)
+
+(use-package engine-mode
+  :config
+  (engine-mode t)
+  (setq-default engine/browser-function 'browse-url-conkeror)
+  (defengine github
+    "https://github.com/search?ref=simplesearch&q=%s"
+    :keybinding "g")
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+  (defengine rfcs
+    "http://pretty-rfc.herokuapp.com/search?q=%s"
+    :keybinding "r")
+  (defengine wikipedia
+    "http://wikipedia.org/search-redirect.php?language=en.m&go=Go&search=%s"
+    :keybinding "w")
+  (defengine youtube
+    "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+    :keybinding "y"))
+
+(use-package enlive)
+(use-package circe)
+(use-package slack :disabled)
+
 (use-package opener
   :bind (:map ejmr-command-shortcut-map ("u" . opener-open-at-point)))
 
@@ -1844,6 +1965,11 @@ Compile: _F_ile     _L_ist Compilers
     ("b" webpaste-paste-buffer "Buffer")
     ("r" webpaste-paste-region "Region"))
   (bind-key "p" #'hydra-webpaste/body ejmr-command-shortcut-map))
+
+
+;;; Miscellaneous
+
+(use-package binclock)
 
 
 ;;; Custom File
