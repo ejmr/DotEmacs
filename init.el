@@ -20,6 +20,7 @@
 (require 'bind-key)
 (require 'diminish)
 (setq use-package-always-ensure t)
+(setq use-package-enable-imenu-support t)
 
 ;;; TODO: Ideally I would like to have (package-menu-execute t) at the
 ;;; end of this but it simply does not work.
@@ -29,11 +30,24 @@
   (package-list-packages)
   (package-menu-mark-upgrades))
 
+(defun ejmr-local-package-directory (name &optional root-dir)
+  "Return directories in ROOT-DIR that contain package NAME.
+
+Ideally this function should always return a list of one element,
+i.e.  the one directory that contains the requested package."
+  (let ((root-dir (or root-dir package-user-dir (error "No package directory"))))
+    (when (and (f-directory-p root-dir)
+	       (f-readable-p root-dir))
+      (f-directories (f-full root-dir)
+		     #'(lambda (dir)
+			 (s-matches? (concat "/" name "-[0-9]+\\.[0-9]+") dir))))))
+
 ;;; TODO: Setup a local mirror of the Emacs Wiki.
 ;;; https://emacsmirror.net/manual/epkg/Installation.html#Installation
 (use-package epkg :disabled t)
 
 (use-package theme-looper
+  :defer nil
   :config
   (bind-key "l" (defhydra hydra-theme-loop (:color amaranth)
 		  "Themes"
@@ -61,6 +75,8 @@
 
 (use-package dashboard :disabled t)
 
+(use-package recover-buffers)
+
 
 ;;; Global Custom Keymap Prefixes
 ;;;
@@ -69,11 +85,17 @@
 ;;; soon as possible so that the rest of the configuration can use
 ;;; them.  Therefore, this page should always come early.
 
-;;; `C-c`
+;;; This key-map variable is an alias for `C-c`.
 (defvaralias 'ejmr-custom-bindings-map 'mode-specific-map)
+
+;;; `C-c h` is specifically for (most) hydra.
 (bind-key "h" (define-prefix-command 'ejmr-hydra-map) ejmr-custom-bindings-map)
-;;; `C-c h`
+
+;;; `s-x` maps to individual commands, rarely modes or toggles.
 (bind-key "s-x" (define-prefix-command 'ejmr-command-shortcut-map))
+
+;;; `s-x s-w` is for packages which use web services.
+(bind-key "s-w" (define-prefix-command 'ejmr-web-service-map) ejmr-command-shortcut-map)
 
 
 ;;; Global Key Shortcuts
@@ -153,7 +175,7 @@ register-alist'."
 (set-register ?i '(file . "/home/eric/.emacs.d/init.el"))
 (set-register ?g '(file . "/home/eric/.gitconfig"))
 (set-register ?\C-f '(file . "/home/eric/.config/fish/"))
-(set-register ?s '(file . "/tmp/Scratch.org"))
+(set-register ?s '(file . "/tmp/Sudden-Thoughts.org"))
 (set-register ?n '(file . "/home/eric/Documents/Notes.org"))
 (set-register ?c '(file . "/home/eric/.conkerorrc/"))
 (set-register ?u '(file . "/home/eric/.conkerorrc/saved-buffers.txt"))
@@ -161,6 +183,13 @@ register-alist'."
 
 
 ;;; Global Utilities
+
+(use-package try)
+
+(use-package snoopy
+  :load-path "/home/eric/.emacs.d/local/snoopy-mode"
+  :commands snoopy-mode
+  :bind ("s-s" . snoopy-mode))
 
 (use-package neotree
   :commands neotree-toggle
@@ -228,6 +257,14 @@ register-alist'."
 
 ;;; Buffer Management
 
+(use-package midnight :defer nil)
+
+(use-package buffer-manage :disabled t)
+
+(use-package related
+  :bind (("s-<right>" . related-switch-forward)
+	 ("s-<left>" . related-switch-backward)))
+
 (defhydra hydra-buffer-menu (:color pink :hint nil)
   "
 ^Mark^             ^Unmark^           ^Actions^          ^Search
@@ -261,18 +298,45 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 
 (use-package auto-dim-other-buffers :disabled t)
 
+(use-package inherit-local
+  :commands (inherit-local-permanent))
+
 (use-package iflipb
   :disabled t
   :bind (("s-b" . iflipb-next-buffer)
 	 ("C-s-b" . iflipb-previous-buffer)))
 
 
+;;; Mode Line
+
+(use-package anzu
+  :diminish anzu-mode
+  :bind ("s-%" . anzu-replace-at-cursor-thing)
+  :config
+  (global-anzu-mode t)
+  (global-set-key [remap query-replace] #'anzu-query-replace)
+  (global-set-key [remap query-replace-regexp] #'anzu-query-replace-regexp))
+
+
 ;;; Minibuffer
+
+(use-package amx
+  :defer nil
+  :load-path "/home/eric/.emacs.d/local/amx"
+  :bind ("M-s-x" . amx-major-mode-commands)
+  :config (amx-mode t))
 
 (use-package historian
   :config
   (use-package ivy-historian
     :config (ivy-historian-mode t)))
+
+(use-package quickref
+  :diminish quickref-mode
+  :init
+  (setq quickref-command-prefix (kbd "s-x s-q"))
+  :config
+  (quickref-global-mode t))
 
 
 ;;; Windows and Frames
@@ -293,6 +357,17 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 (bind-key "d" #'dired-other-window ejmr-window-map)
 (bind-key "." #'xref-find-definitions-other-window ejmr-window-map)
 
+(progn
+  (defun ejmr-switch-buffer-only-window ()
+    "Switches to a buffer and makes it the sole window.
+
+This is the equivalent of `C-x 4 b` and then `C-x 1`."
+    (interactive)
+    (ivy-switch-buffer-other-window)
+    (delete-other-windows))
+
+  (bind-key "o" #'ejmr-switch-buffer-only-window ejmr-window-map))
+
 (defun ejmr-split-window-vertically-and-balance ()
   "Splits the window vertically then balances all windows.
 
@@ -303,13 +378,13 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
 
 (bind-key "2" #'ejmr-split-window-vertically-and-balance ejmr-window-map)
 
-(defhydra hydra-window (ejmr-window-map "s" :color amaranth)
+(defhydra hydra-window (ejmr-window-map "s" :color amaranth :hint nil)
   "Window Size"
-  ("^" enlarge-window "Taller")
-  ("{" shrink-window-horizontally "Narrower")
-  ("}" enlarge-window-horizontally "Wider")
-  ("-" shrink-window-if-larger-than-buffer "Shrink")
-  ("+" balance-windows "Balance")
+  ("t" enlarge-window "Taller")
+  ("n" shrink-window-horizontally "Narrower")
+  ("w" enlarge-window-horizontally "Wider")
+  ("s" shrink-window-if-larger-than-buffer "Shrink")
+  ("b" balance-windows "Balance")
   ("q" nil "Quit" :color blue))
 
 
@@ -669,6 +744,11 @@ _h_   _l_   _o_k        _y_ank
 
 ;;; Auto Completion
 
+(use-package bbyac
+  :diminish bbyac-mode
+  :config
+  (bbyac-global-mode t))
+
 (use-package git-complete
   :load-path "/home/eric/.emacs.d/local/git-complete"
   :commands git-complete
@@ -685,6 +765,9 @@ _h_   _l_   _o_k        _y_ank
   :bind ("s-/" . company-complete)
   :config
   (global-company-mode t)
+  (use-package company-emoji
+    :config
+    (add-to-list 'company-backends 'company-emoji))
   (use-package company-lua)
   (use-package company-quickhelp
     :diminish 'company-quickhelp-mode
@@ -743,6 +826,7 @@ will automatically kill the buffer."
   "Minor Mode"
   ("a" global-aggressive-indent-mode "Agressive")
   ("A" anyins-mode "Anyins")
+  ("b" beginend-global-mode "BeginEnd")
   ("c" global-company-mode "Company")
   ("C" cargo-minor-mode "Cargo")
   ("d" darkroom-tentative-mode "Darkroom")
@@ -754,6 +838,7 @@ will automatically kill the buffer."
   ("h" nhexl-mode "Hex")
   ("H" global-diff-hl-mode "Diff HL")
   ("i" indent-guide-global-mode "Indent Guide")
+  ("I" stupid-indent-mode "Stupid Indent Mode")
   ("l" visual-line-mode "Line")
   ("L" global-lentic-mode "Lentic")
   ("n" nameless-mode "Nameless")
@@ -789,6 +874,24 @@ will automatically kill the buffer."
 
 ;;; Flycheck
 
+(use-package flycheck
+  :config
+  (use-package flycheck-inline :ensure t)
+  (use-package flycheck-proselint
+    :load-path "/home/eric/.emacs.d/local/flycheck-proselint")
+  (use-package flycheck-clangcheck
+    :disabled t
+    :config
+    (setq flycheck-clangcheck-analyze t))
+  (use-package flycheck-mypy :disabled t)
+  (use-package flycheck-package
+    :config (flycheck-package-setup))
+  (use-package flycheck-rust
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  (bind-key "<s-up>" #'flycheck-previous-error)
+  (bind-key "<s-down>" #'flycheck-next-error))
+
 (defhydra hydra-flycheck (:color blue)
   "
 ^
@@ -797,6 +900,7 @@ will automatically kill the buffer."
 [_q_] quit          [_c_] check         [_s_] select
 [_v_] verify setup  [_n_] next          [_d_] disable
 [_m_] manual        [_p_] previous      [_?_] describe
+[_i_] inline
 ^^                  ^^                  ^^
 "
   ("q" nil)
@@ -807,6 +911,12 @@ will automatically kill the buffer."
   ("p" flycheck-previous-error :color red)
   ("s" flycheck-select-checker)
   ("v" flycheck-verify-setup)
+  ("i" (lambda ()
+	 (interactive)
+	 (if (eq 'flycheck-display-errors-function 'flycheck-display-error-messages)
+	     (setq-local flycheck-display-error-function 'flycheck-inline)
+	   (setq-local flycheck-display-error-function 'flycheck-display-error-messages)))
+   :color amaranth)
   ("?" flycheck-describe-checker))
 
 (bind-key "f" #'hydra-flycheck/body ejmr-hydra-map)
@@ -854,7 +964,7 @@ will automatically kill the buffer."
     (end-of-line)
     (set-mark (point))
     (beginning-of-line))
-  (defhydra hydra-mark (:color blue :idle 1.5 :columns 3)
+  (defhydra hydra-mark (:color blue :idle 1.5 :columns 4)
     "Mark"
     ("d" er/mark-defun "Defun / Function")
     ("f" er/mark-defun "Defun / Function")
@@ -864,9 +974,11 @@ will automatically kill the buffer."
     ("E" er/mark-email "Email")
     ("b" mark-whole-buffer "Buffer")
     ("l" ejmr-mark-line "Line")
+    ("s" er/mark-sentence "Sentence")
     ("p" er/mark-text-paragraph "Paragraph")
-    ("s" er/mark-symbol "Symbol")
-    ("S" er/mark-symbol-with-prefix "Prefixed symbol")
+    ("g" mark-page "Page")
+    ("S" er/mark-symbol "Symbol")
+    ("P" er/mark-symbol-with-prefix "Prefixed symbol")
     ("q" er/mark-inside-quotes "Inside Quotes")
     ("Q" er/mark-outside-quotes "Outside Quotes")
     ("(" er/mark-inside-pairs "Inside Pairs")
@@ -951,17 +1063,23 @@ will automatically kill the buffer."
   :config (ace-link-setup-default))
 
 
-;;; Ivy and Swiper
+;;; Ivy, Swiper, and Counsel
 
 (use-package swiper
-  :bind (("C-s" . swiper)
-	 ("C-r" . swiper-all)))
+  :bind (("C-s" . counsel-grep-or-swiper)
+	 ("C-r" . swiper-all))
+  :config
+  (setq counsel-grep-base-command "rg -i -M 120 --no-heading --line-number '%s' %s"))
 
 (use-package ivy
   :diminish 'ivy-mode
   :config
+  (use-package imenu-anywhere
+    :commands (ivy-imenu-anywhere)
+    :bind ("s-." . ivy-imenu-anywhere))
   (use-package ivy-hydra)
   (use-package ivy-rich)
+  (use-package ivy-pass)
   (use-package ivy-todo
     :commands ivy-todo
     :bind (:map org-mode-map ("C-c C-i" . ivy-todo)))
@@ -982,6 +1100,8 @@ will automatically kill the buffer."
 	("u" counsel-gtags-update-tags "Update"))
       (bind-key "g" #'hydra-counsel-gtags/body ejmr-hydra-map)
       (bind-key "g" #'counsel-gtags-dwim ejmr-command-shortcut-map))
+
+    (bind-key "s-s" #'counsel-rg ejmr-command-shortcut-map)
 
     (bind-key "r" #'counsel-file-register ejmr-help-map)
     (bind-key "f" #'counsel-describe-function ejmr-help-map)
@@ -1029,13 +1149,17 @@ _v_ariable       _u_ser-option
     (setq ivy-count-format "(%d/%d) ")))
 
 
-;;; Highlighting
+;;; Highlighting, Rainbow, Colors
 
 (diminish 'hi-lock-mode)
 
+(use-package highlight)
+
 (use-package highlight-thing
-  :diminish highlight-thing-mode
-  :config (global-highlight-thing-mode t))
+  :diminish highlight-thing-mode)
+
+(use-package loccur
+  :bind (:map ejmr-command-shortcut-map ("l" . loccur-current)))
 
 (use-package hl-todo
   :config
@@ -1050,9 +1174,26 @@ _v_ariable       _u_ser-option
     ("q" nil "Quit" :color blue :exit t))
   (bind-key "s-t" #'hydra-todo/body ejmr-command-shortcut-map))
 
-(use-package highlight-blocks)
-(use-package rainbow-delimiters)
-(use-package rainbow-identifiers)
+(progn
+  (use-package hl-sentence)
+  (use-package highlight-blocks)
+  (use-package highlight-indent-guides
+    :config
+    (setq highlight-indent-guides-method 'fill))
+  (use-package highlight-numbers)
+  (use-package rainbow-delimiters)
+  (use-package rainbow-identifiers)
+  (use-package rainbow-blocks)
+
+  (bind-key "l" (defhydra hydra-highlight (:color amaranth)
+		  "Highlight"
+		  ("b" rainbow-blocks-mode "Blocks")
+		  ("d" rainbow-delimiters-mode "Delimiters")
+		  ("i" rainbow-identifiers-mode "Identifiers")
+		  ("n" highlight-numbers-mode "Numbers")
+		  ("TAB" highlight-indent-guides-mode "Indentation")
+		  ("q" nil "Quit" :color blue))
+	    ejmr-hydra-map))
 
 (use-package symbol-overlay
   :config
@@ -1098,7 +1239,9 @@ _v_ariable       _u_ser-option
 	    ejmr-hydra-map))
 
 
-;;; Git
+;;; Version Control, Git, et al.
+
+(use-package vc-msg :disabled t)
 
 (use-package git-modes
   :load-path "/home/eric/.emacs.d/local/git-modes")
@@ -1138,7 +1281,13 @@ _v_ariable       _u_ser-option
 
 (use-package php-mode
   :config
-  (use-package psysh))
+  (use-package psysh)
+  (use-package phpunit
+    :bind (:map php-mode-map
+		("C-c C-t C-t" . phpunit-current-test)
+		("C-c C-t C-c" . phpunit-current-class)
+		("C-c C-t C-p" . phpunit-current-project))
+    :mode ("\\.php$'" . phpunit-mode)))
 
 (use-package ini-mode)
 
@@ -1171,6 +1320,8 @@ _v_ariable       _u_ser-option
   :mode (("\\.asm\\'" . nasm-mode)
 	 ("\\.s\\'" . nasm-mode)))
 
+(use-package riscv-mode)
+
 (progn
   (defun ejmr-setup-cc-mode ()
     (c-set-style "linux")
@@ -1202,6 +1353,19 @@ _v_ariable       _u_ser-option
 
 ;;; Programming Utilities
 
+(use-package poporg
+  :commands (poporg-dwim)
+  :bind (:map ejmr-command-shortcut-map ("p" . poporg-dwim))
+  :config (setq-default poporg-edit-hook 'markdown-mode))
+
+(use-package simple-call-tree)
+(use-package import-popwin :bind
+  (:map ejmr-command-shortcut-map ("i" . import-popwin)))
+
+(use-package devdocs
+  :commands devdocs-search
+  :bind (:map ejmr-web-service-map ("d" . devdocs-search)))
+
 (use-package syntactic-close
   :bind ("s-0" . syntactic-close))
 
@@ -1223,12 +1387,14 @@ _v_ariable       _u_ser-option
 (use-package irony)
 (use-package cov)
 (use-package lice)
+(use-package literal-string
+  :diminish literal-string-mode
+  :config
+  (add-hook 'prog-mode-hook 'literal-string-mode))
 
 (use-package x86-lookup
   :config
   (setq-default x86-lookup-pdf "/home/eric/.emacs.d/etc/intel-x86-reference.pdf"))
-
-(use-package geben :defer t)
 
 (use-package string-inflection
   :commands (string-inflection-all-cycle)
@@ -1310,7 +1476,14 @@ _v_ariable       _u_ser-option
 
 ;;; Debuggers
 
-(use-package realgud :disabled t)
+(use-package realgud
+  :defer t
+  :config
+  (use-package realgud-old-debuggers))
+
+(use-package geben :defer t)
+
+(use-package debug-print)
 
 
 ;;; Build Tools
@@ -1338,25 +1511,13 @@ _v_ariable       _u_ser-option
   (use-package emacsql-sqlite))
 
 
-;;; Flycheck
-
-(use-package flycheck
-  :config
-  (use-package flycheck-clangcheck
-    :disabled t
-    :config
-    (setq flycheck-clangcheck-analyze t))
-  (use-package flycheck-mypy :disabled t)
-  (use-package flycheck-package
-    :config (flycheck-package-setup))
-  (use-package flycheck-rust
-    :config
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-  (bind-key "<s-up>" #'flycheck-previous-error)
-  (bind-key "<s-down>" #'flycheck-next-error))
-
-
 ;;; Emacs Lisp Programming
+
+(use-package buttercup)
+
+(use-package pythonic
+  :config
+  (setq python-shell-interpreter "/usr/bin/python3"))
 
 (use-package lispy
   :config
@@ -1365,6 +1526,7 @@ _v_ariable       _u_ser-option
   (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
   (add-hook       'lisp-mode-hook #'lispy-mode))
 
+(use-package fullframe)
 (use-package add-hooks)
 (use-package commander)
 (use-package with-simulated-input :defer nil)
@@ -1374,6 +1536,7 @@ _v_ariable       _u_ser-option
 ;;; `*--log-open-log' and `*--log-set-level'.
 (use-package log4e-mode)
 
+(use-package f)
 (use-package s)
 (use-package iterator)
 (use-package subemacs-eval)
@@ -1448,10 +1611,19 @@ _v_ariable       _u_ser-option
 
 ;;; External Tools and System Management
 
+(use-package crontab-mode
+  :mode (("\\.cron\\(tab\\)?\\." . crontab-mode)
+	 ("\\.cron\\(tab\\)?\\'" . crontab-mode)))
+
+(use-package protocols
+  :commands (protocols-lookup protocols-clear-cache))
+
+(use-package prodigy)
+
 ;;; TODO: Configure it for apt and setup a hydra for commands.
 (use-package system-packages)
 
-(use-package pass)
+(use-package pass :bind (:map ejmr-command-shortcut-map ("s-p" . pass)))
 (use-package itail :bind (:map ejmr-hydra-map ("i" . itail)))
 (use-package fzf :disabled t)
 
@@ -1532,6 +1704,14 @@ _v_ariable       _u_ser-option
 
   (bind-key "F" #'ejmr-dired-find-file dired-mode-map)
 
+  (use-package dired-single
+    :config
+    (bind-key "<C-return>" #'dired-single-buffer dired-mode-map)
+    (defun ejmr-dired-up-directory ()
+      (interactive)
+      (dired-single-buffer ".."))
+    (bind-key "^" #'ejmr-dired-up-directory dired-mode-map))
+
   (use-package dired-k
     :config
     (bind-key "K" #'dired-k dired-mode-map)
@@ -1583,8 +1763,26 @@ _v_ariable       _u_ser-option
 (use-package demo-it)
 
 (use-package beginend
+  :diminish beginend-global-mode
   :config
-  (beginend-global-mode t))
+  (defun ejmr-diminish-all-beginend-modes ()
+    "Diminish all lighters `beginend-global-mode' activates.
+
+Calling `beginend-global-mode' creates multiple minor modes and
+automatically enables them when, for example, using Dired or
+Elfeed, and more.  These individual minor modes define ` be' as
+the lighter which appears on the mode-line for those modes.
+
+Diminishing `beginend-global-mode' only affects one situation
+though, meaning the lighter will remain.  Completely diminishing
+all instances of ` be' requires us to diminsh each minor mode
+that `beginend' defines.  This function does exactly that."
+    (interactive)
+    (mapc (lambda (pair)
+	    (diminish (cdr pair)))
+	  beginend-modes))
+  (beginend-global-mode t)
+  (add-hook 'beginend-global-mode-hook #'ejmr-diminish-all-beginend-modes))
 
 (defun ejmr-edit-current-file-as-root ()
   "Use TRAMP to `sudo' the current file."
@@ -1654,14 +1852,31 @@ _v_ariable       _u_ser-option
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package view
+  :defer nil
+  :init (setq view-read-only t)
+  :config
+  (bind-key "C-x C-q" #'view-mode)
+  (key-seq-define-global "XQ" #'view-mode)
+  (defhydra hydra-view (:color blue)
+    "View"
+    ("t" view-mode "Toggle" :color pink)
+    ("b" view-buffer "Buffer")
+    ("f" view-file "File")
+    ("q" nil "Quit"))
+  (bind-key "v" #'hydra-view/view-mode-and-exit ejmr-command-shortcut-map)
+  (bind-key "s-v" #'hydra-view/body ejmr-command-shortcut-map))
+
+(use-package outline-toc)
+
 ;;; TODO: Should I create a simple major mode for dealing with files
 ;;; containing nothing but lists of URIs and move this function into
 ;;; that mode's keymap?
 (defun ejmr-sort-buffer-lines-and-delete-duplicates ()
   "Sorts all lines in the buffer and deletes duplicates.
 
-    This automates a task I perform very often with my text file of
-    saved URIs which Conkeror creates."
+  This automates a task I perform very often with my text file of
+  saved URIs which Conkeror creates."
   (interactive)
   (mark-whole-buffer)
   (sort-lines nil (point-min) (point-max))
@@ -1678,15 +1893,15 @@ _v_ariable       _u_ser-option
   :bind (:map selected-keymap
 	      ("n" . narrow-to-region)
 	      (";" . comment-dwim-2)
-	      ("$" . flyspell-region)
-	      ("u" . upcase-region)
-	      ("d" . downcase-region)
-	      ("c" . count-words-region)
-	      ("\\" . indent-region)
-	      ("w" . copy-region-as-kill)
-	      ("W" . copy-as-format)
-	      ("k" . kill-region)
-	      ("m" . apply-macro-to-region-lines)))
+  ("$" . flyspell-region)
+  ("u" . upcase-region)
+  ("d" . downcase-region)
+  ("c" . count-words-region)
+  ("\\" . indent-region)
+  ("w" . copy-region-as-kill)
+  ("W" . copy-as-format)
+  ("k" . kill-region)
+  ("m" . apply-macro-to-region-lines)))
 
 (use-package latex-mode
   :config
@@ -1697,7 +1912,9 @@ _v_ariable       _u_ser-option
   :config
   (use-package google-translate-smooth-ui
     :commands google-translate-smooth-translate
-    :bind ("C-M-$" . google-translate-smooth-translate)
+    :bind (("C-M-$" . google-translate-smooth-translate)
+	   :map ejmr-web-service-map
+	   ("$" . google-translate-smooth-translate))
     :config
     (setq-default google-translate-translation-directions-alist
 		  '(("en" . "ja")
@@ -1747,6 +1964,8 @@ all buffers."
   (key-seq-define-global "ZC" #'focus-mode))
 
 (use-package copy-as-format
+  :commands (copy-as-format)
+  :bind (:map ejmr-web-service-map ("c" . copy-as-format))
   :config
   (setq-default copy-as-format-default "markdown"))
 
@@ -1805,8 +2024,6 @@ all buffers."
 	 ("\\.md\\'" . gfm-mode)
 	 ("\\.markdown\\'" . markdown-mode))
   :config
-  (use-package literal-string
-    :bind (:map markdown-mode-map ("C-'" . literal-string-edit-sting)))
   (setq markdown-command "pandoc -f markdown -t html5")
   (add-hook 'markdown-mode-hook 'auto-fill-mode)
   (defhydra hydra-markdown (:hint nil :pre (ivy-mode nil) :post (ivy-mode t))
@@ -1879,7 +2096,21 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 (bind-key "t" #'hydra-text/body ejmr-hydra-map)
 
 
+;;; Screencasts
+
+(use-package command-log-mode)
+
+;; TODO: Change `shell-file-name' to Bash temporarily whenever
+;; recording something.
+(use-package camcorder)
+
+
 ;;; Web and Online Services
+
+(use-package robots-txt-mode)
+(use-package ipcalc)
+(use-package gitter :disabled t)
+(use-package mastodon :disabled t)
 
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
@@ -1906,12 +2137,14 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
     "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
     :keybinding "y"))
 
+(use-package websocket)
 (use-package enlive)
 (use-package circe)
-(use-package slack :disabled)
+(use-package slack :disabled t)
+(use-package sx :disabled t)
 
 (use-package opener
-  :bind (:map ejmr-command-shortcut-map ("u" . opener-open-at-point)))
+  :bind (:map ejmr-web-service-map ("s-f" . opener-open-at-point)))
 
 (use-package transfer-sh)
 (use-package obfusurl)
@@ -1936,7 +2169,7 @@ Compile: _F_ile     _L_ist Compilers
     ("L" wandbox-list-compilers :color red)
     ("I" wandbox-insert-template)
     ("q" nil))
-  (bind-key "w" #'hydra-wandbox/body ejmr-command-shortcut-map))
+  (bind-key "w" #'hydra-wandbox/body ejmr-web-service-map))
 
 (use-package elfeed)
 
@@ -1957,7 +2190,16 @@ Compile: _F_ile     _L_ist Compilers
 (use-package browse-at-remote
   :bind ("C-x v t" . browse-at-remote))
 
-(use-package numbers)
+(use-package numbers
+  :config
+  (bind-key "n" (defhydra hydra-numbersapi (:color amaranth)
+		  "Numbers"
+		  ("f" numbers-math "Fact")
+		  ("C-f" numbers-random-math "Random Fact")
+		  ("t" numbers-trivia "Trivia")
+		  ("C-t" numbers-random-trivia "Random Trivia")
+		  ("q" nil "Quit" :color blue))
+	    ejmr-web-service-map))
 
 (use-package webpaste
   :config
@@ -1965,12 +2207,24 @@ Compile: _F_ile     _L_ist Compilers
     "Paste to Web"
     ("b" webpaste-paste-buffer "Buffer")
     ("r" webpaste-paste-region "Region"))
-  (bind-key "p" #'hydra-webpaste/body ejmr-command-shortcut-map))
+  (bind-key "p" #'hydra-webpaste/body ejmr-web-service-map))
 
 
 ;;; Miscellaneous
 
+(use-package guru-mode
+  :disabled t
+  :diminish guru-mode
+  :config
+  (guru-global-mode t))
+
+(use-package one-time-pad-encrypt)
+
 (use-package binclock)
+
+(use-package emojify
+  :config
+  (add-hook 'after-init-hook #'global-emojify-mode))
 
 
 ;;; Custom File
