@@ -6,7 +6,7 @@
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
-   (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#d6d6d6"))
+   (vector "#cccccc" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#66cccc" "#515151"))
  '(ansi-term-color-vector
    [unspecified "#f7f7f7" "#7c7c7c" "#8e8e8e" "#a0a0a0" "#686868" "#747474" "#686868" "#464646"] t)
  '(beacon-color "#F8BBD0")
@@ -71,7 +71,8 @@ static char *note[] = {
  '(evil-insert-state-cursor (quote ("#D50000" bar)))
  '(evil-normal-state-cursor (quote ("#F57F17" box)))
  '(evil-visual-state-cursor (quote ("#66BB6A" box)))
- '(fci-rule-color "#d6d6d6")
+ '(fci-rule-color "#515151")
+ '(firestarter-mode t)
  '(flycheck-checkers
    (quote
     (ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-gjslint javascript-jscs javascript-standard json-jsonlint json-python-json less lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl rst-sphinx rst ruby-rubocop ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
@@ -161,7 +162,7 @@ static char *gnus-pointer[] = {
  '(package-enable-at-startup t)
  '(package-selected-packages
    (quote
-    (el-get quickref vc-msg highlight-indent-guides highlight-numbers highlight fullframe rimero-theme elisp-doctstiong-mode subemacs-eval log4e-mode just-mode git-modes flycheck-proselint git-complete calfw-org aggressive-indent-mode snoopy hl-sentence buttercup anzu outline-toc bbyac buffer-manage imenu-anywhere riscv-mode dired-single prodigy pythonic try crontab-mode services recover-buffers protocols one-time-pad-encrypt inherit-local poporg phpunit robots-txt-mode import-popwin related loccur simple-call-tree rainbow-blocks color-identifiers-mode devdocs inkpot-theme espresso-theme mustang-theme busybee-theme phoenix-dark-pink-theme phoenix-dark-mono-theme flycheck-inline camcorder command-log-mode ipcalc guru-mode ivy-pass gitter sx company-emoji mastodon debug-print realgud-old-debuggers x86-lookup eros subemacs iterator json-rpc shen-elisp org-webpage jpop engine-mode markup bui package-build itail math-symbol-lists highlight-thing theme-looper enlive interleave embrace transmission binclock smart-dash slack org-cliplink circe zpresent opener url-shortener uimage obfusurl with-namespace spacemacs-theme silkworm-theme iodine-theme log4e literal-string ivy-rich guess-language geben fzf elquery elisp-docstring-mode with-simulated-input annotate ag ace-jump-zap intero indium mykie treepy soft-morning-theme greymatters-theme isend-mode org-ref string-inflection use-package-chords apiwrap shrink-whitespace makefile-executor underline-with-char calfw face-explorer numbers pass google-translate org-journal elx undo-tree bln-mode multiple-cursors add-hooks epkg decide el2markdown ivy-historian historian eink-theme dakrone-light-theme github-modern-theme ox-gfm org-tree-slide demo-it commander anyins crux system-packages fuel aggressive-indent modern-cpp-font-lock transfer-sh eno racket-mode ids-edit auto-minor-mode scratch edit-indirect epub-mode bbcode-mode latex-mode dired solid-mode helpful sqlup-mode indent-tools worf sublime-themes beginend json-navigator flycheck-package wandbox color-theme-sanityinc-tomorrow git-link psysh cmake-ide zerodark-theme elfeed arjen-grey-theme nubox find-file-in-project magic-latex-buffer elisp-refs org-parser link-hint ace-jump-buffer avy-flycheck ace-flyspell iflipb suggest stupid-indent-mode neon-mode qwe alda-mode dashboard browse-at-remote company-rtags company-php flycheck-rtags ivy-rtags malinka yankpad org-board ox-pandoc ox-asciidoc org-brain ob-php org-readme neotree schrute focus avy-menu rpn-calc ace-isearch copy-as-format emacsql-sqlite emacsql kill-or-bury-alive modalka el-mock mmt highlight-blocks vlf ini-mode symbol-overlay lispy mandm-theme lenlen-theme po-mode hierarchy intellij-theme lentic assess nord-theme rebecca-theme xmlgen brainfuck-mode diff-hl irony general resize-window iedit kaolin-theme restclient nhexl-mode god-mode vdiff composable dumb-jump ivy-todo direnv yaml-mode restart-emacs counsel-gtags counsel-dash wc-mode gandalf-theme white-theme paper-theme tern make-it-so git-timemachine flycheck-rust cargo editorconfig-custom-majormode editorconfig selected cov counsel-projectile projectile lice indent-guide tldr auto-dim-other-buffers emmet-mode go-mode dracula-theme base16-theme tango-plus-theme runner ryo-modal fish-mode 0xc realgud origami company-mode org-mode org-install polymode webpaste cycle-quotes green-screen-theme haskell-mode goose-theme flatui-theme color-theme-modern rainbow-identifiers rainbow-delimiters seoul256-theme punpun-theme plain-theme paganini-theme organic-green-theme material-theme majapahit-theme labburn-theme hydandata-light-theme avk-emacs-themes alect-themes leuven-theme madhat2r-theme zenburn-theme plan9-theme jazz-theme apropospriate-theme eziam-theme fn find-temp-file auto-yasnippet ace-link flycheck-mypy flyspell-correct-ivy free-keys adoc-mode dired-atool dired-efap hl-todo dired-k ws-butler tiny rich-minority flycheck-clangcheck clang-format ace-window syntactic-close linum-relative duplicate-thing clojure-mode company-quickhelp operate-on-number firestarter tao-theme moe-theme creamsody-theme doom-themes zweilight-theme yasnippet which-key tomatinho pandoc-mode js2-mode github-theme darkroom corral pp-c-l caps-lock company-lua avy-zap fountain-mode python-mode php-mode key-seq win-switch ivy-hydra ivy-pages avy recursive-narrow nameless company flycheck rust-mode tup-mode markdown-mode quickrun comment-dwim-2 key-chord nasm-mode refine counsel change-inner expand-region lua-mode forth-mode solarized-theme ivy hydra use-package)))
+    (whitespace-cleanup-mode insert-shebang w3m noxml-fold ghub+ el-get quickref vc-msg highlight-indent-guides highlight-numbers highlight fullframe rimero-theme elisp-doctstiong-mode subemacs-eval log4e-mode just-mode git-modes flycheck-proselint git-complete calfw-org aggressive-indent-mode snoopy hl-sentence buttercup anzu outline-toc bbyac buffer-manage imenu-anywhere riscv-mode dired-single prodigy pythonic try crontab-mode services recover-buffers protocols one-time-pad-encrypt inherit-local poporg phpunit robots-txt-mode import-popwin related loccur simple-call-tree rainbow-blocks color-identifiers-mode devdocs inkpot-theme espresso-theme mustang-theme busybee-theme phoenix-dark-pink-theme phoenix-dark-mono-theme flycheck-inline camcorder command-log-mode ipcalc guru-mode ivy-pass gitter sx company-emoji mastodon debug-print realgud-old-debuggers x86-lookup eros subemacs iterator json-rpc shen-elisp org-webpage jpop engine-mode markup bui package-build itail math-symbol-lists highlight-thing theme-looper enlive interleave embrace transmission binclock smart-dash slack org-cliplink circe zpresent opener url-shortener uimage obfusurl with-namespace spacemacs-theme silkworm-theme iodine-theme log4e literal-string ivy-rich guess-language geben fzf elquery elisp-docstring-mode with-simulated-input annotate ag ace-jump-zap intero indium mykie treepy soft-morning-theme greymatters-theme isend-mode org-ref string-inflection use-package-chords apiwrap shrink-whitespace makefile-executor underline-with-char calfw face-explorer numbers pass google-translate org-journal elx undo-tree bln-mode multiple-cursors add-hooks epkg decide el2markdown ivy-historian historian eink-theme dakrone-light-theme github-modern-theme ox-gfm org-tree-slide demo-it commander anyins crux system-packages fuel aggressive-indent modern-cpp-font-lock transfer-sh eno racket-mode ids-edit auto-minor-mode scratch edit-indirect epub-mode bbcode-mode latex-mode dired solid-mode helpful sqlup-mode indent-tools worf sublime-themes beginend json-navigator flycheck-package wandbox color-theme-sanityinc-tomorrow git-link psysh cmake-ide zerodark-theme elfeed arjen-grey-theme nubox find-file-in-project magic-latex-buffer elisp-refs org-parser link-hint ace-jump-buffer avy-flycheck ace-flyspell iflipb suggest stupid-indent-mode neon-mode qwe alda-mode dashboard browse-at-remote company-rtags company-php flycheck-rtags ivy-rtags malinka yankpad org-board ox-pandoc ox-asciidoc org-brain ob-php org-readme neotree schrute focus avy-menu rpn-calc ace-isearch copy-as-format emacsql-sqlite emacsql kill-or-bury-alive modalka el-mock mmt highlight-blocks vlf ini-mode symbol-overlay lispy mandm-theme lenlen-theme po-mode hierarchy intellij-theme lentic assess nord-theme rebecca-theme xmlgen brainfuck-mode diff-hl irony general resize-window iedit kaolin-theme restclient nhexl-mode god-mode vdiff composable dumb-jump ivy-todo direnv yaml-mode restart-emacs counsel-gtags counsel-dash wc-mode gandalf-theme white-theme paper-theme tern make-it-so git-timemachine flycheck-rust cargo editorconfig-custom-majormode editorconfig selected cov counsel-projectile projectile lice indent-guide tldr auto-dim-other-buffers emmet-mode go-mode dracula-theme base16-theme tango-plus-theme runner ryo-modal fish-mode 0xc realgud origami company-mode org-mode org-install polymode webpaste cycle-quotes green-screen-theme haskell-mode goose-theme flatui-theme color-theme-modern rainbow-identifiers rainbow-delimiters seoul256-theme punpun-theme plain-theme paganini-theme organic-green-theme material-theme majapahit-theme labburn-theme hydandata-light-theme avk-emacs-themes alect-themes leuven-theme madhat2r-theme zenburn-theme plan9-theme jazz-theme apropospriate-theme eziam-theme fn find-temp-file auto-yasnippet ace-link flycheck-mypy flyspell-correct-ivy free-keys adoc-mode dired-atool dired-efap hl-todo dired-k ws-butler tiny rich-minority flycheck-clangcheck clang-format ace-window syntactic-close linum-relative duplicate-thing clojure-mode company-quickhelp operate-on-number firestarter tao-theme moe-theme creamsody-theme doom-themes zweilight-theme yasnippet which-key tomatinho pandoc-mode js2-mode github-theme darkroom corral pp-c-l caps-lock company-lua avy-zap fountain-mode python-mode php-mode key-seq win-switch ivy-hydra ivy-pages avy recursive-narrow nameless company flycheck rust-mode tup-mode markdown-mode quickrun comment-dwim-2 key-chord nasm-mode refine counsel change-inner expand-region lua-mode forth-mode solarized-theme ivy hydra use-package)))
  '(pdf-view-midnight-colors (quote ("#969896" . "#f8eec7")))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
@@ -171,7 +172,10 @@ static char *gnus-pointer[] = {
  '(rainbow-identifiers-cie-l*a*b*-saturation 25)
  '(safe-local-variable-values
    (quote
-    ((eval when
+    ((firestarter
+      (byte-compile-file
+       (buffer-file-name)))
+     (eval when
 	   (require
 	    (quote rainbow-mode)
 	    nil t)
@@ -196,24 +200,24 @@ static char *gnus-pointer[] = {
  '(vc-annotate-background-mode nil)
  '(vc-annotate-color-map
    (quote
-    ((20 . "#c82829")
-     (40 . "#f5871f")
-     (60 . "#eab700")
-     (80 . "#718c00")
-     (100 . "#3e999f")
-     (120 . "#4271ae")
-     (140 . "#8959a8")
-     (160 . "#c82829")
-     (180 . "#f5871f")
-     (200 . "#eab700")
-     (220 . "#718c00")
-     (240 . "#3e999f")
-     (260 . "#4271ae")
-     (280 . "#8959a8")
-     (300 . "#c82829")
-     (320 . "#f5871f")
-     (340 . "#eab700")
-     (360 . "#718c00"))))
+    ((20 . "#f2777a")
+     (40 . "#f99157")
+     (60 . "#ffcc66")
+     (80 . "#99cc99")
+     (100 . "#66cccc")
+     (120 . "#6699cc")
+     (140 . "#cc99cc")
+     (160 . "#f2777a")
+     (180 . "#f99157")
+     (200 . "#ffcc66")
+     (220 . "#99cc99")
+     (240 . "#66cccc")
+     (260 . "#6699cc")
+     (280 . "#cc99cc")
+     (300 . "#f2777a")
+     (320 . "#f99157")
+     (340 . "#ffcc66")
+     (360 . "#99cc99"))))
  '(vc-annotate-very-old-color nil)
  '(weechat-color-list
    (quote

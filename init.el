@@ -47,6 +47,7 @@ i.e.  the one directory that contains the requested package."
 (use-package epkg :disabled t)
 
 (use-package theme-looper
+  :disabled t
   :defer nil
   :config
   (bind-key "l" (defhydra hydra-theme-loop (:color amaranth)
@@ -75,7 +76,7 @@ i.e.  the one directory that contains the requested package."
 
 (use-package dashboard :disabled t)
 
-(use-package recover-buffers)
+(use-package recover-buffers :disabled t)
 
 
 ;;; Global Custom Keymap Prefixes
@@ -127,7 +128,7 @@ i.e.  the one directory that contains the requested package."
 
 ;;; Global Minor Modes
 
-(use-package auto-minor-mode)
+(use-package auto-minor-mode :disabled t)
 
 (transient-mark-mode t)
 
@@ -184,7 +185,7 @@ register-alist'."
 
 ;;; Global Utilities
 
-(use-package try)
+(use-package try :disabled t)
 
 (use-package snoopy
   :load-path "/home/eric/.emacs.d/local/snoopy-mode"
@@ -196,16 +197,9 @@ register-alist'."
   :bind (:map ejmr-command-shortcut-map ("n" . neotree-toggle))
   :config (setq neo-theme 'state))
 
-(use-package avy-menu)
-(use-package mmt)
-(use-package el-mock)
 (use-package vlf)
-(use-package eieio)
 (use-package general :disabled t)
-(use-package direnv)
-(use-package iedit)
-(use-package hierarchy)
-(use-package lentic)
+(use-package direnv :disabled t)
 (use-package rpn-calc)
 
 (use-package kill-or-bury-alive
@@ -215,14 +209,15 @@ register-alist'."
 
 (use-package refine)
 (use-package restart-emacs)
-(use-package zone)
-(use-package tldr)
+(use-package zone :disabled t)
+(use-package tldr :disabled t)
 (use-package fn)
 
 (use-package find-temp-file
   :bind (:map ejmr-command-shortcut-map ("f" . find-temp-file)))
 
 (use-package editorconfig
+  :disabled t
   :diminish editorconfig-mode
   :config
   (editorconfig-mode t)
@@ -230,6 +225,9 @@ register-alist'."
     :config
     (add-hook 'editorconfig-custom-hooks 'editorconfig-custom-majormode)))
 
+;;; TODO: Remove `selected' in favor of this and copy its
+;;; functionality into this mode?  And while I'm at in, remove
+;;; key-seq?  Maybe just go nuts cleaning house.
 (use-package composable
   :diminish composable-mode
   :config
@@ -251,6 +249,7 @@ register-alist'."
     :bind (:map ejmr-custom-bindings-map ("n" . linum-relative-global-mode))))
 
 (use-package qwe
+  :disabled t
   :load-path ("/home/eric/.emacs.d/local/qwe-0.9.5/src"
 	      "/home/eric/.emacs.d/local/qwe-0.9.5/ext"))
 
@@ -437,6 +436,10 @@ _a_g          _p_roject    _d_ired
 
 
 ;;; External Shell Utilities
+
+(use-package insert-shebang
+  :disabled t
+  :config (bind-key "b" #'insert-shebang ejmr-command-shortcut-map))
 
 (use-package with-editor
   :config (shell-command-with-editor-mode t))
@@ -745,6 +748,7 @@ _h_   _l_   _o_k        _y_ank
 ;;; Auto Completion
 
 (use-package bbyac
+  :defer nil
   :diminish bbyac-mode
   :config
   (bbyac-global-mode t))
@@ -822,38 +826,30 @@ will automatically kill the buffer."
 
 ;;; Hydra for Minor Modes
 
-(defhydra hydra-minor-modes (:columns 6)
-  "Minor Mode"
-  ("a" global-aggressive-indent-mode "Agressive")
-  ("A" anyins-mode "Anyins")
-  ("b" beginend-global-mode "BeginEnd")
-  ("c" global-company-mode "Company")
-  ("C" cargo-minor-mode "Cargo")
-  ("d" darkroom-tentative-mode "Darkroom")
-  ("D" direnv-mode "Direnv")
-  ("e" emmet-mode "Emmet")
-  ("f" global-flycheck-mode "Flycheck")
-  ("F" flyspell-mode "Flyspell")
-  ("g" god-mode-all "God Mode")
-  ("h" nhexl-mode "Hex")
-  ("H" global-diff-hl-mode "Diff HL")
-  ("i" indent-guide-global-mode "Indent Guide")
-  ("I" stupid-indent-mode "Stupid Indent Mode")
-  ("l" visual-line-mode "Line")
-  ("L" global-lentic-mode "Lentic")
-  ("n" nameless-mode "Nameless")
-  ("N" annotate-mode "Annotate")
-  ("o" global-origami-mode "Origami")
-  ("r" rainbow-identifiers-mode "Rainbow")
-  ("p" pandoc-mode "Pandoc")
-  ("s" firestarter-mode "Firestarter")
-  ("S" selected-minor-mode "Selected")
-  ("t" global-highlight-thing-mode "HL Thing")
-  ("v" view-mode "View")
-  ("w" ws-butler-mode "WS Butler")
-  ("y" yas-global-mode "YASnippet")
-  ("Y" lispy-mode "Lispy")
-  ("q" nil "Quit" :color blue))
+(defhydra hydra-minor-modes (:hint nil)
+  "
+^Indenting^    ^Coding^         ^Writing^
+------------------------------------------------------------
+[_A_]ggresive  [_N_]ameless      Dark_r_oom
+[_S_]tupid     [_C_]ompany       Fly_s_pell
+[_G_]uide      [_E_]mmet         _P_andoc
+             [_D_]iff HL       _W_S Butler
+             [_F_]irestarter   _V_isual Line
+"
+  ("A" global-aggressive-indent-mode)
+  ("S" stupid-indent-mode)
+  ("G" indent-guide-mode)
+  ("N" nameless-mode)
+  ("C" global-company-mode)
+  ("E" emmet-mode)
+  ("F" firestarter-mode)
+  ("D" global-diff-hl-mode)
+  ("r" darkroom-tentative-mode)
+  ("s" flyspell-mode)
+  ("P" pandoc-mode)
+  ("W" ws-butler-mode)
+  ("V" visual-line-mode)
+  ("q" nil :color blue))
 
 (bind-key "n" #'hydra-minor-modes/body ejmr-hydra-map)
 
@@ -1197,6 +1193,25 @@ _v_ariable       _u_ser-option
 
 (use-package symbol-overlay
   :config
+  (defhydra hydra-symbol-overlay (:hint nil)
+    "
+[_P_]ut       Jump to [_N_]ext        Search [_L_]iterally
+[_T_]oggle            [_P_]revious     ...or [_Q_]uery Replace
+[_E_]cho              [_D_]efinition   ...or [_R_]ename
+[_S_]ave
+"
+    ("P" symbol-overlay-put)
+    ("N" symbol-overlay-jump-next)
+    ("P" symbol-overlay-jump-prev)
+    ("S" symbol-overlay-save-symbol)
+    ("T" symbol-overlay-toggle-in-scope)
+    ("E" symbol-overlay-echo-mark)
+    ("D" symbol-overlay-jump-to-definition)
+    ("L" symbol-overlay-isearch-literally)
+    ("Q" symbol-overlay-query-replace)
+    ("R" symbol-overlay-rename)
+    ("q" nil :color blue))
+  (bind-key "s" #'hydra-symbol-overlay/body ejmr-hydra-map)
   (bind-key "s" #'symbol-overlay-put ejmr-command-shortcut-map))
 
 
@@ -1292,24 +1307,25 @@ _v_ariable       _u_ser-option
 (use-package ini-mode)
 
 (use-package haskell-mode
+  :disabled t
   :config
   (use-package intero))
 
 (use-package python-mode)
 (use-package js2-mode)
 (use-package json-navigator)
-(use-package indium)
+(use-package indium :disabled t)
 (use-package tern :disabled t)
-(use-package clojure-mode)
+(use-package clojure-mode :disabled t)
 
 (use-package conf-mode
   :mode ("\\.toml\\'" . conf-mode))
 
-(use-package neon-mode)
-(use-package nhexl-mode)
-(use-package brainfuck-mode)
+(use-package neon-mode :disabled t)
+(use-package nhexl-mode :disabled t)
+(use-package brainfuck-mode :disabled t)
 (use-package forth-mode)
-(use-package go-mode)
+(use-package go-mode :disabled t)
 (use-package fish-mode)
 
 (use-package lua-mode
@@ -1333,6 +1349,7 @@ _v_ariable       _u_ser-option
   :config (modern-c++-font-lock-global-mode t))
 
 (use-package solid-mode
+  :disabled t
   :load-path "/home/eric/.emacs.d/local/solid-mode"
   :config
   (quickrun-add-command "solid"
@@ -1342,11 +1359,12 @@ _v_ariable       _u_ser-option
       (:description . "Compile and execute Solid scripts"))
     :mode 'solid-mode))
 
-(use-package shen-elisp)
+(use-package shen-elisp :disabled t)
 
 (use-package fuel :disabled t)
 
 (use-package racket-mode
+  :disabled t
   :commands (racket-mode)
   :mode ("\\.rkt\\'" . racket-mode))
 
@@ -1411,6 +1429,7 @@ _v_ariable       _u_ser-option
   (bind-key "M-c" #'hydra-string-inflection/body))
 
 (use-package just-mode
+  :disabled t
   :load-path "/home/eric/.emacs.d/local/just-mode"
   :mode "Justfile")
 
@@ -1514,6 +1533,10 @@ _v_ariable       _u_ser-option
 ;;; Emacs Lisp Programming
 
 (use-package buttercup)
+(use-package mmt)
+(use-package el-mock)
+(use-package avy-menu)
+(use-package eieio)
 
 (use-package pythonic
   :config
@@ -1625,7 +1648,16 @@ _v_ariable       _u_ser-option
 
 (use-package pass :bind (:map ejmr-command-shortcut-map ("s-p" . pass)))
 (use-package itail :bind (:map ejmr-hydra-map ("i" . itail)))
-(use-package fzf :disabled t)
+
+(use-package fzf
+  :disabled t
+  :config
+  (defhydra hydra-fzf (:color blue :hint 0.5)
+    "fzf"
+    ("f" fzf "File")
+    ("d" fzf-directory "Directory")
+    ("g" fzf-git "Git"))
+  (bind-key "z" #'hydra-fzf/body ejmr-command-shortcut-map))
 
 
 ;;; Project Management
@@ -1656,6 +1688,10 @@ _v_ariable       _u_ser-option
 
 ;;; HTML, XML, CSS
 
+(use-package noxml-fold
+  :config
+  (add-hook 'nxml-mode-hook 'noxml-fold-mode))
+
 (use-package emmet-mode
   :config
   (add-hook 'sgml-mode-hook 'emmet-mode)
@@ -1670,6 +1706,17 @@ _v_ariable       _u_ser-option
 (use-package dired :config
 
   (setq dired-dwim-target t)
+
+  ;; TODO: Allow arbritrary marks
+  (defun ejmr-dired-funcall-marked-files (fn)
+    "Calls FN for all marked files in the current Dired buffer."
+    (mapcar fn (dired-get-marked-files)))
+
+  (defun ejmr-dired-browse-with-w3m ()
+    "Browse the marked file(s) with w3m."
+    (interactive)
+    (ejmr-dired-funcall-marked-files (function w3m-browse-url)))
+  (bind-key "* W" #'ejmr-dired-browse-with-w3m dired-mode-map)
 
   (defun ejmr-dired-view-readme ()
     "View the README file in the current Dired directory.
@@ -1729,6 +1776,8 @@ _v_ariable       _u_ser-option
 
 ;;; General Editing Utilities
 
+(use-package whitespace-cleanup)
+
 (use-package embrace
   :bind (:map ejmr-command-shortcut-map ("e" . embrace-commander)))
 
@@ -1768,15 +1817,15 @@ _v_ariable       _u_ser-option
   (defun ejmr-diminish-all-beginend-modes ()
     "Diminish all lighters `beginend-global-mode' activates.
 
-Calling `beginend-global-mode' creates multiple minor modes and
-automatically enables them when, for example, using Dired or
-Elfeed, and more.  These individual minor modes define ` be' as
-the lighter which appears on the mode-line for those modes.
+    Calling `beginend-global-mode' creates multiple minor modes and
+    automatically enables them when, for example, using Dired or
+    Elfeed, and more.  These individual minor modes define ` be' as
+    the lighter which appears on the mode-line for those modes.
 
-Diminishing `beginend-global-mode' only affects one situation
-though, meaning the lighter will remain.  Completely diminishing
-all instances of ` be' requires us to diminsh each minor mode
-that `beginend' defines.  This function does exactly that."
+    Diminishing `beginend-global-mode' only affects one situation
+    though, meaning the lighter will remain.  Completely diminishing
+    all instances of ` be' requires us to diminsh each minor mode
+    that `beginend' defines.  This function does exactly that."
     (interactive)
     (mapc (lambda (pair)
 	    (diminish (cdr pair)))
@@ -1852,6 +1901,10 @@ that `beginend' defines.  This function does exactly that."
 
 ;;; Text Reading, Editing, and Writing
 
+(use-package iedit)
+(use-package hierarchy)
+(use-package lentic)
+
 (use-package view
   :defer nil
   :init (setq view-read-only t)
@@ -1875,8 +1928,8 @@ that `beginend' defines.  This function does exactly that."
 (defun ejmr-sort-buffer-lines-and-delete-duplicates ()
   "Sorts all lines in the buffer and deletes duplicates.
 
-  This automates a task I perform very often with my text file of
-  saved URIs which Conkeror creates."
+    This automates a task I perform very often with my text file of
+    saved URIs which Conkeror creates."
   (interactive)
   (mark-whole-buffer)
   (sort-lines nil (point-min) (point-max))
@@ -1893,15 +1946,15 @@ that `beginend' defines.  This function does exactly that."
   :bind (:map selected-keymap
 	      ("n" . narrow-to-region)
 	      (";" . comment-dwim-2)
-  ("$" . flyspell-region)
-  ("u" . upcase-region)
-  ("d" . downcase-region)
-  ("c" . count-words-region)
-  ("\\" . indent-region)
-  ("w" . copy-region-as-kill)
-  ("W" . copy-as-format)
-  ("k" . kill-region)
-  ("m" . apply-macro-to-region-lines)))
+    ("$" . flyspell-region)
+    ("u" . upcase-region)
+    ("d" . downcase-region)
+    ("c" . count-words-region)
+    ("\\" . indent-region)
+    ("w" . copy-region-as-kill)
+    ("W" . copy-as-format)
+    ("k" . kill-region)
+    ("m" . apply-macro-to-region-lines)))
 
 (use-package latex-mode
   :config
@@ -2105,7 +2158,7 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
 (use-package camcorder)
 
 
-;;; Web and Online Services
+;;; Online Services
 
 (use-package robots-txt-mode)
 (use-package ipcalc)
@@ -2237,3 +2290,4 @@ Compile: _F_ile     _L_ist Compilers
 ;; Local Variables:
 ;; firestarter: (byte-compile-file (buffer-file-name))
 ;; End:
+(put 'narrow-to-page 'disabled nil)
