@@ -42,6 +42,13 @@ i.e.  the one directory that contains the requested package."
 		     #'(lambda (dir)
 			 (s-matches? (concat "/" name "-[0-9]+\\.[0-9]+") dir))))))
 
+(eval-and-compile
+  (defun ejmr-get-local-load-path-for (name)
+    "Returns the local directory containing the package NAME."
+    (interactive)
+    (let ((root-dir "/home/eric/.emacs.d/local/"))
+      (concat root-dir name))))
+
 ;;; TODO: Setup a local mirror of the Emacs Wiki.
 ;;; https://emacsmirror.net/manual/epkg/Installation.html#Installation
 (use-package epkg :disabled t)
@@ -188,7 +195,7 @@ register-alist'."
 (use-package try :disabled t)
 
 (use-package snoopy
-  :load-path "/home/eric/.emacs.d/local/snoopy-mode"
+  :load-path (lambda () (ejmr-get-local-load-path-for "snoopy-mode"))
   :commands snoopy-mode
   :bind ("s-s" . snoopy-mode))
 
@@ -217,7 +224,6 @@ register-alist'."
   :bind (:map ejmr-command-shortcut-map ("f" . find-temp-file)))
 
 (use-package editorconfig
-  :disabled t
   :diminish editorconfig-mode
   :config
   (editorconfig-mode t)
@@ -321,7 +327,7 @@ _~_: modified      ^ ^                ^ ^                ^^                     
 
 (use-package amx
   :defer nil
-  :load-path "/home/eric/.emacs.d/local/amx"
+  :load-path (lambda () (ejmr-get-local-load-path-for "amx"))
   :bind ("M-s-x" . amx-major-mode-commands)
   :config (amx-mode t))
 
@@ -392,7 +398,33 @@ This is the equivalent of `C-x 2' followed by `C-x +'."
 (use-package tiny
   :bind (:map ejmr-command-shortcut-map ("t" . tiny-expand)))
 
+(use-package vimish-fold
+  :config
+  (defhydra hydra-vimish-fold (:color pink :hint nil :delay 0.5)
+    "
+Vimish Fold
+-----------
+[_f_]old    [_d_]elete    [_u_]nfold    [_r_]efold    [_t_]oggle
+    Prefix CTRL for `*-all' variants
+
+[_a_]vy  [_q_]uit
+"
+    ("f" vimish-fold)
+    ("C-f" vimish-fold-all)
+    ("d" vimish-fold-delete)
+    ("C-d" vimish-fold-delete-all)
+    ("u" vimish-unfold)
+    ("C-u" vimish-fold-unfold-all)
+    ("r" vimish-fold-refold)
+    ("C-r" vimish-fold-refold-all)
+    ("t" vimish-fold-toggle)
+    ("C-t" vimish-fold-toggle-all)
+    ("a" vimish-fold-avy)
+    ("q" nil :color blue))
+  (bind-key "s-f" #'hydra-vimish-fold/body ejmr-command-shortcut-map))
+
 (use-package origami
+  :disabled t
   :diminish 'origami-mode
   :config
   (global-origami-mode t)
@@ -475,7 +507,7 @@ _a_g          _p_roject    _d_ired
 (use-package indent-tools
   :bind (:map ejmr-hydra-map (">" . indent-tools-hydra/body)))
 
-(use-package aggressive-indent-mode
+(use-package aggressive-indent
   :commands (aggressive-indent-mode)
   :config
   (global-aggressive-indent-mode t))
@@ -483,8 +515,6 @@ _a_g          _p_roject    _d_ired
 (use-package indent-guide
   :diminish indent-guide-mode
   :config (add-hook 'prog-mode-hook #'indent-guide-mode))
-
-(use-package aggressive-indent :diminish aggressive-indent-mode)
 
 
 ;;; Help and Info
@@ -681,7 +711,7 @@ _h_   _l_   _o_k        _y_ank
   (use-package org-journal :disabled t)
   (use-package org-wiki
     :disabled t
-    :load-path "/home/eric/.emacs.d/local/org-wiki"
+    :load-path (lambda () (ejmr-get-local-load-path-for "org-wiki"))
     :config
     (setq org-wiki-location "/home/eric/Documents/Wiki")
     (setq org-wiki-server-port "7331")
@@ -754,7 +784,7 @@ _h_   _l_   _o_k        _y_ank
   (bbyac-global-mode t))
 
 (use-package git-complete
-  :load-path "/home/eric/.emacs.d/local/git-complete"
+  :load-path (lambda () (ejmr-get-local-load-path-for "git-complete"))
   :commands git-complete
   :bind ("M-s-/" . git-complete)
   :config
@@ -874,7 +904,7 @@ will automatically kill the buffer."
   :config
   (use-package flycheck-inline :ensure t)
   (use-package flycheck-proselint
-    :load-path "/home/eric/.emacs.d/local/flycheck-proselint")
+    :load-path (lambda () (ejmr-get-local-load-path-for "flycheck-proselint")))
   (use-package flycheck-clangcheck
     :disabled t
     :config
@@ -883,6 +913,7 @@ will automatically kill the buffer."
   (use-package flycheck-package
     :config (flycheck-package-setup))
   (use-package flycheck-rust
+    :disabled t
     :config
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
   (bind-key "<s-up>" #'flycheck-previous-error)
@@ -1259,7 +1290,7 @@ _v_ariable       _u_ser-option
 (use-package vc-msg :disabled t)
 
 (use-package git-modes
-  :load-path "/home/eric/.emacs.d/local/git-modes")
+  :load-path (lambda () (ejmr-get-local-load-path-for "git-modes")))
 
 (use-package git-timemachine
   :commands git-timemachine-toggle
@@ -1288,55 +1319,55 @@ _v_ariable       _u_ser-option
   (bind-key "c" #'hydra-git/body vc-prefix-map))
 
 
-;;; Modes for Specific Programming Languages
+;;; Rust
 
 (use-package rust-mode
   :config
   (use-package cargo :diminish cargo-minor-mode))
 
-(use-package php-mode
-  :config
-  (use-package psysh)
-  (use-package phpunit
-    :bind (:map php-mode-map
-		("C-c C-t C-t" . phpunit-current-test)
-		("C-c C-t C-c" . phpunit-current-class)
-		("C-c C-t C-p" . phpunit-current-project))
-    :mode ("\\.php$'" . phpunit-mode)))
+
+;;; File-Format Programming Modes
 
+(use-package nhexl-mode :disabled t)
+(use-package brainfuck-mode :disabled t)
+(use-package neon-mode :disabled t)
 (use-package ini-mode)
-
-(use-package haskell-mode
-  :disabled t
-  :config
-  (use-package intero))
-
-(use-package python-mode)
-(use-package js2-mode)
-(use-package json-navigator)
-(use-package indium :disabled t)
-(use-package tern :disabled t)
-(use-package clojure-mode :disabled t)
-
 (use-package conf-mode
   :mode ("\\.toml\\'" . conf-mode))
 
-(use-package neon-mode :disabled t)
-(use-package nhexl-mode :disabled t)
-(use-package brainfuck-mode :disabled t)
+
+;;; Forth
+
 (use-package forth-mode)
+
+
+;;; Goland
+
 (use-package go-mode :disabled t)
+
+
+;;; Shell Programming
+
 (use-package fish-mode)
+
+
+;;; Lua
 
 (use-package lua-mode
   :config
   (setq-default lua-indent-level 4))
+
+
+;;; Assembly
 
 (use-package nasm-mode
   :mode (("\\.asm\\'" . nasm-mode)
 	 ("\\.s\\'" . nasm-mode)))
 
 (use-package riscv-mode)
+
+
+;;; C, C++, and C#
 
 (progn
   (defun ejmr-setup-cc-mode ()
@@ -1348,9 +1379,12 @@ _v_ariable       _u_ser-option
 (use-package modern-cpp-font-lock
   :config (modern-c++-font-lock-global-mode t))
 
+
+;;; Solid Programming Language
+
 (use-package solid-mode
   :disabled t
-  :load-path "/home/eric/.emacs.d/local/solid-mode"
+  :load-path (lambda () (ejmr-get-local-load-path-for "solid-mode"))
   :config
   (quickrun-add-command "solid"
     '((:command . "solid")
@@ -1359,14 +1393,57 @@ _v_ariable       _u_ser-option
       (:description . "Compile and execute Solid scripts"))
     :mode 'solid-mode))
 
-(use-package shen-elisp :disabled t)
+
+;;; Factor
 
 (use-package fuel :disabled t)
+
+
+;;; Scheme
+
+(use-package geiser
+  :init
+  (setq geiser-active-implementations '(guile chibi-scheme)))
 
 (use-package racket-mode
   :disabled t
   :commands (racket-mode)
   :mode ("\\.rkt\\'" . racket-mode))
+
+
+;;; Python
+
+(use-package python-mode)
+
+
+;;; JavaScript
+
+(use-package js2-mode)
+(use-package json-navigator)
+(use-package indium :disabled t)
+(use-package tern :disabled t)
+
+
+;;; Clojure
+
+(use-package clojure-mode :disabled t)
+
+
+;;; PHP
+
+(use-package php-mode
+  :config
+  (use-package psysh)
+  (use-package phpunit
+    :bind (:map php-mode-map
+		("C-c C-t C-t" . phpunit-current-test)
+		("C-c C-t C-c" . phpunit-current-class)
+		("C-c C-t C-p" . phpunit-current-project))
+    :mode ("\\.php$'" . phpunit-mode)))
+
+(use-package php-runtime
+  :load-path (lambda () (ejmr-get-local-load-path-for "php-runtime.el"))
+  :defer nil)
 
 
 ;;; Programming Utilities
@@ -1427,11 +1504,6 @@ _v_ariable       _u_ser-option
     ("SPC" string-inflection-all-cycle "Cycle")
     ("q" nil "Quit" :color blue))
   (bind-key "M-c" #'hydra-string-inflection/body))
-
-(use-package just-mode
-  :disabled t
-  :load-path "/home/eric/.emacs.d/local/just-mode"
-  :mode "Justfile")
 
 (use-package scratch)
 
@@ -1507,8 +1579,12 @@ _v_ariable       _u_ser-option
 
 ;;; Build Tools
 
+(use-package make-mode
+  :mode (("Justfile" . makefile-mode)
+	 ("justfile" . makefile-mode)))
+
 (use-package tup-mode
-  :load-path "/home/eric/.emacs.d/local/tup-mode")
+  :load-path (lambda () (ejmr-get-local-load-path-for "tup-mode")))
 
 (use-package cmake-ide :disabled t)
 (use-package malinka :disabled t)
@@ -1532,11 +1608,23 @@ _v_ariable       _u_ser-option
 
 ;;; Emacs Lisp Programming
 
+(use-package shen-elisp :disabled t)
+
 (use-package buttercup)
 (use-package mmt)
 (use-package el-mock)
 (use-package avy-menu)
 (use-package eieio)
+
+(progn
+  (use-package package-lint)
+  (use-package checkdoc)
+  (defun ejmr-lint-elisp-buffer ()
+    "Runt lint commands on my Emacs Lisp code."
+    (interactive)
+    (checkdoc)
+    (package-lint-current-buffer))
+  (bind-key "C-c C-l" #'ejmr-lint-elisp-buffer emacs-lisp-mode-map))
 
 (use-package pythonic
   :config
@@ -1586,10 +1674,6 @@ _v_ariable       _u_ser-option
   :config
   (bind-key "C-c C-s" #'suggest-mode emacs-lisp-mode-map)
   (bind-key "C-c C-e" #'emacs-lisp-mode suggest-mode-map))
-
-(use-package package-lint
-  :config
-  (bind-key "C-c C-l" #'package-lint-current-buffer emacs-lisp-mode-map))
 
 (use-package el2markdown
   :config
@@ -1707,15 +1791,14 @@ _v_ariable       _u_ser-option
 
   (setq dired-dwim-target t)
 
-  ;; TODO: Allow arbritrary marks
-  (defun ejmr-dired-funcall-marked-files (fn)
+  (defun ejmr-dired-map-marked-files (fn)
     "Calls FN for all marked files in the current Dired buffer."
     (mapcar fn (dired-get-marked-files)))
 
   (defun ejmr-dired-browse-with-w3m ()
     "Browse the marked file(s) with w3m."
     (interactive)
-    (ejmr-dired-funcall-marked-files (function w3m-browse-url)))
+    (ejmr-dired-map-marked-files (function w3m-browse-url)))
   (bind-key "* W" #'ejmr-dired-browse-with-w3m dired-mode-map)
 
   (defun ejmr-dired-view-readme ()
@@ -1807,7 +1890,7 @@ _v_ariable       _u_ser-option
 (use-package decide)
 
 (use-package linkd
-  :load-path "/home/eric/.emacs.d/local/linkd")
+  :load-path (lambda () (ejmr-get-local-load-path-for "linkd")))
 
 (use-package demo-it)
 
@@ -1975,7 +2058,7 @@ _v_ariable       _u_ser-option
 
 (use-package wiki-nav
   :disabled t
-  :load-path "/home/eric/.emacs.d/local/button-lock"
+  :load-path (lambda () (ejmr-get-local-load-path-for "button-lock"))
   :diminish (wiki-nav-mode button-lock-mode)
   :config (global-wiki-nav-mode 1)
 
@@ -2023,10 +2106,11 @@ all buffers."
   (setq-default copy-as-format-default "markdown"))
 
 (use-package bbcode-mode
-  :load-path "/home/eric/.emacs.d/local/bbcode-mode")
+  :load-path (lambda () (ejmr-get-local-load-path-for "bbcode-mode")))
 
 (use-package epub-mode
-  :load-path "/home/eric/.emacs.d/local/epub-mode.el")
+  :disabled t
+  :load-path (lambda () (ejmr-get-local-load-path-for "epub-mode.el")))
 
 ;;; TODO: Install the `unfill' package then delete this function.
 (defun ejmr-refill-to-one-line ()
@@ -2290,4 +2374,3 @@ Compile: _F_ile     _L_ist Compilers
 ;; Local Variables:
 ;; firestarter: (byte-compile-file (buffer-file-name))
 ;; End:
-(put 'narrow-to-page 'disabled nil)
